@@ -1,0 +1,203 @@
+syntax = "proto3";
+
+package identity;
+
+option go_package = "github.com/Silicon-Savannah-Solutions/identity";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Identity Service provides APIs for user identity management
+service IdentityService {
+  // Create a new user account
+  rpc CreateUser(CreateUserRequest) returns (User);
+
+  // Get user by ID
+  rpc GetUser(GetUserRequest) returns (User);
+
+  // Update user information
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+
+  // Delete a user
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+
+  // Authenticate a user and return a session token
+  rpc Login(LoginRequest) returns (LoginResponse);
+
+  // Revoke a session token
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
+
+  // Verify a session token
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
+
+  // Request a password reset
+  rpc RequestPasswordReset(RequestPasswordResetRequest) returns (google.protobuf.Empty);
+
+  // Reset a password using a reset token
+  rpc ResetPassword(ResetPasswordRequest) returns (google.protobuf.Empty);
+
+  // Change a user's password (when logged in)
+  rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty);
+
+  // List users with pagination
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
+
+// User represents a user account
+message User {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string full_name = 4;
+  UserStatus status = 5;
+  repeated Role roles = 6;
+  UserMetadata metadata = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+  google.protobuf.Timestamp last_login = 10;
+}
+
+// UserStatus represents the status of a user account
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_INACTIVE = 2;
+  USER_STATUS_SUSPENDED = 3;
+  USER_STATUS_PENDING_VERIFICATION = 4;
+}
+
+// Role represents a role for authorization purposes
+message Role {
+  string name = 1;
+  repeated string permissions = 2;
+}
+
+// UserMetadata contains additional information about a user
+message UserMetadata {
+  string phone_number = 1;
+  string profile_picture_url = 2;
+  map<string, string> custom_attributes = 3;
+  Address address = 4;
+}
+
+// Address represents a physical address
+message Address {
+  string street_address = 1;
+  string city = 2;
+  string state = 3;
+  string postal_code = 4;
+  string country = 5;
+}
+
+// CreateUserRequest is used to create a new user
+message CreateUserRequest {
+  string email = 1;
+  string username = 2;
+  string password = 3;
+  string full_name = 4;
+  repeated string role_names = 5;
+  UserMetadata metadata = 6;
+}
+
+// GetUserRequest is used to retrieve a user by ID
+message GetUserRequest {
+  string id = 1;
+}
+
+// UpdateUserRequest is used to update a user's information
+message UpdateUserRequest {
+  string id = 1;
+  optional string email = 2;
+  optional string username = 3;
+  optional string full_name = 4;
+  optional UserStatus status = 5;
+  repeated string role_names = 6;
+  optional UserMetadata metadata = 7;
+}
+
+// DeleteUserRequest is used to delete a user
+message DeleteUserRequest {
+  string id = 1;
+}
+
+// LoginRequest is used to authenticate a user
+message LoginRequest {
+  // Either email or username must be provided
+  oneof identifier {
+    string email = 1;
+    string username = 2;
+  }
+  string password = 3;
+  // Optional device information for multi-device management
+  DeviceInfo device_info = 4;
+}
+
+// DeviceInfo contains information about the device being used
+message DeviceInfo {
+  string device_id = 1;
+  string device_type = 2;
+  string os = 3;
+  string ip_address = 4;
+  string user_agent = 5;
+}
+
+// LoginResponse is returned after successful authentication
+message LoginResponse {
+  string user_id = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  int64 expires_in = 4; // Token expiration in seconds
+  repeated string permissions = 5;
+}
+
+// LogoutRequest is used to revoke a session token
+message LogoutRequest {
+  string access_token = 1;
+}
+
+// VerifyTokenRequest is used to verify a session token
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+// VerifyTokenResponse is returned after token verification
+message VerifyTokenResponse {
+  bool valid = 1;
+  string user_id = 2;
+  repeated string permissions = 3;
+  int64 expires_in = 4; // Remaining validity in seconds
+}
+
+// RequestPasswordResetRequest is used to request a password reset
+message RequestPasswordResetRequest {
+  string email = 1;
+}
+
+// ResetPasswordRequest is used to reset a password using a token
+message ResetPasswordRequest {
+  string reset_token = 1;
+  string new_password = 2;
+}
+
+// ChangePasswordRequest is used to change a password when logged in
+message ChangePasswordRequest {
+  string user_id = 1;
+  string current_password = 2;
+  string new_password = 3;
+}
+
+// ListUsersRequest is used to list users with pagination
+message ListUsersRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  // Optional filters
+  optional UserStatus status = 3;
+  optional string role_name = 4;
+}
+
+// ListUsersResponse contains a list of users and pagination info
+message ListUsersResponse {
+  repeated User users = 1;
+  string next_page_token = 2;
+  int32 total_count = 3;
+}

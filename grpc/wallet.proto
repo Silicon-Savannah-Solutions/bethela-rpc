@@ -1,0 +1,369 @@
+syntax = "proto3";
+
+package wallet;
+
+option go_package = "github.com/travoroguna/bethela-rpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// WalletService provides APIs for digital wallet management and mobile money operations
+service WalletService {
+  // Create a new wallet for a user
+  rpc CreateWallet(CreateWalletRequest) returns (Wallet);
+
+  // Get wallet by ID
+  rpc GetWallet(GetWalletRequest) returns (Wallet);
+
+  // Get wallet by user ID
+  rpc GetWalletByUser(GetWalletByUserRequest) returns (Wallet);
+
+  // Update wallet information
+  rpc UpdateWallet(UpdateWalletRequest) returns (Wallet);
+
+  // Get wallet balance
+  rpc GetBalance(GetBalanceRequest) returns (BalanceResponse);
+
+  // List transactions for a wallet with pagination
+  rpc ListTransactions(ListTransactionsRequest) returns (ListTransactionsResponse);
+
+  // Deposit funds into wallet via mobile money
+  rpc DepositViaMobileMoney(DepositRequest) returns (Transaction);
+
+  // Withdraw funds from wallet to mobile money
+  rpc WithdrawToMobileMoney(WithdrawRequest) returns (Transaction);
+
+  // Transfer funds between wallets
+  rpc TransferFunds(TransferRequest) returns (Transaction);
+
+  // Pay merchant
+  rpc PayMerchant(PayMerchantRequest) returns (Transaction);
+
+  // Get transaction status
+  rpc GetTransactionStatus(GetTransactionStatusRequest) returns (TransactionStatus);
+
+  // Request refund for a transaction
+  rpc RequestRefund(RefundRequest) returns (RefundResponse);
+
+  // Add mobile money account to wallet
+  rpc AddMobileMoneyAccount(AddMobileMoneyAccountRequest) returns (MobileMoneyAccount);
+
+  // Remove mobile money account from wallet
+  rpc RemoveMobileMoneyAccount(RemoveMobileMoneyAccountRequest) returns (google.protobuf.Empty);
+
+  // List mobile money accounts for a wallet
+  rpc ListMobileMoneyAccounts(ListMobileMoneyAccountsRequest) returns (ListMobileMoneyAccountsResponse);
+
+  // Set default mobile money account for a wallet
+  rpc SetDefaultMobileMoneyAccount(SetDefaultMobileMoneyAccountRequest) returns (MobileMoneyAccount);
+}
+
+// Currency enumeration
+enum Currency {
+  CURRENCY_UNSPECIFIED = 0;
+  CURRENCY_USD = 1;
+  CURRENCY_EUR = 2;
+  CURRENCY_GBP = 3;
+  CURRENCY_KES = 4; // Kenyan Shilling
+  CURRENCY_NGN = 5; // Nigerian Naira
+  CURRENCY_GHS = 6; // Ghanaian Cedi
+  CURRENCY_ZAR = 7; // South African Rand
+  CURRENCY_UGX = 8; // Ugandan Shilling
+  CURRENCY_TZS = 9; // Tanzanian Shilling
+  CURRENCY_RWF = 10; // Rwandan Franc
+  // Add more currencies as needed
+}
+
+// Money represents a monetary value with currency
+message Money {
+  int64 amount = 1; // Amount in smallest currency unit (e.g., cents)
+  Currency currency = 2;
+}
+
+// WalletStatus represents the status of a wallet
+enum WalletStatus {
+  WALLET_STATUS_UNSPECIFIED = 0;
+  WALLET_STATUS_ACTIVE = 1;
+  WALLET_STATUS_SUSPENDED = 2;
+  WALLET_STATUS_CLOSED = 3;
+  WALLET_STATUS_PENDING_VERIFICATION = 4;
+}
+
+// Wallet represents a digital wallet
+message Wallet {
+  string id = 1;
+  string user_id = 2;
+  WalletStatus status = 3;
+  repeated Balance balances = 4;
+  string default_mobile_money_account_id = 5;
+  WalletMetadata metadata = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  google.protobuf.Timestamp last_activity_at = 9;
+}
+
+// Balance represents the amount of a specific currency in a wallet
+message Balance {
+  Money available = 1;
+  Money pending = 2;
+  Money reserved = 3;
+}
+
+// WalletMetadata contains additional information about a wallet
+message WalletMetadata {
+  string wallet_name = 1;
+  string wallet_type = 2;
+  int32 tier_level = 3;
+  map<string, string> custom_attributes = 4;
+}
+
+// Mobile Money Provider enumeration
+enum MobileMoneyProvider {
+  MOBILE_MONEY_PROVIDER_UNSPECIFIED = 0;
+  MOBILE_MONEY_PROVIDER_MPESA = 1;
+  MOBILE_MONEY_PROVIDER_MTN = 2;
+  MOBILE_MONEY_PROVIDER_AIRTEL = 3;
+  MOBILE_MONEY_PROVIDER_ORANGE = 4;
+  MOBILE_MONEY_PROVIDER_VODAFONE = 5;
+  MOBILE_MONEY_PROVIDER_TIGO = 6;
+  MOBILE_MONEY_PROVIDER_WAVE = 7;
+  // Add more providers as needed
+}
+
+// Mobile Money Account represents a linked mobile money account
+message MobileMoneyAccount {
+  string id = 1;
+  string wallet_id = 2;
+  MobileMoneyProvider provider = 3;
+  string phone_number = 4;
+  string account_name = 5;
+  bool is_verified = 6;
+  bool is_default = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp verified_at = 9;
+}
+
+// Transaction Type enumeration
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  TRANSACTION_TYPE_DEPOSIT = 1;
+  TRANSACTION_TYPE_WITHDRAWAL = 2;
+  TRANSACTION_TYPE_TRANSFER = 3;
+  TRANSACTION_TYPE_PAYMENT = 4;
+  TRANSACTION_TYPE_REFUND = 5;
+  TRANSACTION_TYPE_FEE = 6;
+  TRANSACTION_TYPE_BONUS = 7;
+  TRANSACTION_TYPE_ADJUSTMENT = 8;
+}
+
+// Transaction Status enumeration
+enum TransactionStatusValue {
+  TRANSACTION_STATUS_UNSPECIFIED = 0;
+  TRANSACTION_STATUS_PENDING = 1;
+  TRANSACTION_STATUS_COMPLETED = 2;
+  TRANSACTION_STATUS_FAILED = 3;
+  TRANSACTION_STATUS_CANCELLED = 4;
+  TRANSACTION_STATUS_REFUNDED = 5;
+  TRANSACTION_STATUS_PARTIALLY_REFUNDED = 6;
+}
+
+message TransactionStatus {
+  TransactionStatusValue status = 1;
+  string status_message = 2; // Optional message from the provider
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// Transaction represents a wallet transaction
+message Transaction {
+  string id = 1;
+  string wallet_id = 2;
+  TransactionType type = 3;
+  TransactionStatus status = 4;
+  Money amount = 5;
+  Money fee = 6;
+  string reference = 7;
+  string description = 8;
+  string external_id = 9;
+  PaymentMethod payment_method = 10;
+  map<string, string> metadata = 11;
+  string counterparty_id = 12; // ID of the other wallet, mobile money account, or merchant
+  string counterparty_name = 13;
+  google.protobuf.Timestamp created_at = 14;
+  google.protobuf.Timestamp updated_at = 15;
+}
+
+// Payment Method Type enumeration
+enum PaymentMethodType {
+  PAYMENT_METHOD_TYPE_UNSPECIFIED = 0;
+  PAYMENT_METHOD_TYPE_MOBILE_MONEY = 1;
+  PAYMENT_METHOD_TYPE_WALLET = 2;
+  PAYMENT_METHOD_TYPE_BANK = 3;
+  PAYMENT_METHOD_TYPE_CARD = 4;
+}
+
+// Payment Method represents the method used for a transaction
+message PaymentMethod {
+  PaymentMethodType type = 1;
+  string identifier = 2; // Mobile number, wallet ID, etc.
+  MobileMoneyProvider mobile_money_provider = 3;
+  string payment_token = 4;
+}
+
+// CreateWalletRequest is used to create a new wallet
+message CreateWalletRequest {
+  string user_id = 1;
+  Currency default_currency = 2;
+  WalletMetadata metadata = 3;
+}
+
+// GetWalletRequest is used to retrieve a wallet by ID
+message GetWalletRequest {
+  string id = 1;
+}
+
+// GetWalletByUserRequest is used to retrieve a wallet by user ID
+message GetWalletByUserRequest {
+  string user_id = 1;
+}
+
+// UpdateWalletRequest is used to update a wallet's information
+message UpdateWalletRequest {
+  string id = 1;
+  WalletStatus status = 2;
+  WalletMetadata metadata = 3;
+}
+
+// GetBalanceRequest is used to get a wallet's balance
+message GetBalanceRequest {
+  string wallet_id = 1;
+  optional Currency currency = 2;
+}
+
+// BalanceResponse is returned with wallet balance information
+message BalanceResponse {
+  string wallet_id = 1;
+  repeated Balance balances = 2;
+}
+
+// ListTransactionsRequest is used to list transactions for a wallet
+message ListTransactionsRequest {
+  string wallet_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  optional TransactionType type = 4;
+  optional TransactionStatus status = 5;
+  optional google.protobuf.Timestamp start_date = 6;
+  optional google.protobuf.Timestamp end_date = 7;
+}
+
+// ListTransactionsResponse contains a list of transactions and pagination info
+message ListTransactionsResponse {
+  repeated Transaction transactions = 1;
+  string next_page_token = 2;
+  int32 total_count = 3;
+}
+
+// DepositRequest is used to deposit funds via mobile money
+message DepositRequest {
+  string wallet_id = 1;
+  Money amount = 2;
+  MobileMoneyDepositDetails mobile_money_details = 3;
+  string reference = 4;
+  map<string, string> metadata = 5;
+}
+
+// MobileMoneyDepositDetails contains details for mobile money deposit
+message MobileMoneyDepositDetails {
+  string mobile_money_account_id = 1;
+  // Alternative if account is not already registered
+  string phone_number = 2;
+  MobileMoneyProvider provider = 3;
+}
+
+// WithdrawRequest is used to withdraw funds to mobile money
+message WithdrawRequest {
+  string wallet_id = 1;
+  Money amount = 2;
+  MobileMoneyWithdrawDetails mobile_money_details = 3;
+  string reference = 4;
+  map<string, string> metadata = 5;
+}
+
+// MobileMoneyWithdrawDetails contains details for mobile money withdrawal
+message MobileMoneyWithdrawDetails {
+  string mobile_money_account_id = 1;
+  // Alternative if account is not already registered
+  string phone_number = 2;
+  MobileMoneyProvider provider = 3;
+}
+
+// TransferRequest is used to transfer funds between wallets
+message TransferRequest {
+  string source_wallet_id = 1;
+  string destination_wallet_id = 2;
+  Money amount = 3;
+  string description = 4;
+  string reference = 5;
+  map<string, string> metadata = 6;
+}
+
+// PayMerchantRequest is used to pay a merchant
+message PayMerchantRequest {
+  string wallet_id = 1;
+  string merchant_id = 2;
+  Money amount = 3;
+  string description = 4;
+  string reference = 5;
+  map<string, string> metadata = 6;
+}
+
+// GetTransactionStatusRequest is used to get a transaction's status
+message GetTransactionStatusRequest {
+  string transaction_id = 1;
+}
+
+// RefundRequest is used to request a refund for a transaction
+message RefundRequest {
+  string transaction_id = 1;
+  optional Money amount = 2; // If not set, full refund is assumed
+  string reason = 3;
+}
+
+// RefundResponse is returned after a refund request
+message RefundResponse {
+  string original_transaction_id = 1;
+  string refund_transaction_id = 2;
+  TransactionStatus status = 3;
+  Money amount = 4;
+  string reference = 5;
+}
+
+// AddMobileMoneyAccountRequest is used to add a mobile money account to a wallet
+message AddMobileMoneyAccountRequest {
+  string wallet_id = 1;
+  MobileMoneyProvider provider = 2;
+  string phone_number = 3;
+  string account_name = 4;
+  bool set_as_default = 5;
+}
+
+// RemoveMobileMoneyAccountRequest is used to remove a mobile money account from a wallet
+message RemoveMobileMoneyAccountRequest {
+  string mobile_money_account_id = 1;
+}
+
+// ListMobileMoneyAccountsRequest is used to list mobile money accounts for a wallet
+message ListMobileMoneyAccountsRequest {
+  string wallet_id = 1;
+}
+
+// ListMobileMoneyAccountsResponse contains a list of mobile money accounts
+message ListMobileMoneyAccountsResponse {
+  repeated MobileMoneyAccount accounts = 1;
+}
+
+// SetDefaultMobileMoneyAccountRequest is used to set the default mobile money account
+message SetDefaultMobileMoneyAccountRequest {
+  string wallet_id = 1;
+  string mobile_money_account_id = 2;
+}
