@@ -5,7 +5,7 @@ package provider;
 option go_package = "github.com/travoroguna/bethela-rpc";
 
 import "google/protobuf/timestamp.proto";
-import "wallet.proto"; // Assuming this is where Money is defined
+import public "wallet.proto"; // Assuming this is where Money is defined
 
 // ProviderInterface - Standard API that each mobile money provider MUST implement
 // Each MNO (M-Pesa, MTN, Airtel, etc.) will implement this interface
@@ -20,7 +20,7 @@ service ProviderInterface {
   rpc CheckTransactionStatus(StatusRequest) returns (StatusResponse);
 
   // Get account balance
-  rpc GetAccountBalance(BalanceRequest) returns (BalanceResponse);
+  rpc GetAccountBalance(BalanceRequest) returns (WalletBalanceResponse);
 
   // Validate a customer account
   rpc ValidateAccount(ValidateAccountRequest) returns (ValidateAccountResponse);
@@ -114,7 +114,7 @@ message BalanceRequest {
 }
 
 // BalanceResponse for account balance
-message BalanceResponse {
+message WalletBalanceResponse {
   repeated wallet.Money balances = 1; // Some providers support multiple currency balances
   string account_number = 2;
   google.protobuf.Timestamp as_of = 3; // When the balance was determined

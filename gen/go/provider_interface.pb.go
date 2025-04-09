@@ -698,7 +698,7 @@ func (x *BalanceRequest) GetAccountIdentifier() string {
 }
 
 // BalanceResponse for account balance
-type BalanceResponse struct {
+type WalletBalanceResponse struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Balances         []*Money               `protobuf:"bytes,1,rep,name=balances,proto3" json:"balances,omitempty"` // Some providers support multiple currency balances
 	AccountNumber    string                 `protobuf:"bytes,2,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"`
@@ -708,20 +708,20 @@ type BalanceResponse struct {
 	sizeCache        protoimpl.SizeCache
 }
 
-func (x *BalanceResponse) Reset() {
-	*x = BalanceResponse{}
+func (x *WalletBalanceResponse) Reset() {
+	*x = WalletBalanceResponse{}
 	mi := &file_provider_interface_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *BalanceResponse) String() string {
+func (x *WalletBalanceResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*BalanceResponse) ProtoMessage() {}
+func (*WalletBalanceResponse) ProtoMessage() {}
 
-func (x *BalanceResponse) ProtoReflect() protoreflect.Message {
+func (x *WalletBalanceResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_provider_interface_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -733,33 +733,33 @@ func (x *BalanceResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use BalanceResponse.ProtoReflect.Descriptor instead.
-func (*BalanceResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use WalletBalanceResponse.ProtoReflect.Descriptor instead.
+func (*WalletBalanceResponse) Descriptor() ([]byte, []int) {
 	return file_provider_interface_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *BalanceResponse) GetBalances() []*Money {
+func (x *WalletBalanceResponse) GetBalances() []*Money {
 	if x != nil {
 		return x.Balances
 	}
 	return nil
 }
 
-func (x *BalanceResponse) GetAccountNumber() string {
+func (x *WalletBalanceResponse) GetAccountNumber() string {
 	if x != nil {
 		return x.AccountNumber
 	}
 	return ""
 }
 
-func (x *BalanceResponse) GetAsOf() *timestamppb.Timestamp {
+func (x *WalletBalanceResponse) GetAsOf() *timestamppb.Timestamp {
 	if x != nil {
 		return x.AsOf
 	}
 	return nil
 }
 
-func (x *BalanceResponse) GetProviderMetadata() map[string]string {
+func (x *WalletBalanceResponse) GetProviderMetadata() map[string]string {
 	if x != nil {
 		return x.ProviderMetadata
 	}
@@ -1149,12 +1149,12 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"m\n" +
 	"\x0eBalanceRequest\x12,\n" +
 	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x12-\n" +
-	"\x12account_identifier\x18\x02 \x01(\tR\x11accountIdentifier\"\xb7\x02\n" +
-	"\x0fBalanceResponse\x12)\n" +
+	"\x12account_identifier\x18\x02 \x01(\tR\x11accountIdentifier\"\xc3\x02\n" +
+	"\x15WalletBalanceResponse\x12)\n" +
 	"\bbalances\x18\x01 \x03(\v2\r.wallet.MoneyR\bbalances\x12%\n" +
 	"\x0eaccount_number\x18\x02 \x01(\tR\raccountNumber\x12/\n" +
-	"\x05as_of\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04asOf\x12\\\n" +
-	"\x11provider_metadata\x18\x04 \x03(\v2/.provider.BalanceResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
+	"\x05as_of\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04asOf\x12b\n" +
+	"\x11provider_metadata\x18\x04 \x03(\v25.provider.WalletBalanceResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
 	"\x15ProviderMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x90\x01\n" +
@@ -1197,14 +1197,14 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\x15PAYMENT_STATUS_FAILED\x10\x04\x12\x1c\n" +
 	"\x18PAYMENT_STATUS_CANCELLED\x10\x05\x12\x1a\n" +
 	"\x16PAYMENT_STATUS_EXPIRED\x10\x06\x12\x1b\n" +
-	"\x17PAYMENT_STATUS_REVERSED\x10\a2\xe3\x03\n" +
+	"\x17PAYMENT_STATUS_REVERSED\x10\a2\xe9\x03\n" +
 	"\x11ProviderInterface\x12N\n" +
 	"\x0fInitiatePayment\x12 .provider.InitiatePaymentRequest\x1a\x19.provider.PaymentResponse\x12B\n" +
 	"\tSendMoney\x12\x1a.provider.SendMoneyRequest\x1a\x19.provider.PaymentResponse\x12K\n" +
-	"\x16CheckTransactionStatus\x12\x17.provider.StatusRequest\x1a\x18.provider.StatusResponse\x12H\n" +
-	"\x11GetAccountBalance\x12\x18.provider.BalanceRequest\x1a\x19.provider.BalanceResponse\x12V\n" +
+	"\x16CheckTransactionStatus\x12\x17.provider.StatusRequest\x1a\x18.provider.StatusResponse\x12N\n" +
+	"\x11GetAccountBalance\x12\x18.provider.BalanceRequest\x1a\x1f.provider.WalletBalanceResponse\x12V\n" +
 	"\x0fValidateAccount\x12 .provider.ValidateAccountRequest\x1a!.provider.ValidateAccountResponse\x12K\n" +
-	"\x12ReverseTransaction\x12\x19.provider.ReversalRequest\x1a\x1a.provider.ReversalResponseB$Z\"github.com/travoroguna/bethela-rpcb\x06proto3"
+	"\x12ReverseTransaction\x12\x19.provider.ReversalRequest\x1a\x1a.provider.ReversalResponseB$Z\"github.com/travoroguna/bethela-rpcP\x01b\x06proto3"
 
 var (
 	file_provider_interface_proto_rawDescOnce sync.Once
@@ -1229,7 +1229,7 @@ var file_provider_interface_proto_goTypes = []any{
 	(*StatusRequest)(nil),           // 5: provider.StatusRequest
 	(*StatusResponse)(nil),          // 6: provider.StatusResponse
 	(*BalanceRequest)(nil),          // 7: provider.BalanceRequest
-	(*BalanceResponse)(nil),         // 8: provider.BalanceResponse
+	(*WalletBalanceResponse)(nil),   // 8: provider.WalletBalanceResponse
 	(*ValidateAccountRequest)(nil),  // 9: provider.ValidateAccountRequest
 	(*ValidateAccountResponse)(nil), // 10: provider.ValidateAccountResponse
 	(*ReversalRequest)(nil),         // 11: provider.ReversalRequest
@@ -1239,7 +1239,7 @@ var file_provider_interface_proto_goTypes = []any{
 	nil,                             // 15: provider.SendMoneyRequest.MetadataEntry
 	nil,                             // 16: provider.PaymentResponse.ProviderMetadataEntry
 	nil,                             // 17: provider.StatusResponse.ProviderMetadataEntry
-	nil,                             // 18: provider.BalanceResponse.ProviderMetadataEntry
+	nil,                             // 18: provider.WalletBalanceResponse.ProviderMetadataEntry
 	nil,                             // 19: provider.ValidateAccountResponse.ProviderMetadataEntry
 	nil,                             // 20: provider.ReversalResponse.ProviderMetadataEntry
 	(*Money)(nil),                   // 21: wallet.Money
@@ -1264,9 +1264,9 @@ var file_provider_interface_proto_depIdxs = []int32{
 	22, // 15: provider.StatusResponse.updated_at:type_name -> google.protobuf.Timestamp
 	17, // 16: provider.StatusResponse.provider_metadata:type_name -> provider.StatusResponse.ProviderMetadataEntry
 	1,  // 17: provider.BalanceRequest.auth:type_name -> provider.Authentication
-	21, // 18: provider.BalanceResponse.balances:type_name -> wallet.Money
-	22, // 19: provider.BalanceResponse.as_of:type_name -> google.protobuf.Timestamp
-	18, // 20: provider.BalanceResponse.provider_metadata:type_name -> provider.BalanceResponse.ProviderMetadataEntry
+	21, // 18: provider.WalletBalanceResponse.balances:type_name -> wallet.Money
+	22, // 19: provider.WalletBalanceResponse.as_of:type_name -> google.protobuf.Timestamp
+	18, // 20: provider.WalletBalanceResponse.provider_metadata:type_name -> provider.WalletBalanceResponse.ProviderMetadataEntry
 	1,  // 21: provider.ValidateAccountRequest.auth:type_name -> provider.Authentication
 	19, // 22: provider.ValidateAccountResponse.provider_metadata:type_name -> provider.ValidateAccountResponse.ProviderMetadataEntry
 	1,  // 23: provider.ReversalRequest.auth:type_name -> provider.Authentication
@@ -1283,7 +1283,7 @@ var file_provider_interface_proto_depIdxs = []int32{
 	4,  // 34: provider.ProviderInterface.InitiatePayment:output_type -> provider.PaymentResponse
 	4,  // 35: provider.ProviderInterface.SendMoney:output_type -> provider.PaymentResponse
 	6,  // 36: provider.ProviderInterface.CheckTransactionStatus:output_type -> provider.StatusResponse
-	8,  // 37: provider.ProviderInterface.GetAccountBalance:output_type -> provider.BalanceResponse
+	8,  // 37: provider.ProviderInterface.GetAccountBalance:output_type -> provider.WalletBalanceResponse
 	10, // 38: provider.ProviderInterface.ValidateAccount:output_type -> provider.ValidateAccountResponse
 	12, // 39: provider.ProviderInterface.ReverseTransaction:output_type -> provider.ReversalResponse
 	34, // [34:40] is the sub-list for method output_type
