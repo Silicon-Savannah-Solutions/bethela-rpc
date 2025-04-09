@@ -4,7 +4,7 @@
 // - protoc             v5.29.3
 // source: identity.proto
 
-package identity
+package bethela_rpc
 
 import (
 	context "context"

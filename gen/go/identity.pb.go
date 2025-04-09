@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: identity.proto
 
-package identity
+package bethela_rpc
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -1513,7 +1513,7 @@ const file_identity_proto_rawDesc = "" +
 	"\x14RequestPasswordReset\x12%.identity.RequestPasswordResetRequest\x1a\x16.google.protobuf.Empty\x12G\n" +
 	"\rResetPassword\x12\x1e.identity.ResetPasswordRequest\x1a\x16.google.protobuf.Empty\x12I\n" +
 	"\x0eChangePassword\x12\x1f.identity.ChangePasswordRequest\x1a\x16.google.protobuf.Empty\x12D\n" +
-	"\tListUsers\x12\x1a.identity.ListUsersRequest\x1a\x1b.identity.ListUsersResponseB0Z.github.com/Silicon-Savannah-Solutions/identityb\x06proto3"
+	"\tListUsers\x12\x1a.identity.ListUsersRequest\x1a\x1b.identity.ListUsersResponseB$Z\"github.com/travoroguna/bethela-rpcb\x06proto3"
 
 var (
 	file_identity_proto_rawDescOnce sync.Once
