@@ -2725,7 +2725,7 @@ const file_wallet_proto_rawDesc = "" +
 	"\x15AddMobileMoneyAccount\x12$.wallet.AddMobileMoneyAccountRequest\x1a\x1a.wallet.MobileMoneyAccount\x12[\n" +
 	"\x18RemoveMobileMoneyAccount\x12'.wallet.RemoveMobileMoneyAccountRequest\x1a\x16.google.protobuf.Empty\x12j\n" +
 	"\x17ListMobileMoneyAccounts\x12&.wallet.ListMobileMoneyAccountsRequest\x1a'.wallet.ListMobileMoneyAccountsResponse\x12g\n" +
-	"\x1cSetDefaultMobileMoneyAccount\x12+.wallet.SetDefaultMobileMoneyAccountRequest\x1a\x1a.wallet.MobileMoneyAccountB$Z\"github.com/travoroguna/bethela-rpcb\x06proto3"
+	"\x1cSetDefaultMobileMoneyAccount\x12+.wallet.SetDefaultMobileMoneyAccountRequest\x1a\x1a.wallet.MobileMoneyAccountB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcb\x06proto3"
 
 var (
 	file_wallet_proto_rawDescOnce sync.Once

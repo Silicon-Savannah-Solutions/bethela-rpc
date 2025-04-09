@@ -41,7 +41,7 @@ type ProviderInterfaceClient interface {
 	// Check status of a transaction
 	CheckTransactionStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*StatusResponse, error)
 	// Get account balance
-	GetAccountBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*WalletBalanceResponse, error)
+	GetAccountBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*ProviderBalanceResponse, error)
 	// Validate a customer account
 	ValidateAccount(ctx context.Context, in *ValidateAccountRequest, opts ...grpc.CallOption) (*ValidateAccountResponse, error)
 	// Reverse a transaction
@@ -86,9 +86,9 @@ func (c *providerInterfaceClient) CheckTransactionStatus(ctx context.Context, in
 	return out, nil
 }
 
-func (c *providerInterfaceClient) GetAccountBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*WalletBalanceResponse, error) {
+func (c *providerInterfaceClient) GetAccountBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*ProviderBalanceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(WalletBalanceResponse)
+	out := new(ProviderBalanceResponse)
 	err := c.cc.Invoke(ctx, ProviderInterface_GetAccountBalance_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -130,7 +130,7 @@ type ProviderInterfaceServer interface {
 	// Check status of a transaction
 	CheckTransactionStatus(context.Context, *StatusRequest) (*StatusResponse, error)
 	// Get account balance
-	GetAccountBalance(context.Context, *BalanceRequest) (*WalletBalanceResponse, error)
+	GetAccountBalance(context.Context, *BalanceRequest) (*ProviderBalanceResponse, error)
 	// Validate a customer account
 	ValidateAccount(context.Context, *ValidateAccountRequest) (*ValidateAccountResponse, error)
 	// Reverse a transaction
@@ -154,7 +154,7 @@ func (UnimplementedProviderInterfaceServer) SendMoney(context.Context, *SendMone
 func (UnimplementedProviderInterfaceServer) CheckTransactionStatus(context.Context, *StatusRequest) (*StatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckTransactionStatus not implemented")
 }
-func (UnimplementedProviderInterfaceServer) GetAccountBalance(context.Context, *BalanceRequest) (*WalletBalanceResponse, error) {
+func (UnimplementedProviderInterfaceServer) GetAccountBalance(context.Context, *BalanceRequest) (*ProviderBalanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccountBalance not implemented")
 }
 func (UnimplementedProviderInterfaceServer) ValidateAccount(context.Context, *ValidateAccountRequest) (*ValidateAccountResponse, error) {

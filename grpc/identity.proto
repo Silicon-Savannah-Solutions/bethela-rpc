@@ -3,7 +3,7 @@ syntax = "proto3";
 package identity;
 
 
-option go_package = "github.com/travoroguna/bethela-rpc";
+option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";

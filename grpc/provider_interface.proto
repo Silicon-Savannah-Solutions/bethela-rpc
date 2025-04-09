@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package provider;
 
-option go_package = "github.com/travoroguna/bethela-rpc";
+option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
 
 import "google/protobuf/timestamp.proto";
 import public "wallet.proto"; // Assuming this is where Money is defined
@@ -20,7 +20,7 @@ service ProviderInterface {
   rpc CheckTransactionStatus(StatusRequest) returns (StatusResponse);
 
   // Get account balance
-  rpc GetAccountBalance(BalanceRequest) returns (WalletBalanceResponse);
+  rpc GetAccountBalance(BalanceRequest) returns (ProviderBalanceResponse);
 
   // Validate a customer account
   rpc ValidateAccount(ValidateAccountRequest) returns (ValidateAccountResponse);
@@ -113,8 +113,8 @@ message BalanceRequest {
   string account_identifier = 2; // Optional: specific account within business
 }
 
-// BalanceResponse for account balance
-message WalletBalanceResponse {
+// ProviderBalanceResponse for account balance
+message ProviderBalanceResponse {
   repeated wallet.Money balances = 1; // Some providers support multiple currency balances
   string account_number = 2;
   google.protobuf.Timestamp as_of = 3; // When the balance was determined
