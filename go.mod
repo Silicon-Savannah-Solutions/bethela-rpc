@@ -1,4 +1,4 @@
-module github.com/travoroguna/bethela-rpc
+module github.com/Silicon-Savannah-Solutions/bethela-rpc
 
 go 1.24.1
 
