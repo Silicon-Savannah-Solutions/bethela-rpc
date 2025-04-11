@@ -42,6 +42,12 @@ service IdentityService {
 
   // List users with pagination
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+
+  // Request a verification code
+  rpc RequestVerificationCode(RequestVerificationCodeRequest) returns (RequestVerificationCodeResponse);
+
+  // Verify an account using a verification code
+  rpc VerifyAccount(VerifyAccountRequest) returns (google.protobuf.Empty);
 }
 
 // User represents a user account
@@ -201,4 +207,38 @@ message ListUsersResponse {
   repeated User users = 1;
   string next_page_token = 2;
   int32 total_count = 3;
+}
+
+// VerificationType specifies the type of verification
+enum VerificationType {
+  VERIFICATION_TYPE_UNSPECIFIED = 0;
+  VERIFICATION_TYPE_PHONE = 1;
+  VERIFICATION_TYPE_EMAIL = 2;
+}
+
+// RequestVerificationCodeRequest is used to request a verification code
+message RequestVerificationCodeRequest {
+  // Either phone or email must be provided
+  oneof identifier {
+    string phone = 1;
+    string email = 2;
+  }
+  VerificationType type = 3;
+}
+
+// RequestVerificationCodeResponse contains information about the verification code request
+message RequestVerificationCodeResponse {
+  string user_id = 1;
+  int32 expires_in = 2; // Time in seconds until the code expires
+  // For security, we don't return the actual code here - it's sent via SMS or email
+}
+
+// VerifyAccountRequest is used to verify an account using a verification code
+message VerifyAccountRequest {
+  // Either phone or email must be provided
+  oneof identifier {
+    string phone = 1;
+    string email = 2;
+  }
+  string code = 3;
 }
