@@ -20,17 +20,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdentityService_CreateUser_FullMethodName           = "/identity.IdentityService/CreateUser"
-	IdentityService_GetUser_FullMethodName              = "/identity.IdentityService/GetUser"
-	IdentityService_UpdateUser_FullMethodName           = "/identity.IdentityService/UpdateUser"
-	IdentityService_DeleteUser_FullMethodName           = "/identity.IdentityService/DeleteUser"
-	IdentityService_Login_FullMethodName                = "/identity.IdentityService/Login"
-	IdentityService_Logout_FullMethodName               = "/identity.IdentityService/Logout"
-	IdentityService_VerifyToken_FullMethodName          = "/identity.IdentityService/VerifyToken"
-	IdentityService_RequestPasswordReset_FullMethodName = "/identity.IdentityService/RequestPasswordReset"
-	IdentityService_ResetPassword_FullMethodName        = "/identity.IdentityService/ResetPassword"
-	IdentityService_ChangePassword_FullMethodName       = "/identity.IdentityService/ChangePassword"
-	IdentityService_ListUsers_FullMethodName            = "/identity.IdentityService/ListUsers"
+	IdentityService_CreateUser_FullMethodName              = "/identity.IdentityService/CreateUser"
+	IdentityService_GetUser_FullMethodName                 = "/identity.IdentityService/GetUser"
+	IdentityService_UpdateUser_FullMethodName              = "/identity.IdentityService/UpdateUser"
+	IdentityService_DeleteUser_FullMethodName              = "/identity.IdentityService/DeleteUser"
+	IdentityService_Login_FullMethodName                   = "/identity.IdentityService/Login"
+	IdentityService_Logout_FullMethodName                  = "/identity.IdentityService/Logout"
+	IdentityService_VerifyToken_FullMethodName             = "/identity.IdentityService/VerifyToken"
+	IdentityService_RequestPasswordReset_FullMethodName    = "/identity.IdentityService/RequestPasswordReset"
+	IdentityService_ResetPassword_FullMethodName           = "/identity.IdentityService/ResetPassword"
+	IdentityService_ChangePassword_FullMethodName          = "/identity.IdentityService/ChangePassword"
+	IdentityService_ListUsers_FullMethodName               = "/identity.IdentityService/ListUsers"
+	IdentityService_RequestVerificationCode_FullMethodName = "/identity.IdentityService/RequestVerificationCode"
+	IdentityService_VerifyAccount_FullMethodName           = "/identity.IdentityService/VerifyAccount"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -61,6 +63,10 @@ type IdentityServiceClient interface {
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// List users with pagination
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
+	// Request a verification code
+	RequestVerificationCode(ctx context.Context, in *RequestVerificationCodeRequest, opts ...grpc.CallOption) (*RequestVerificationCodeResponse, error)
+	// Verify an account using a verification code
+	VerifyAccount(ctx context.Context, in *VerifyAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type identityServiceClient struct {
@@ -181,6 +187,26 @@ func (c *identityServiceClient) ListUsers(ctx context.Context, in *ListUsersRequ
 	return out, nil
 }
 
+func (c *identityServiceClient) RequestVerificationCode(ctx context.Context, in *RequestVerificationCodeRequest, opts ...grpc.CallOption) (*RequestVerificationCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestVerificationCodeResponse)
+	err := c.cc.Invoke(ctx, IdentityService_RequestVerificationCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityServiceClient) VerifyAccount(ctx context.Context, in *VerifyAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, IdentityService_VerifyAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
@@ -209,6 +235,10 @@ type IdentityServiceServer interface {
 	ChangePassword(context.Context, *ChangePasswordRequest) (*emptypb.Empty, error)
 	// List users with pagination
 	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
+	// Request a verification code
+	RequestVerificationCode(context.Context, *RequestVerificationCodeRequest) (*RequestVerificationCodeResponse, error)
+	// Verify an account using a verification code
+	VerifyAccount(context.Context, *VerifyAccountRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -251,6 +281,12 @@ func (UnimplementedIdentityServiceServer) ChangePassword(context.Context, *Chang
 }
 func (UnimplementedIdentityServiceServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
+}
+func (UnimplementedIdentityServiceServer) RequestVerificationCode(context.Context, *RequestVerificationCodeRequest) (*RequestVerificationCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestVerificationCode not implemented")
+}
+func (UnimplementedIdentityServiceServer) VerifyAccount(context.Context, *VerifyAccountRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyAccount not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -471,6 +507,42 @@ func _IdentityService_ListUsers_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_RequestVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestVerificationCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).RequestVerificationCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_RequestVerificationCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).RequestVerificationCode(ctx, req.(*RequestVerificationCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityService_VerifyAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).VerifyAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_VerifyAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).VerifyAccount(ctx, req.(*VerifyAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -521,6 +593,14 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListUsers",
 			Handler:    _IdentityService_ListUsers_Handler,
+		},
+		{
+			MethodName: "RequestVerificationCode",
+			Handler:    _IdentityService_RequestVerificationCode_Handler,
+		},
+		{
+			MethodName: "VerifyAccount",
+			Handler:    _IdentityService_VerifyAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

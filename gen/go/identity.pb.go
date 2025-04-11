@@ -79,6 +79,56 @@ func (UserStatus) EnumDescriptor() ([]byte, []int) {
 	return file_identity_proto_rawDescGZIP(), []int{0}
 }
 
+// VerificationType specifies the type of verification
+type VerificationType int32
+
+const (
+	VerificationType_VERIFICATION_TYPE_UNSPECIFIED VerificationType = 0
+	VerificationType_VERIFICATION_TYPE_PHONE       VerificationType = 1
+	VerificationType_VERIFICATION_TYPE_EMAIL       VerificationType = 2
+)
+
+// Enum value maps for VerificationType.
+var (
+	VerificationType_name = map[int32]string{
+		0: "VERIFICATION_TYPE_UNSPECIFIED",
+		1: "VERIFICATION_TYPE_PHONE",
+		2: "VERIFICATION_TYPE_EMAIL",
+	}
+	VerificationType_value = map[string]int32{
+		"VERIFICATION_TYPE_UNSPECIFIED": 0,
+		"VERIFICATION_TYPE_PHONE":       1,
+		"VERIFICATION_TYPE_EMAIL":       2,
+	}
+)
+
+func (x VerificationType) Enum() *VerificationType {
+	p := new(VerificationType)
+	*p = x
+	return p
+}
+
+func (x VerificationType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (VerificationType) Descriptor() protoreflect.EnumDescriptor {
+	return file_identity_proto_enumTypes[1].Descriptor()
+}
+
+func (VerificationType) Type() protoreflect.EnumType {
+	return &file_identity_proto_enumTypes[1]
+}
+
+func (x VerificationType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use VerificationType.Descriptor instead.
+func (VerificationType) EnumDescriptor() ([]byte, []int) {
+	return file_identity_proto_rawDescGZIP(), []int{1}
+}
+
 // User represents a user account
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1368,6 +1418,245 @@ func (x *ListUsersResponse) GetTotalCount() int32 {
 	return 0
 }
 
+// RequestVerificationCodeRequest is used to request a verification code
+type RequestVerificationCodeRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Either phone or email must be provided
+	//
+	// Types that are valid to be assigned to Identifier:
+	//
+	//	*RequestVerificationCodeRequest_Phone
+	//	*RequestVerificationCodeRequest_Email
+	Identifier    isRequestVerificationCodeRequest_Identifier `protobuf_oneof:"identifier"`
+	Type          VerificationType                            `protobuf:"varint,3,opt,name=type,proto3,enum=identity.VerificationType" json:"type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestVerificationCodeRequest) Reset() {
+	*x = RequestVerificationCodeRequest{}
+	mi := &file_identity_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestVerificationCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestVerificationCodeRequest) ProtoMessage() {}
+
+func (x *RequestVerificationCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestVerificationCodeRequest.ProtoReflect.Descriptor instead.
+func (*RequestVerificationCodeRequest) Descriptor() ([]byte, []int) {
+	return file_identity_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *RequestVerificationCodeRequest) GetIdentifier() isRequestVerificationCodeRequest_Identifier {
+	if x != nil {
+		return x.Identifier
+	}
+	return nil
+}
+
+func (x *RequestVerificationCodeRequest) GetPhone() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*RequestVerificationCodeRequest_Phone); ok {
+			return x.Phone
+		}
+	}
+	return ""
+}
+
+func (x *RequestVerificationCodeRequest) GetEmail() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*RequestVerificationCodeRequest_Email); ok {
+			return x.Email
+		}
+	}
+	return ""
+}
+
+func (x *RequestVerificationCodeRequest) GetType() VerificationType {
+	if x != nil {
+		return x.Type
+	}
+	return VerificationType_VERIFICATION_TYPE_UNSPECIFIED
+}
+
+type isRequestVerificationCodeRequest_Identifier interface {
+	isRequestVerificationCodeRequest_Identifier()
+}
+
+type RequestVerificationCodeRequest_Phone struct {
+	Phone string `protobuf:"bytes,1,opt,name=phone,proto3,oneof"`
+}
+
+type RequestVerificationCodeRequest_Email struct {
+	Email string `protobuf:"bytes,2,opt,name=email,proto3,oneof"`
+}
+
+func (*RequestVerificationCodeRequest_Phone) isRequestVerificationCodeRequest_Identifier() {}
+
+func (*RequestVerificationCodeRequest_Email) isRequestVerificationCodeRequest_Identifier() {}
+
+// RequestVerificationCodeResponse contains information about the verification code request
+type RequestVerificationCodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ExpiresIn     int32                  `protobuf:"varint,2,opt,name=expires_in,json=expiresIn,proto3" json:"expires_in,omitempty"` // Time in seconds until the code expires
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestVerificationCodeResponse) Reset() {
+	*x = RequestVerificationCodeResponse{}
+	mi := &file_identity_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestVerificationCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestVerificationCodeResponse) ProtoMessage() {}
+
+func (x *RequestVerificationCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestVerificationCodeResponse.ProtoReflect.Descriptor instead.
+func (*RequestVerificationCodeResponse) Descriptor() ([]byte, []int) {
+	return file_identity_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *RequestVerificationCodeResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *RequestVerificationCodeResponse) GetExpiresIn() int32 {
+	if x != nil {
+		return x.ExpiresIn
+	}
+	return 0
+}
+
+// VerifyAccountRequest is used to verify an account using a verification code
+type VerifyAccountRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Either phone or email must be provided
+	//
+	// Types that are valid to be assigned to Identifier:
+	//
+	//	*VerifyAccountRequest_Phone
+	//	*VerifyAccountRequest_Email
+	Identifier    isVerifyAccountRequest_Identifier `protobuf_oneof:"identifier"`
+	Code          string                            `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyAccountRequest) Reset() {
+	*x = VerifyAccountRequest{}
+	mi := &file_identity_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyAccountRequest) ProtoMessage() {}
+
+func (x *VerifyAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_identity_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyAccountRequest.ProtoReflect.Descriptor instead.
+func (*VerifyAccountRequest) Descriptor() ([]byte, []int) {
+	return file_identity_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *VerifyAccountRequest) GetIdentifier() isVerifyAccountRequest_Identifier {
+	if x != nil {
+		return x.Identifier
+	}
+	return nil
+}
+
+func (x *VerifyAccountRequest) GetPhone() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*VerifyAccountRequest_Phone); ok {
+			return x.Phone
+		}
+	}
+	return ""
+}
+
+func (x *VerifyAccountRequest) GetEmail() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*VerifyAccountRequest_Email); ok {
+			return x.Email
+		}
+	}
+	return ""
+}
+
+func (x *VerifyAccountRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type isVerifyAccountRequest_Identifier interface {
+	isVerifyAccountRequest_Identifier()
+}
+
+type VerifyAccountRequest_Phone struct {
+	Phone string `protobuf:"bytes,1,opt,name=phone,proto3,oneof"`
+}
+
+type VerifyAccountRequest_Email struct {
+	Email string `protobuf:"bytes,2,opt,name=email,proto3,oneof"`
+}
+
+func (*VerifyAccountRequest_Phone) isVerifyAccountRequest_Identifier() {}
+
+func (*VerifyAccountRequest_Email) isVerifyAccountRequest_Identifier() {}
+
 var File_identity_proto protoreflect.FileDescriptor
 
 const file_identity_proto_rawDesc = "" +
@@ -1491,14 +1780,34 @@ const file_identity_proto_rawDesc = "" +
 	"\x05users\x18\x01 \x03(\v2\x0e.identity.UserR\x05users\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
 	"\vtotal_count\x18\x03 \x01(\x05R\n" +
-	"totalCount*\x9c\x01\n" +
+	"totalCount\"\x8e\x01\n" +
+	"\x1eRequestVerificationCodeRequest\x12\x16\n" +
+	"\x05phone\x18\x01 \x01(\tH\x00R\x05phone\x12\x16\n" +
+	"\x05email\x18\x02 \x01(\tH\x00R\x05email\x12.\n" +
+	"\x04type\x18\x03 \x01(\x0e2\x1a.identity.VerificationTypeR\x04typeB\f\n" +
+	"\n" +
+	"identifier\"Y\n" +
+	"\x1fRequestVerificationCodeResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1d\n" +
+	"\n" +
+	"expires_in\x18\x02 \x01(\x05R\texpiresIn\"h\n" +
+	"\x14VerifyAccountRequest\x12\x16\n" +
+	"\x05phone\x18\x01 \x01(\tH\x00R\x05phone\x12\x16\n" +
+	"\x05email\x18\x02 \x01(\tH\x00R\x05email\x12\x12\n" +
+	"\x04code\x18\x03 \x01(\tR\x04codeB\f\n" +
+	"\n" +
+	"identifier*\x9c\x01\n" +
 	"\n" +
 	"UserStatus\x12\x1b\n" +
 	"\x17USER_STATUS_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12USER_STATUS_ACTIVE\x10\x01\x12\x18\n" +
 	"\x14USER_STATUS_INACTIVE\x10\x02\x12\x19\n" +
 	"\x15USER_STATUS_SUSPENDED\x10\x03\x12$\n" +
-	" USER_STATUS_PENDING_VERIFICATION\x10\x042\xf1\x05\n" +
+	" USER_STATUS_PENDING_VERIFICATION\x10\x04*o\n" +
+	"\x10VerificationType\x12!\n" +
+	"\x1dVERIFICATION_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17VERIFICATION_TYPE_PHONE\x10\x01\x12\x1b\n" +
+	"\x17VERIFICATION_TYPE_EMAIL\x10\x022\xaa\a\n" +
 	"\x0fIdentityService\x129\n" +
 	"\n" +
 	"CreateUser\x12\x1b.identity.CreateUserRequest\x1a\x0e.identity.User\x123\n" +
@@ -1513,7 +1822,9 @@ const file_identity_proto_rawDesc = "" +
 	"\x14RequestPasswordReset\x12%.identity.RequestPasswordResetRequest\x1a\x16.google.protobuf.Empty\x12G\n" +
 	"\rResetPassword\x12\x1e.identity.ResetPasswordRequest\x1a\x16.google.protobuf.Empty\x12I\n" +
 	"\x0eChangePassword\x12\x1f.identity.ChangePasswordRequest\x1a\x16.google.protobuf.Empty\x12D\n" +
-	"\tListUsers\x12\x1a.identity.ListUsersRequest\x1a\x1b.identity.ListUsersResponseB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcb\x06proto3"
+	"\tListUsers\x12\x1a.identity.ListUsersRequest\x1a\x1b.identity.ListUsersResponse\x12n\n" +
+	"\x17RequestVerificationCode\x12(.identity.RequestVerificationCodeRequest\x1a).identity.RequestVerificationCodeResponse\x12G\n" +
+	"\rVerifyAccount\x12\x1e.identity.VerifyAccountRequest\x1a\x16.google.protobuf.EmptyB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcb\x06proto3"
 
 var (
 	file_identity_proto_rawDescOnce sync.Once
@@ -1527,75 +1838,84 @@ func file_identity_proto_rawDescGZIP() []byte {
 	return file_identity_proto_rawDescData
 }
 
-var file_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_identity_proto_goTypes = []any{
-	(UserStatus)(0),                     // 0: identity.UserStatus
-	(*User)(nil),                        // 1: identity.User
-	(*Role)(nil),                        // 2: identity.Role
-	(*UserMetadata)(nil),                // 3: identity.UserMetadata
-	(*Address)(nil),                     // 4: identity.Address
-	(*CreateUserRequest)(nil),           // 5: identity.CreateUserRequest
-	(*GetUserRequest)(nil),              // 6: identity.GetUserRequest
-	(*UpdateUserRequest)(nil),           // 7: identity.UpdateUserRequest
-	(*DeleteUserRequest)(nil),           // 8: identity.DeleteUserRequest
-	(*LoginRequest)(nil),                // 9: identity.LoginRequest
-	(*DeviceInfo)(nil),                  // 10: identity.DeviceInfo
-	(*LoginResponse)(nil),               // 11: identity.LoginResponse
-	(*LogoutRequest)(nil),               // 12: identity.LogoutRequest
-	(*VerifyTokenRequest)(nil),          // 13: identity.VerifyTokenRequest
-	(*VerifyTokenResponse)(nil),         // 14: identity.VerifyTokenResponse
-	(*RequestPasswordResetRequest)(nil), // 15: identity.RequestPasswordResetRequest
-	(*ResetPasswordRequest)(nil),        // 16: identity.ResetPasswordRequest
-	(*ChangePasswordRequest)(nil),       // 17: identity.ChangePasswordRequest
-	(*ListUsersRequest)(nil),            // 18: identity.ListUsersRequest
-	(*ListUsersResponse)(nil),           // 19: identity.ListUsersResponse
-	nil,                                 // 20: identity.UserMetadata.CustomAttributesEntry
-	(*timestamppb.Timestamp)(nil),       // 21: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),               // 22: google.protobuf.Empty
+	(UserStatus)(0),                         // 0: identity.UserStatus
+	(VerificationType)(0),                   // 1: identity.VerificationType
+	(*User)(nil),                            // 2: identity.User
+	(*Role)(nil),                            // 3: identity.Role
+	(*UserMetadata)(nil),                    // 4: identity.UserMetadata
+	(*Address)(nil),                         // 5: identity.Address
+	(*CreateUserRequest)(nil),               // 6: identity.CreateUserRequest
+	(*GetUserRequest)(nil),                  // 7: identity.GetUserRequest
+	(*UpdateUserRequest)(nil),               // 8: identity.UpdateUserRequest
+	(*DeleteUserRequest)(nil),               // 9: identity.DeleteUserRequest
+	(*LoginRequest)(nil),                    // 10: identity.LoginRequest
+	(*DeviceInfo)(nil),                      // 11: identity.DeviceInfo
+	(*LoginResponse)(nil),                   // 12: identity.LoginResponse
+	(*LogoutRequest)(nil),                   // 13: identity.LogoutRequest
+	(*VerifyTokenRequest)(nil),              // 14: identity.VerifyTokenRequest
+	(*VerifyTokenResponse)(nil),             // 15: identity.VerifyTokenResponse
+	(*RequestPasswordResetRequest)(nil),     // 16: identity.RequestPasswordResetRequest
+	(*ResetPasswordRequest)(nil),            // 17: identity.ResetPasswordRequest
+	(*ChangePasswordRequest)(nil),           // 18: identity.ChangePasswordRequest
+	(*ListUsersRequest)(nil),                // 19: identity.ListUsersRequest
+	(*ListUsersResponse)(nil),               // 20: identity.ListUsersResponse
+	(*RequestVerificationCodeRequest)(nil),  // 21: identity.RequestVerificationCodeRequest
+	(*RequestVerificationCodeResponse)(nil), // 22: identity.RequestVerificationCodeResponse
+	(*VerifyAccountRequest)(nil),            // 23: identity.VerifyAccountRequest
+	nil,                                     // 24: identity.UserMetadata.CustomAttributesEntry
+	(*timestamppb.Timestamp)(nil),           // 25: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                   // 26: google.protobuf.Empty
 }
 var file_identity_proto_depIdxs = []int32{
 	0,  // 0: identity.User.status:type_name -> identity.UserStatus
-	2,  // 1: identity.User.roles:type_name -> identity.Role
-	3,  // 2: identity.User.metadata:type_name -> identity.UserMetadata
-	21, // 3: identity.User.created_at:type_name -> google.protobuf.Timestamp
-	21, // 4: identity.User.updated_at:type_name -> google.protobuf.Timestamp
-	21, // 5: identity.User.last_login:type_name -> google.protobuf.Timestamp
-	20, // 6: identity.UserMetadata.custom_attributes:type_name -> identity.UserMetadata.CustomAttributesEntry
-	4,  // 7: identity.UserMetadata.address:type_name -> identity.Address
-	3,  // 8: identity.CreateUserRequest.metadata:type_name -> identity.UserMetadata
+	3,  // 1: identity.User.roles:type_name -> identity.Role
+	4,  // 2: identity.User.metadata:type_name -> identity.UserMetadata
+	25, // 3: identity.User.created_at:type_name -> google.protobuf.Timestamp
+	25, // 4: identity.User.updated_at:type_name -> google.protobuf.Timestamp
+	25, // 5: identity.User.last_login:type_name -> google.protobuf.Timestamp
+	24, // 6: identity.UserMetadata.custom_attributes:type_name -> identity.UserMetadata.CustomAttributesEntry
+	5,  // 7: identity.UserMetadata.address:type_name -> identity.Address
+	4,  // 8: identity.CreateUserRequest.metadata:type_name -> identity.UserMetadata
 	0,  // 9: identity.UpdateUserRequest.status:type_name -> identity.UserStatus
-	3,  // 10: identity.UpdateUserRequest.metadata:type_name -> identity.UserMetadata
-	10, // 11: identity.LoginRequest.device_info:type_name -> identity.DeviceInfo
+	4,  // 10: identity.UpdateUserRequest.metadata:type_name -> identity.UserMetadata
+	11, // 11: identity.LoginRequest.device_info:type_name -> identity.DeviceInfo
 	0,  // 12: identity.ListUsersRequest.status:type_name -> identity.UserStatus
-	1,  // 13: identity.ListUsersResponse.users:type_name -> identity.User
-	5,  // 14: identity.IdentityService.CreateUser:input_type -> identity.CreateUserRequest
-	6,  // 15: identity.IdentityService.GetUser:input_type -> identity.GetUserRequest
-	7,  // 16: identity.IdentityService.UpdateUser:input_type -> identity.UpdateUserRequest
-	8,  // 17: identity.IdentityService.DeleteUser:input_type -> identity.DeleteUserRequest
-	9,  // 18: identity.IdentityService.Login:input_type -> identity.LoginRequest
-	12, // 19: identity.IdentityService.Logout:input_type -> identity.LogoutRequest
-	13, // 20: identity.IdentityService.VerifyToken:input_type -> identity.VerifyTokenRequest
-	15, // 21: identity.IdentityService.RequestPasswordReset:input_type -> identity.RequestPasswordResetRequest
-	16, // 22: identity.IdentityService.ResetPassword:input_type -> identity.ResetPasswordRequest
-	17, // 23: identity.IdentityService.ChangePassword:input_type -> identity.ChangePasswordRequest
-	18, // 24: identity.IdentityService.ListUsers:input_type -> identity.ListUsersRequest
-	1,  // 25: identity.IdentityService.CreateUser:output_type -> identity.User
-	1,  // 26: identity.IdentityService.GetUser:output_type -> identity.User
-	1,  // 27: identity.IdentityService.UpdateUser:output_type -> identity.User
-	22, // 28: identity.IdentityService.DeleteUser:output_type -> google.protobuf.Empty
-	11, // 29: identity.IdentityService.Login:output_type -> identity.LoginResponse
-	22, // 30: identity.IdentityService.Logout:output_type -> google.protobuf.Empty
-	14, // 31: identity.IdentityService.VerifyToken:output_type -> identity.VerifyTokenResponse
-	22, // 32: identity.IdentityService.RequestPasswordReset:output_type -> google.protobuf.Empty
-	22, // 33: identity.IdentityService.ResetPassword:output_type -> google.protobuf.Empty
-	22, // 34: identity.IdentityService.ChangePassword:output_type -> google.protobuf.Empty
-	19, // 35: identity.IdentityService.ListUsers:output_type -> identity.ListUsersResponse
-	25, // [25:36] is the sub-list for method output_type
-	14, // [14:25] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	2,  // 13: identity.ListUsersResponse.users:type_name -> identity.User
+	1,  // 14: identity.RequestVerificationCodeRequest.type:type_name -> identity.VerificationType
+	6,  // 15: identity.IdentityService.CreateUser:input_type -> identity.CreateUserRequest
+	7,  // 16: identity.IdentityService.GetUser:input_type -> identity.GetUserRequest
+	8,  // 17: identity.IdentityService.UpdateUser:input_type -> identity.UpdateUserRequest
+	9,  // 18: identity.IdentityService.DeleteUser:input_type -> identity.DeleteUserRequest
+	10, // 19: identity.IdentityService.Login:input_type -> identity.LoginRequest
+	13, // 20: identity.IdentityService.Logout:input_type -> identity.LogoutRequest
+	14, // 21: identity.IdentityService.VerifyToken:input_type -> identity.VerifyTokenRequest
+	16, // 22: identity.IdentityService.RequestPasswordReset:input_type -> identity.RequestPasswordResetRequest
+	17, // 23: identity.IdentityService.ResetPassword:input_type -> identity.ResetPasswordRequest
+	18, // 24: identity.IdentityService.ChangePassword:input_type -> identity.ChangePasswordRequest
+	19, // 25: identity.IdentityService.ListUsers:input_type -> identity.ListUsersRequest
+	21, // 26: identity.IdentityService.RequestVerificationCode:input_type -> identity.RequestVerificationCodeRequest
+	23, // 27: identity.IdentityService.VerifyAccount:input_type -> identity.VerifyAccountRequest
+	2,  // 28: identity.IdentityService.CreateUser:output_type -> identity.User
+	2,  // 29: identity.IdentityService.GetUser:output_type -> identity.User
+	2,  // 30: identity.IdentityService.UpdateUser:output_type -> identity.User
+	26, // 31: identity.IdentityService.DeleteUser:output_type -> google.protobuf.Empty
+	12, // 32: identity.IdentityService.Login:output_type -> identity.LoginResponse
+	26, // 33: identity.IdentityService.Logout:output_type -> google.protobuf.Empty
+	15, // 34: identity.IdentityService.VerifyToken:output_type -> identity.VerifyTokenResponse
+	26, // 35: identity.IdentityService.RequestPasswordReset:output_type -> google.protobuf.Empty
+	26, // 36: identity.IdentityService.ResetPassword:output_type -> google.protobuf.Empty
+	26, // 37: identity.IdentityService.ChangePassword:output_type -> google.protobuf.Empty
+	20, // 38: identity.IdentityService.ListUsers:output_type -> identity.ListUsersResponse
+	22, // 39: identity.IdentityService.RequestVerificationCode:output_type -> identity.RequestVerificationCodeResponse
+	26, // 40: identity.IdentityService.VerifyAccount:output_type -> google.protobuf.Empty
+	28, // [28:41] is the sub-list for method output_type
+	15, // [15:28] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_identity_proto_init() }
@@ -1609,13 +1929,21 @@ func file_identity_proto_init() {
 		(*LoginRequest_Username)(nil),
 	}
 	file_identity_proto_msgTypes[17].OneofWrappers = []any{}
+	file_identity_proto_msgTypes[19].OneofWrappers = []any{
+		(*RequestVerificationCodeRequest_Phone)(nil),
+		(*RequestVerificationCodeRequest_Email)(nil),
+	}
+	file_identity_proto_msgTypes[21].OneofWrappers = []any{
+		(*VerifyAccountRequest_Phone)(nil),
+		(*VerifyAccountRequest_Email)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_identity_proto_rawDesc), len(file_identity_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   20,
+			NumEnums:      2,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
