@@ -63,6 +63,17 @@ This automatic tagging ensures that each commit has a corresponding version that
 git push origin <tag-name>
 ```
 
+##### Automatic Tag Pushing
+
+You can configure the hook to automatically push tags by setting an environment variable:
+
+```bash
+# Enable automatic tag pushing
+export BETHELA_AUTO_PUSH_TAGS=1
+```
+
+When this variable is set, the post-commit hook will automatically push the newly created tag to the remote repository, making it immediately available for other projects to use.
+
 You can set up both hooks at once with the provided setup script:
 
 ```bash

@@ -86,95 +86,9 @@ func (PaymentStatus) EnumDescriptor() ([]byte, []int) {
 	return file_provider_interface_proto_rawDescGZIP(), []int{0}
 }
 
-// Authentication details required by provider
-type Authentication struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	ApiKey             string                 `protobuf:"bytes,1,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
-	ApiSecret          string                 `protobuf:"bytes,2,opt,name=api_secret,json=apiSecret,proto3" json:"api_secret,omitempty"`
-	BusinessNumber     string                 `protobuf:"bytes,3,opt,name=business_number,json=businessNumber,proto3" json:"business_number,omitempty"`                                                                                 // Business short code, merchant ID, etc.
-	InitiatorName      string                 `protobuf:"bytes,4,opt,name=initiator_name,json=initiatorName,proto3" json:"initiator_name,omitempty"`                                                                                    // For providers that require this
-	SecurityCredential string                 `protobuf:"bytes,5,opt,name=security_credential,json=securityCredential,proto3" json:"security_credential,omitempty"`                                                                     // Encrypted credentials
-	ExtraCredentials   map[string]string      `protobuf:"bytes,6,rep,name=extra_credentials,json=extraCredentials,proto3" json:"extra_credentials,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Any additional provider-specific auth params
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *Authentication) Reset() {
-	*x = Authentication{}
-	mi := &file_provider_interface_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Authentication) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Authentication) ProtoMessage() {}
-
-func (x *Authentication) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Authentication.ProtoReflect.Descriptor instead.
-func (*Authentication) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *Authentication) GetApiKey() string {
-	if x != nil {
-		return x.ApiKey
-	}
-	return ""
-}
-
-func (x *Authentication) GetApiSecret() string {
-	if x != nil {
-		return x.ApiSecret
-	}
-	return ""
-}
-
-func (x *Authentication) GetBusinessNumber() string {
-	if x != nil {
-		return x.BusinessNumber
-	}
-	return ""
-}
-
-func (x *Authentication) GetInitiatorName() string {
-	if x != nil {
-		return x.InitiatorName
-	}
-	return ""
-}
-
-func (x *Authentication) GetSecurityCredential() string {
-	if x != nil {
-		return x.SecurityCredential
-	}
-	return ""
-}
-
-func (x *Authentication) GetExtraCredentials() map[string]string {
-	if x != nil {
-		return x.ExtraCredentials
-	}
-	return nil
-}
-
 // InitiatePaymentRequest - C2B payment
 type InitiatePaymentRequest struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
-	Auth                 *Authentication        `protobuf:"bytes,1,opt,name=auth,proto3" json:"auth,omitempty"`
 	TransactionReference string                 `protobuf:"bytes,2,opt,name=transaction_reference,json=transactionReference,proto3" json:"transaction_reference,omitempty"` // Client-generated unique reference
 	Amount               *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	CustomerNumber       string                 `protobuf:"bytes,4,opt,name=customer_number,json=customerNumber,proto3" json:"customer_number,omitempty"` // Phone number with country code
@@ -189,7 +103,7 @@ type InitiatePaymentRequest struct {
 
 func (x *InitiatePaymentRequest) Reset() {
 	*x = InitiatePaymentRequest{}
-	mi := &file_provider_interface_proto_msgTypes[1]
+	mi := &file_provider_interface_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -201,7 +115,7 @@ func (x *InitiatePaymentRequest) String() string {
 func (*InitiatePaymentRequest) ProtoMessage() {}
 
 func (x *InitiatePaymentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[1]
+	mi := &file_provider_interface_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,14 +128,7 @@ func (x *InitiatePaymentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitiatePaymentRequest.ProtoReflect.Descriptor instead.
 func (*InitiatePaymentRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *InitiatePaymentRequest) GetAuth() *Authentication {
-	if x != nil {
-		return x.Auth
-	}
-	return nil
+	return file_provider_interface_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *InitiatePaymentRequest) GetTransactionReference() string {
@@ -283,7 +190,6 @@ func (x *InitiatePaymentRequest) GetMetadata() map[string]string {
 // SendMoneyRequest - B2C payment
 type SendMoneyRequest struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
-	Auth                 *Authentication        `protobuf:"bytes,1,opt,name=auth,proto3" json:"auth,omitempty"`
 	TransactionReference string                 `protobuf:"bytes,2,opt,name=transaction_reference,json=transactionReference,proto3" json:"transaction_reference,omitempty"` // Client-generated unique reference
 	Amount               *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	RecipientNumber      string                 `protobuf:"bytes,4,opt,name=recipient_number,json=recipientNumber,proto3" json:"recipient_number,omitempty"` // Phone number with country code
@@ -297,7 +203,7 @@ type SendMoneyRequest struct {
 
 func (x *SendMoneyRequest) Reset() {
 	*x = SendMoneyRequest{}
-	mi := &file_provider_interface_proto_msgTypes[2]
+	mi := &file_provider_interface_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -309,7 +215,7 @@ func (x *SendMoneyRequest) String() string {
 func (*SendMoneyRequest) ProtoMessage() {}
 
 func (x *SendMoneyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[2]
+	mi := &file_provider_interface_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -322,14 +228,7 @@ func (x *SendMoneyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMoneyRequest.ProtoReflect.Descriptor instead.
 func (*SendMoneyRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *SendMoneyRequest) GetAuth() *Authentication {
-	if x != nil {
-		return x.Auth
-	}
-	return nil
+	return file_provider_interface_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *SendMoneyRequest) GetTransactionReference() string {
@@ -398,7 +297,7 @@ type PaymentResponse struct {
 
 func (x *PaymentResponse) Reset() {
 	*x = PaymentResponse{}
-	mi := &file_provider_interface_proto_msgTypes[3]
+	mi := &file_provider_interface_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -410,7 +309,7 @@ func (x *PaymentResponse) String() string {
 func (*PaymentResponse) ProtoMessage() {}
 
 func (x *PaymentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[3]
+	mi := &file_provider_interface_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -423,7 +322,7 @@ func (x *PaymentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaymentResponse.ProtoReflect.Descriptor instead.
 func (*PaymentResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{3}
+	return file_provider_interface_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PaymentResponse) GetProviderTransactionId() string {
@@ -485,7 +384,6 @@ func (x *PaymentResponse) GetProviderMetadata() map[string]string {
 // StatusRequest to check transaction status
 type StatusRequest struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	Auth                  *Authentication        `protobuf:"bytes,1,opt,name=auth,proto3" json:"auth,omitempty"`
 	ProviderTransactionId string                 `protobuf:"bytes,2,opt,name=provider_transaction_id,json=providerTransactionId,proto3" json:"provider_transaction_id,omitempty"` // Provider-generated ID
 	ClientTransactionId   string                 `protobuf:"bytes,3,opt,name=client_transaction_id,json=clientTransactionId,proto3" json:"client_transaction_id,omitempty"`       // Client-generated reference
 	unknownFields         protoimpl.UnknownFields
@@ -494,7 +392,7 @@ type StatusRequest struct {
 
 func (x *StatusRequest) Reset() {
 	*x = StatusRequest{}
-	mi := &file_provider_interface_proto_msgTypes[4]
+	mi := &file_provider_interface_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -506,7 +404,7 @@ func (x *StatusRequest) String() string {
 func (*StatusRequest) ProtoMessage() {}
 
 func (x *StatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[4]
+	mi := &file_provider_interface_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -519,14 +417,7 @@ func (x *StatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatusRequest.ProtoReflect.Descriptor instead.
 func (*StatusRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *StatusRequest) GetAuth() *Authentication {
-	if x != nil {
-		return x.Auth
-	}
-	return nil
+	return file_provider_interface_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *StatusRequest) GetProviderTransactionId() string {
@@ -560,7 +451,7 @@ type StatusResponse struct {
 
 func (x *StatusResponse) Reset() {
 	*x = StatusResponse{}
-	mi := &file_provider_interface_proto_msgTypes[5]
+	mi := &file_provider_interface_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -572,7 +463,7 @@ func (x *StatusResponse) String() string {
 func (*StatusResponse) ProtoMessage() {}
 
 func (x *StatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[5]
+	mi := &file_provider_interface_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -585,7 +476,7 @@ func (x *StatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatusResponse.ProtoReflect.Descriptor instead.
 func (*StatusResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{5}
+	return file_provider_interface_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *StatusResponse) GetProviderTransactionId() string {
@@ -647,7 +538,6 @@ func (x *StatusResponse) GetProviderMetadata() map[string]string {
 // BalanceRequest to check account balance
 type BalanceRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
-	Auth              *Authentication        `protobuf:"bytes,1,opt,name=auth,proto3" json:"auth,omitempty"`
 	AccountIdentifier string                 `protobuf:"bytes,2,opt,name=account_identifier,json=accountIdentifier,proto3" json:"account_identifier,omitempty"` // Optional: specific account within business
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
@@ -655,7 +545,7 @@ type BalanceRequest struct {
 
 func (x *BalanceRequest) Reset() {
 	*x = BalanceRequest{}
-	mi := &file_provider_interface_proto_msgTypes[6]
+	mi := &file_provider_interface_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -667,7 +557,7 @@ func (x *BalanceRequest) String() string {
 func (*BalanceRequest) ProtoMessage() {}
 
 func (x *BalanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[6]
+	mi := &file_provider_interface_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -680,14 +570,7 @@ func (x *BalanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BalanceRequest.ProtoReflect.Descriptor instead.
 func (*BalanceRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *BalanceRequest) GetAuth() *Authentication {
-	if x != nil {
-		return x.Auth
-	}
-	return nil
+	return file_provider_interface_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *BalanceRequest) GetAccountIdentifier() string {
@@ -710,7 +593,7 @@ type ProviderBalanceResponse struct {
 
 func (x *ProviderBalanceResponse) Reset() {
 	*x = ProviderBalanceResponse{}
-	mi := &file_provider_interface_proto_msgTypes[7]
+	mi := &file_provider_interface_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -722,7 +605,7 @@ func (x *ProviderBalanceResponse) String() string {
 func (*ProviderBalanceResponse) ProtoMessage() {}
 
 func (x *ProviderBalanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[7]
+	mi := &file_provider_interface_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -735,7 +618,7 @@ func (x *ProviderBalanceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderBalanceResponse.ProtoReflect.Descriptor instead.
 func (*ProviderBalanceResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{7}
+	return file_provider_interface_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ProviderBalanceResponse) GetBalances() []*Money {
@@ -769,7 +652,6 @@ func (x *ProviderBalanceResponse) GetProviderMetadata() map[string]string {
 // ValidateAccountRequest to validate customer account
 type ValidateAccountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Auth          *Authentication        `protobuf:"bytes,1,opt,name=auth,proto3" json:"auth,omitempty"`
 	AccountNumber string                 `protobuf:"bytes,2,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"` // Typically phone number
 	AccountType   string                 `protobuf:"bytes,3,opt,name=account_type,json=accountType,proto3" json:"account_type,omitempty"`       // Optional: specific account type
 	unknownFields protoimpl.UnknownFields
@@ -778,7 +660,7 @@ type ValidateAccountRequest struct {
 
 func (x *ValidateAccountRequest) Reset() {
 	*x = ValidateAccountRequest{}
-	mi := &file_provider_interface_proto_msgTypes[8]
+	mi := &file_provider_interface_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -790,7 +672,7 @@ func (x *ValidateAccountRequest) String() string {
 func (*ValidateAccountRequest) ProtoMessage() {}
 
 func (x *ValidateAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[8]
+	mi := &file_provider_interface_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -803,14 +685,7 @@ func (x *ValidateAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateAccountRequest.ProtoReflect.Descriptor instead.
 func (*ValidateAccountRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *ValidateAccountRequest) GetAuth() *Authentication {
-	if x != nil {
-		return x.Auth
-	}
-	return nil
+	return file_provider_interface_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ValidateAccountRequest) GetAccountNumber() string {
@@ -841,7 +716,7 @@ type ValidateAccountResponse struct {
 
 func (x *ValidateAccountResponse) Reset() {
 	*x = ValidateAccountResponse{}
-	mi := &file_provider_interface_proto_msgTypes[9]
+	mi := &file_provider_interface_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -853,7 +728,7 @@ func (x *ValidateAccountResponse) String() string {
 func (*ValidateAccountResponse) ProtoMessage() {}
 
 func (x *ValidateAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[9]
+	mi := &file_provider_interface_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -866,7 +741,7 @@ func (x *ValidateAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateAccountResponse.ProtoReflect.Descriptor instead.
 func (*ValidateAccountResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{9}
+	return file_provider_interface_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ValidateAccountResponse) GetIsValid() bool {
@@ -907,7 +782,6 @@ func (x *ValidateAccountResponse) GetProviderMetadata() map[string]string {
 // ReversalRequest to reverse a transaction
 type ReversalRequest struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	Auth                  *Authentication        `protobuf:"bytes,1,opt,name=auth,proto3" json:"auth,omitempty"`
 	ProviderTransactionId string                 `protobuf:"bytes,2,opt,name=provider_transaction_id,json=providerTransactionId,proto3" json:"provider_transaction_id,omitempty"`
 	ClientTransactionId   string                 `protobuf:"bytes,3,opt,name=client_transaction_id,json=clientTransactionId,proto3" json:"client_transaction_id,omitempty"`
 	Amount                *Money                 `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"` // Some providers need amount for reversal
@@ -919,7 +793,7 @@ type ReversalRequest struct {
 
 func (x *ReversalRequest) Reset() {
 	*x = ReversalRequest{}
-	mi := &file_provider_interface_proto_msgTypes[10]
+	mi := &file_provider_interface_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -931,7 +805,7 @@ func (x *ReversalRequest) String() string {
 func (*ReversalRequest) ProtoMessage() {}
 
 func (x *ReversalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[10]
+	mi := &file_provider_interface_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -944,14 +818,7 @@ func (x *ReversalRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReversalRequest.ProtoReflect.Descriptor instead.
 func (*ReversalRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *ReversalRequest) GetAuth() *Authentication {
-	if x != nil {
-		return x.Auth
-	}
-	return nil
+	return file_provider_interface_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ReversalRequest) GetProviderTransactionId() string {
@@ -1004,7 +871,7 @@ type ReversalResponse struct {
 
 func (x *ReversalResponse) Reset() {
 	*x = ReversalResponse{}
-	mi := &file_provider_interface_proto_msgTypes[11]
+	mi := &file_provider_interface_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1016,7 +883,7 @@ func (x *ReversalResponse) String() string {
 func (*ReversalResponse) ProtoMessage() {}
 
 func (x *ReversalResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[11]
+	mi := &file_provider_interface_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1029,7 +896,7 @@ func (x *ReversalResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReversalResponse.ProtoReflect.Descriptor instead.
 func (*ReversalResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{11}
+	return file_provider_interface_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ReversalResponse) GetReversalId() string {
@@ -1078,20 +945,8 @@ var File_provider_interface_proto protoreflect.FileDescriptor
 
 const file_provider_interface_proto_rawDesc = "" +
 	"\n" +
-	"\x18provider_interface.proto\x12\bprovider\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\xeb\x02\n" +
-	"\x0eAuthentication\x12\x17\n" +
-	"\aapi_key\x18\x01 \x01(\tR\x06apiKey\x12\x1d\n" +
-	"\n" +
-	"api_secret\x18\x02 \x01(\tR\tapiSecret\x12'\n" +
-	"\x0fbusiness_number\x18\x03 \x01(\tR\x0ebusinessNumber\x12%\n" +
-	"\x0einitiator_name\x18\x04 \x01(\tR\rinitiatorName\x12/\n" +
-	"\x13security_credential\x18\x05 \x01(\tR\x12securityCredential\x12[\n" +
-	"\x11extra_credentials\x18\x06 \x03(\v2..provider.Authentication.ExtraCredentialsEntryR\x10extraCredentials\x1aC\n" +
-	"\x15ExtraCredentialsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xe3\x03\n" +
-	"\x16InitiatePaymentRequest\x12,\n" +
-	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x123\n" +
+	"\x18provider_interface.proto\x12\bprovider\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\xb5\x03\n" +
+	"\x16InitiatePaymentRequest\x123\n" +
 	"\x15transaction_reference\x18\x02 \x01(\tR\x14transactionReference\x12%\n" +
 	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12'\n" +
 	"\x0fcustomer_number\x18\x04 \x01(\tR\x0ecustomerNumber\x12 \n" +
@@ -1103,9 +958,8 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\bmetadata\x18\t \x03(\v2..provider.InitiatePaymentRequest.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa7\x03\n" +
-	"\x10SendMoneyRequest\x12,\n" +
-	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x123\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf9\x02\n" +
+	"\x10SendMoneyRequest\x123\n" +
 	"\x15transaction_reference\x18\x02 \x01(\tR\x14transactionReference\x12%\n" +
 	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12)\n" +
 	"\x10recipient_number\x18\x04 \x01(\tR\x0frecipientNumber\x12\x16\n" +
@@ -1128,9 +982,8 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\x11provider_metadata\x18\b \x03(\v2/.provider.PaymentResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
 	"\x15ProviderMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa9\x01\n" +
-	"\rStatusRequest\x12,\n" +
-	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x126\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"{\n" +
+	"\rStatusRequest\x126\n" +
 	"\x17provider_transaction_id\x18\x02 \x01(\tR\x15providerTransactionId\x122\n" +
 	"\x15client_transaction_id\x18\x03 \x01(\tR\x13clientTransactionId\"\x91\x04\n" +
 	"\x0eStatusResponse\x126\n" +
@@ -1146,9 +999,8 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\x11provider_metadata\x18\b \x03(\v2..provider.StatusResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
 	"\x15ProviderMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"m\n" +
-	"\x0eBalanceRequest\x12,\n" +
-	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x12-\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"?\n" +
+	"\x0eBalanceRequest\x12-\n" +
 	"\x12account_identifier\x18\x02 \x01(\tR\x11accountIdentifier\"\xc7\x02\n" +
 	"\x17ProviderBalanceResponse\x12)\n" +
 	"\bbalances\x18\x01 \x03(\v2\r.wallet.MoneyR\bbalances\x12%\n" +
@@ -1157,9 +1009,8 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\x11provider_metadata\x18\x04 \x03(\v27.provider.ProviderBalanceResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
 	"\x15ProviderMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x90\x01\n" +
-	"\x16ValidateAccountRequest\x12,\n" +
-	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x12%\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"b\n" +
+	"\x16ValidateAccountRequest\x12%\n" +
 	"\x0eaccount_number\x18\x02 \x01(\tR\raccountNumber\x12!\n" +
 	"\faccount_type\x18\x03 \x01(\tR\vaccountType\"\xd0\x02\n" +
 	"\x17ValidateAccountResponse\x12\x19\n" +
@@ -1170,9 +1021,8 @@ const file_provider_interface_proto_rawDesc = "" +
 	"\x11provider_metadata\x18\x05 \x03(\v27.provider.ValidateAccountResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
 	"\x15ProviderMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8d\x02\n" +
-	"\x0fReversalRequest\x12,\n" +
-	"\x04auth\x18\x01 \x01(\v2\x18.provider.AuthenticationR\x04auth\x126\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xdf\x01\n" +
+	"\x0fReversalRequest\x126\n" +
 	"\x17provider_transaction_id\x18\x02 \x01(\tR\x15providerTransactionId\x122\n" +
 	"\x15client_transaction_id\x18\x03 \x01(\tR\x13clientTransactionId\x12%\n" +
 	"\x06amount\x18\x04 \x01(\v2\r.wallet.MoneyR\x06amount\x12\x16\n" +
@@ -1219,78 +1069,69 @@ func file_provider_interface_proto_rawDescGZIP() []byte {
 }
 
 var file_provider_interface_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_provider_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_provider_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_provider_interface_proto_goTypes = []any{
 	(PaymentStatus)(0),              // 0: provider.PaymentStatus
-	(*Authentication)(nil),          // 1: provider.Authentication
-	(*InitiatePaymentRequest)(nil),  // 2: provider.InitiatePaymentRequest
-	(*SendMoneyRequest)(nil),        // 3: provider.SendMoneyRequest
-	(*PaymentResponse)(nil),         // 4: provider.PaymentResponse
-	(*StatusRequest)(nil),           // 5: provider.StatusRequest
-	(*StatusResponse)(nil),          // 6: provider.StatusResponse
-	(*BalanceRequest)(nil),          // 7: provider.BalanceRequest
-	(*ProviderBalanceResponse)(nil), // 8: provider.ProviderBalanceResponse
-	(*ValidateAccountRequest)(nil),  // 9: provider.ValidateAccountRequest
-	(*ValidateAccountResponse)(nil), // 10: provider.ValidateAccountResponse
-	(*ReversalRequest)(nil),         // 11: provider.ReversalRequest
-	(*ReversalResponse)(nil),        // 12: provider.ReversalResponse
-	nil,                             // 13: provider.Authentication.ExtraCredentialsEntry
-	nil,                             // 14: provider.InitiatePaymentRequest.MetadataEntry
-	nil,                             // 15: provider.SendMoneyRequest.MetadataEntry
-	nil,                             // 16: provider.PaymentResponse.ProviderMetadataEntry
-	nil,                             // 17: provider.StatusResponse.ProviderMetadataEntry
-	nil,                             // 18: provider.ProviderBalanceResponse.ProviderMetadataEntry
-	nil,                             // 19: provider.ValidateAccountResponse.ProviderMetadataEntry
-	nil,                             // 20: provider.ReversalResponse.ProviderMetadataEntry
-	(*Money)(nil),                   // 21: wallet.Money
-	(*timestamppb.Timestamp)(nil),   // 22: google.protobuf.Timestamp
+	(*InitiatePaymentRequest)(nil),  // 1: provider.InitiatePaymentRequest
+	(*SendMoneyRequest)(nil),        // 2: provider.SendMoneyRequest
+	(*PaymentResponse)(nil),         // 3: provider.PaymentResponse
+	(*StatusRequest)(nil),           // 4: provider.StatusRequest
+	(*StatusResponse)(nil),          // 5: provider.StatusResponse
+	(*BalanceRequest)(nil),          // 6: provider.BalanceRequest
+	(*ProviderBalanceResponse)(nil), // 7: provider.ProviderBalanceResponse
+	(*ValidateAccountRequest)(nil),  // 8: provider.ValidateAccountRequest
+	(*ValidateAccountResponse)(nil), // 9: provider.ValidateAccountResponse
+	(*ReversalRequest)(nil),         // 10: provider.ReversalRequest
+	(*ReversalResponse)(nil),        // 11: provider.ReversalResponse
+	nil,                             // 12: provider.InitiatePaymentRequest.MetadataEntry
+	nil,                             // 13: provider.SendMoneyRequest.MetadataEntry
+	nil,                             // 14: provider.PaymentResponse.ProviderMetadataEntry
+	nil,                             // 15: provider.StatusResponse.ProviderMetadataEntry
+	nil,                             // 16: provider.ProviderBalanceResponse.ProviderMetadataEntry
+	nil,                             // 17: provider.ValidateAccountResponse.ProviderMetadataEntry
+	nil,                             // 18: provider.ReversalResponse.ProviderMetadataEntry
+	(*Money)(nil),                   // 19: wallet.Money
+	(*timestamppb.Timestamp)(nil),   // 20: google.protobuf.Timestamp
 }
 var file_provider_interface_proto_depIdxs = []int32{
-	13, // 0: provider.Authentication.extra_credentials:type_name -> provider.Authentication.ExtraCredentialsEntry
-	1,  // 1: provider.InitiatePaymentRequest.auth:type_name -> provider.Authentication
-	21, // 2: provider.InitiatePaymentRequest.amount:type_name -> wallet.Money
-	14, // 3: provider.InitiatePaymentRequest.metadata:type_name -> provider.InitiatePaymentRequest.MetadataEntry
-	1,  // 4: provider.SendMoneyRequest.auth:type_name -> provider.Authentication
-	21, // 5: provider.SendMoneyRequest.amount:type_name -> wallet.Money
-	15, // 6: provider.SendMoneyRequest.metadata:type_name -> provider.SendMoneyRequest.MetadataEntry
-	0,  // 7: provider.PaymentResponse.status:type_name -> provider.PaymentStatus
-	21, // 8: provider.PaymentResponse.amount:type_name -> wallet.Money
-	22, // 9: provider.PaymentResponse.created_at:type_name -> google.protobuf.Timestamp
-	16, // 10: provider.PaymentResponse.provider_metadata:type_name -> provider.PaymentResponse.ProviderMetadataEntry
-	1,  // 11: provider.StatusRequest.auth:type_name -> provider.Authentication
-	0,  // 12: provider.StatusResponse.status:type_name -> provider.PaymentStatus
-	21, // 13: provider.StatusResponse.amount:type_name -> wallet.Money
-	22, // 14: provider.StatusResponse.created_at:type_name -> google.protobuf.Timestamp
-	22, // 15: provider.StatusResponse.updated_at:type_name -> google.protobuf.Timestamp
-	17, // 16: provider.StatusResponse.provider_metadata:type_name -> provider.StatusResponse.ProviderMetadataEntry
-	1,  // 17: provider.BalanceRequest.auth:type_name -> provider.Authentication
-	21, // 18: provider.ProviderBalanceResponse.balances:type_name -> wallet.Money
-	22, // 19: provider.ProviderBalanceResponse.as_of:type_name -> google.protobuf.Timestamp
-	18, // 20: provider.ProviderBalanceResponse.provider_metadata:type_name -> provider.ProviderBalanceResponse.ProviderMetadataEntry
-	1,  // 21: provider.ValidateAccountRequest.auth:type_name -> provider.Authentication
-	19, // 22: provider.ValidateAccountResponse.provider_metadata:type_name -> provider.ValidateAccountResponse.ProviderMetadataEntry
-	1,  // 23: provider.ReversalRequest.auth:type_name -> provider.Authentication
-	21, // 24: provider.ReversalRequest.amount:type_name -> wallet.Money
-	0,  // 25: provider.ReversalResponse.status:type_name -> provider.PaymentStatus
-	22, // 26: provider.ReversalResponse.processed_at:type_name -> google.protobuf.Timestamp
-	20, // 27: provider.ReversalResponse.provider_metadata:type_name -> provider.ReversalResponse.ProviderMetadataEntry
-	2,  // 28: provider.ProviderInterface.InitiatePayment:input_type -> provider.InitiatePaymentRequest
-	3,  // 29: provider.ProviderInterface.SendMoney:input_type -> provider.SendMoneyRequest
-	5,  // 30: provider.ProviderInterface.CheckTransactionStatus:input_type -> provider.StatusRequest
-	7,  // 31: provider.ProviderInterface.GetAccountBalance:input_type -> provider.BalanceRequest
-	9,  // 32: provider.ProviderInterface.ValidateAccount:input_type -> provider.ValidateAccountRequest
-	11, // 33: provider.ProviderInterface.ReverseTransaction:input_type -> provider.ReversalRequest
-	4,  // 34: provider.ProviderInterface.InitiatePayment:output_type -> provider.PaymentResponse
-	4,  // 35: provider.ProviderInterface.SendMoney:output_type -> provider.PaymentResponse
-	6,  // 36: provider.ProviderInterface.CheckTransactionStatus:output_type -> provider.StatusResponse
-	8,  // 37: provider.ProviderInterface.GetAccountBalance:output_type -> provider.ProviderBalanceResponse
-	10, // 38: provider.ProviderInterface.ValidateAccount:output_type -> provider.ValidateAccountResponse
-	12, // 39: provider.ProviderInterface.ReverseTransaction:output_type -> provider.ReversalResponse
-	34, // [34:40] is the sub-list for method output_type
-	28, // [28:34] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	19, // 0: provider.InitiatePaymentRequest.amount:type_name -> wallet.Money
+	12, // 1: provider.InitiatePaymentRequest.metadata:type_name -> provider.InitiatePaymentRequest.MetadataEntry
+	19, // 2: provider.SendMoneyRequest.amount:type_name -> wallet.Money
+	13, // 3: provider.SendMoneyRequest.metadata:type_name -> provider.SendMoneyRequest.MetadataEntry
+	0,  // 4: provider.PaymentResponse.status:type_name -> provider.PaymentStatus
+	19, // 5: provider.PaymentResponse.amount:type_name -> wallet.Money
+	20, // 6: provider.PaymentResponse.created_at:type_name -> google.protobuf.Timestamp
+	14, // 7: provider.PaymentResponse.provider_metadata:type_name -> provider.PaymentResponse.ProviderMetadataEntry
+	0,  // 8: provider.StatusResponse.status:type_name -> provider.PaymentStatus
+	19, // 9: provider.StatusResponse.amount:type_name -> wallet.Money
+	20, // 10: provider.StatusResponse.created_at:type_name -> google.protobuf.Timestamp
+	20, // 11: provider.StatusResponse.updated_at:type_name -> google.protobuf.Timestamp
+	15, // 12: provider.StatusResponse.provider_metadata:type_name -> provider.StatusResponse.ProviderMetadataEntry
+	19, // 13: provider.ProviderBalanceResponse.balances:type_name -> wallet.Money
+	20, // 14: provider.ProviderBalanceResponse.as_of:type_name -> google.protobuf.Timestamp
+	16, // 15: provider.ProviderBalanceResponse.provider_metadata:type_name -> provider.ProviderBalanceResponse.ProviderMetadataEntry
+	17, // 16: provider.ValidateAccountResponse.provider_metadata:type_name -> provider.ValidateAccountResponse.ProviderMetadataEntry
+	19, // 17: provider.ReversalRequest.amount:type_name -> wallet.Money
+	0,  // 18: provider.ReversalResponse.status:type_name -> provider.PaymentStatus
+	20, // 19: provider.ReversalResponse.processed_at:type_name -> google.protobuf.Timestamp
+	18, // 20: provider.ReversalResponse.provider_metadata:type_name -> provider.ReversalResponse.ProviderMetadataEntry
+	1,  // 21: provider.ProviderInterface.InitiatePayment:input_type -> provider.InitiatePaymentRequest
+	2,  // 22: provider.ProviderInterface.SendMoney:input_type -> provider.SendMoneyRequest
+	4,  // 23: provider.ProviderInterface.CheckTransactionStatus:input_type -> provider.StatusRequest
+	6,  // 24: provider.ProviderInterface.GetAccountBalance:input_type -> provider.BalanceRequest
+	8,  // 25: provider.ProviderInterface.ValidateAccount:input_type -> provider.ValidateAccountRequest
+	10, // 26: provider.ProviderInterface.ReverseTransaction:input_type -> provider.ReversalRequest
+	3,  // 27: provider.ProviderInterface.InitiatePayment:output_type -> provider.PaymentResponse
+	3,  // 28: provider.ProviderInterface.SendMoney:output_type -> provider.PaymentResponse
+	5,  // 29: provider.ProviderInterface.CheckTransactionStatus:output_type -> provider.StatusResponse
+	7,  // 30: provider.ProviderInterface.GetAccountBalance:output_type -> provider.ProviderBalanceResponse
+	9,  // 31: provider.ProviderInterface.ValidateAccount:output_type -> provider.ValidateAccountResponse
+	11, // 32: provider.ProviderInterface.ReverseTransaction:output_type -> provider.ReversalResponse
+	27, // [27:33] is the sub-list for method output_type
+	21, // [21:27] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_provider_interface_proto_init() }
@@ -1305,7 +1146,7 @@ func file_provider_interface_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_provider_interface_proto_rawDesc), len(file_provider_interface_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   20,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

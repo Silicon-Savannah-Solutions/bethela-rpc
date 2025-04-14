@@ -29,20 +29,8 @@ service ProviderInterface {
   rpc ReverseTransaction(ReversalRequest) returns (ReversalResponse);
 }
 
-
-// Authentication details required by provider
-message Authentication {
-  string api_key = 1;
-  string api_secret = 2;
-  string business_number = 3; // Business short code, merchant ID, etc.
-  string initiator_name = 4; // For providers that require this
-  string security_credential = 5; // Encrypted credentials
-  map<string, string> extra_credentials = 6; // Any additional provider-specific auth params
-}
-
 // InitiatePaymentRequest - C2B payment
 message InitiatePaymentRequest {
-  Authentication auth = 1;
   string transaction_reference = 2; // Client-generated unique reference
   wallet.Money amount = 3;
   string customer_number = 4; // Phone number with country code
@@ -55,7 +43,6 @@ message InitiatePaymentRequest {
 
 // SendMoneyRequest - B2C payment
 message SendMoneyRequest {
-  Authentication auth = 1;
   string transaction_reference = 2; // Client-generated unique reference
   wallet.Money amount = 3;
   string recipient_number = 4; // Phone number with country code
@@ -90,7 +77,6 @@ enum PaymentStatus {
 
 // StatusRequest to check transaction status
 message StatusRequest {
-  Authentication auth = 1;
   string provider_transaction_id = 2; // Provider-generated ID
   string client_transaction_id = 3; // Client-generated reference
 }
@@ -109,7 +95,6 @@ message StatusResponse {
 
 // BalanceRequest to check account balance
 message BalanceRequest {
-  Authentication auth = 1;
   string account_identifier = 2; // Optional: specific account within business
 }
 
@@ -123,7 +108,6 @@ message ProviderBalanceResponse {
 
 // ValidateAccountRequest to validate customer account
 message ValidateAccountRequest {
-  Authentication auth = 1;
   string account_number = 2; // Typically phone number
   string account_type = 3; // Optional: specific account type
 }
@@ -139,7 +123,6 @@ message ValidateAccountResponse {
 
 // ReversalRequest to reverse a transaction
 message ReversalRequest {
-  Authentication auth = 1;
   string provider_transaction_id = 2;
   string client_transaction_id = 3;
   wallet.Money amount = 4; // Some providers need amount for reversal
