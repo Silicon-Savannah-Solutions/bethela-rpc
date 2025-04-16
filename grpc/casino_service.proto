@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+package casino;
+
+option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "wallet.proto"; // For Money type
+import "casino_provider.proto"; // For Game definition
+
+// CasinoService provides APIs for casino games operations
+service CasinoService {
+  // List available games with filtering and pagination
+  rpc ListGames(ListGamesRequest) returns (ListGamesResponse);
+  
+  // Get game details
+  rpc GetGame(GetGameRequest) returns (casino.Game);
+  
+  // Get game categories
+  rpc GetCategories(GetCategoriesRequest) returns (GetCategoriesResponse);
+  
+  // Get game providers
+  rpc GetProviders(GetProvidersRequest) returns (GetProvidersResponse);
+  
+  // Launch a game session
+  rpc LaunchGame(casino.LaunchGameRequest) returns (casino.LaunchGameResponse);
+  
+  // Get player game history
+  rpc GetPlayerHistory(GetPlayerHistoryRequest) returns (GetPlayerHistoryResponse);
+  
+  // Register webhook endpoints for game providers
+  // These are implemented in the casino service but not exposed via gRPC
+  // They're handled in the HTTP layer
+  
+  // Internal methods used by the casino service
+  rpc ProcessBet(ProcessBetRequest) returns (ProcessBetResponse);
+  rpc ProcessWin(ProcessWinRequest) returns (ProcessWinResponse);
+  rpc ProcessRollback(ProcessRollbackRequest) returns (ProcessRollbackResponse);
+}
+
+// ListGamesRequest is used to list games with filters
+message ListGamesRequest {
+  int32 page_size = 1;         // Number of games per page
+  string page_token = 2;       // Pagination token
+  string category = 3;         // Filter by category
+  string provider = 4;         // Filter by provider
+  string currency = 5;         // Filter by currency support
+  string search = 6;           // Search by name
+}
+
+// ListGamesResponse contains a list of games and pagination info
+message ListGamesResponse {
+  repeated casino.Game games = 1;     // List of games
+  string next_page_token = 2;  // Token for next page
+  int32 total_count = 3;       // Total number of games
+}
+
+// GetGameRequest is used to get a specific game
+message GetGameRequest {
+  string game_id = 1;          // Game ID
+}
+
+// GetCategoriesRequest is used to get game categories
+message GetCategoriesRequest {
+  // Empty request
+}
+
+// Category represents a game category
+message Category {
+  string id = 1;               // Category ID
+  string name = 2;             // Category name
+  string icon = 3;             // Category icon
+  int32 game_count = 4;        // Number of games in category
+}
+
+// GetCategoriesResponse contains a list of game categories
+message GetCategoriesResponse {
+  repeated Category categories = 1; // List of categories
+}
+
+// GetProvidersRequest is used to get game providers
+message GetProvidersRequest {
+  // Empty request
+}
+
+// Provider represents a game provider
+message Provider {
+  string id = 1;               // Provider ID
+  string name = 2;             // Provider name
+  string logo_url = 3;         // Provider logo URL
+  int32 game_count = 4;        // Number of games from this provider
+}
+
+// GetProvidersResponse contains a list of game providers
+message GetProvidersResponse {
+  repeated Provider providers = 1; // List of providers
+}
+
+// ServiceLaunchRequest wraps the provider launch request for service use
+message ServiceLaunchRequest {
+  string game_id = 1;          // Game ID
+  string player_id = 2;        // Player ID
+  string currency = 3;         // Currency to play with
+  bool demo_mode = 4;          // Whether to launch in demo mode
+  string language = 5;         // Preferred language
+  string return_url = 6;       // URL to return to after game ends
+}
+
+// ServiceLaunchResponse wraps the provider launch response for service use
+message ServiceLaunchResponse {
+  string game_url = 1;         // URL to launch the game
+  string session_id = 2;       // Game session ID
+  google.protobuf.Timestamp expires_at = 3; // Session expiration time
+}
+
+// GetPlayerHistoryRequest is used to get a player's game history
+message GetPlayerHistoryRequest {
+  string player_id = 1;        // Player ID
+  int32 page_size = 2;         // Number of items per page
+  string page_token = 3;       // Pagination token
+  google.protobuf.Timestamp start_date = 4; // Start date filter
+  google.protobuf.Timestamp end_date = 5;   // End date filter
+  string game_id = 6;          // Filter by game ID
+  string provider_id = 7;      // Filter by provider ID
+}
+
+// GameSession represents a game session in the player's history
+message GameSession {
+  string session_id = 1;       // Session ID
+  string game_id = 2;          // Game ID
+  string game_name = 3;        // Game name
+  string provider_id = 4;      // Provider ID
+  google.protobuf.Timestamp start_time = 5; // Session start time
+  google.protobuf.Timestamp end_time = 6;   // Session end time
+  wallet.Money bet_amount = 7; // Total bet amount
+  wallet.Money win_amount = 8; // Total win amount
+  wallet.Money net_position = 9; // Net gain/loss
+}
+
+// GetPlayerHistoryResponse contains a player's game history
+message GetPlayerHistoryResponse {
+  repeated GameSession sessions = 1; // List of game sessions
+  string next_page_token = 2;   // Token for next page
+  int32 total_count = 3;        // Total number of sessions
+}
+
+// ProcessBetRequest is used internally to process a bet
+message ProcessBetRequest {
+  string provider_id = 1;      // Provider ID
+  casino.BetRequest bet_request = 2;  // Original bet request
+}
+
+// ProcessBetResponse is returned after processing a bet
+message ProcessBetResponse {
+  string transaction_id = 1;   // Transaction ID
+  bool success = 2;            // Whether the bet was successful
+  string error_code = 3;       // Error code if unsuccessful
+  string error_message = 4;    // Error message if unsuccessful
+  wallet.Money balance = 5;    // Updated balance
+}
+
+// ProcessWinRequest is used internally to process a win
+message ProcessWinRequest {
+  string provider_id = 1;      // Provider ID
+  casino.WinRequest win_request = 2;  // Original win request
+}
+
+// ProcessWinResponse is returned after processing a win
+message ProcessWinResponse {
+  string transaction_id = 1;   // Transaction ID
+  bool success = 2;            // Whether the win was successful
+  string error_code = 3;       // Error code if unsuccessful
+  string error_message = 4;    // Error message if unsuccessful
+  wallet.Money balance = 5;    // Updated balance
+}
+
+// ProcessRollbackRequest is used internally to process a rollback
+message ProcessRollbackRequest {
+  string provider_id = 1;      // Provider ID
+  casino.RollbackRequest rollback_request = 2; // Original rollback request
+}
+
+// ProcessRollbackResponse is returned after processing a rollback
+message ProcessRollbackResponse {
+  string transaction_id = 1;   // Transaction ID
+  bool success = 2;            // Whether the rollback was successful
+  string error_code = 3;       // Error code if unsuccessful
+  string error_message = 4;    // Error message if unsuccessful
+  wallet.Money balance = 5;    // Updated balance
+}

@@ -1,0 +1,143 @@
+syntax = "proto3";
+
+package casino;
+
+option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
+
+import "google/protobuf/timestamp.proto";
+import "wallet.proto"; // For Money type
+
+// CasinoProviderInterface - Standard API that each casino game provider MUST implement
+// Each provider (Euro Virtuals, etc.) will implement this interface
+service CasinoProviderInterface {
+  // Get available games from the provider
+  rpc GetGames(GetGamesRequest) returns (GetGamesResponse);
+  
+  // Launch a game session
+  rpc LaunchGame(LaunchGameRequest) returns (LaunchGameResponse);
+  
+  // Process a bet transaction
+  rpc ProcessBet(BetRequest) returns (BetResponse);
+  
+  // Process a win transaction
+  rpc ProcessWin(WinRequest) returns (WinResponse);
+  
+  // Rollback a transaction
+  rpc RollbackTransaction(RollbackRequest) returns (RollbackResponse);
+}
+
+// Game represents a casino game
+message Game {
+  string game_id = 1;          // Provider's unique game ID
+  string game_uuid = 2;        // System unique game ID
+  string name = 3;             // Game name
+  string description = 4;      // Game description
+  string thumbnail_url = 5;    // URL to game thumbnail
+  string category = 6;         // Game category (slots, table, live, etc.)
+  map<string, string> minimum_stake = 7;  // Minimum stake by currency
+  map<string, string> maximum_stake = 8;  // Maximum stake by currency
+  map<string, string> maximum_win = 9;    // Maximum win by currency
+  repeated string supported_currencies = 10; // List of supported currencies
+  bool is_active = 11;         // Whether the game is active
+  google.protobuf.Timestamp updated_at = 12; // Last update time
+}
+
+// GetGamesRequest is used to retrieve games from a provider
+message GetGamesRequest {
+  int32 page = 1;              // Pagination: page number
+  int32 per_page = 2;          // Pagination: items per page
+  string category = 3;         // Filter by category
+  string currency = 4;         // Filter by supported currency
+  bool active_only = 5;        // Filter active games only
+}
+
+// GetGamesResponse contains the list of games
+message GetGamesResponse {
+  repeated Game games = 1;     // List of games
+  int32 total = 2;             // Total number of games
+  int32 page = 3;              // Current page
+  int32 per_page = 4;          // Items per page
+}
+
+// LaunchGameRequest is used to launch a game session
+message LaunchGameRequest {
+  string game_id = 1;          // Game ID to launch
+  string player_id = 2;        // Player unique ID
+  string player_name = 3;      // Player display name
+  string session_token = 4;    // Authentication token
+  string currency = 5;         // Player's currency
+  wallet.Money balance = 6;    // Player's current balance
+  bool demo_mode = 7;          // Whether to launch in demo mode
+  string return_url = 8;       // URL to return to after game ends
+  string language = 9;         // Player's preferred language
+}
+
+// LaunchGameResponse contains the game launch URL
+message LaunchGameResponse {
+  string game_url = 1;         // URL to launch the game
+  string session_id = 2;       // Provider's session ID
+  google.protobuf.Timestamp expires_at = 3; // Session expiration time
+}
+
+// BetRequest is used to process a bet
+message BetRequest {
+  string transaction_id = 1;   // Unique transaction ID
+  string game_id = 2;          // Game ID
+  string player_id = 3;        // Player ID
+  string session_id = 4;       // Session ID
+  string round_id = 5;         // Game round ID
+  wallet.Money amount = 6;     // Bet amount
+  google.protobuf.Timestamp timestamp = 7; // Transaction timestamp
+  map<string, string> metadata = 8; // Additional metadata
+}
+
+// BetResponse is returned after processing a bet
+message BetResponse {
+  string transaction_id = 1;   // Unique transaction ID
+  bool success = 2;            // Whether the bet was successful
+  string error_code = 3;       // Error code if unsuccessful
+  string error_message = 4;    // Error message if unsuccessful
+  wallet.Money balance = 5;    // Updated balance
+}
+
+// WinRequest is used to process a win
+message WinRequest {
+  string transaction_id = 1;   // Unique transaction ID
+  string game_id = 2;          // Game ID
+  string player_id = 3;        // Player ID
+  string session_id = 4;       // Session ID
+  string round_id = 5;         // Game round ID
+  string bet_transaction_id = 6; // Original bet transaction ID
+  wallet.Money amount = 7;     // Win amount
+  google.protobuf.Timestamp timestamp = 8; // Transaction timestamp
+  map<string, string> metadata = 9; // Additional metadata
+}
+
+// WinResponse is returned after processing a win
+message WinResponse {
+  string transaction_id = 1;   // Unique transaction ID
+  bool success = 2;            // Whether the win was successful
+  string error_code = 3;       // Error code if unsuccessful
+  string error_message = 4;    // Error message if unsuccessful
+  wallet.Money balance = 5;    // Updated balance
+}
+
+// RollbackRequest is used to rollback a transaction
+message RollbackRequest {
+  string transaction_id = 1;   // Transaction ID to rollback
+  string player_id = 2;        // Player ID
+  string game_id = 3;          // Game ID
+  string session_id = 4;       // Session ID
+  string round_id = 5;         // Game round ID
+  string reason = 6;           // Reason for rollback
+  google.protobuf.Timestamp timestamp = 7; // Rollback timestamp
+}
+
+// RollbackResponse is returned after processing a rollback
+message RollbackResponse {
+  string transaction_id = 1;   // Original transaction ID
+  bool success = 2;            // Whether the rollback was successful
+  string error_code = 3;       // Error code if unsuccessful
+  string error_message = 4;    // Error message if unsuccessful
+  wallet.Money balance = 5;    // Updated balance
+}

@@ -36,6 +36,8 @@ const (
 	WalletService_RemoveMobileMoneyAccount_FullMethodName     = "/wallet.WalletService/RemoveMobileMoneyAccount"
 	WalletService_ListMobileMoneyAccounts_FullMethodName      = "/wallet.WalletService/ListMobileMoneyAccounts"
 	WalletService_SetDefaultMobileMoneyAccount_FullMethodName = "/wallet.WalletService/SetDefaultMobileMoneyAccount"
+	WalletService_HoldFunds_FullMethodName                    = "/wallet.WalletService/HoldFunds"
+	WalletService_DeductHeldFunds_FullMethodName              = "/wallet.WalletService/DeductHeldFunds"
 )
 
 // WalletServiceClient is the client API for WalletService service.
@@ -76,6 +78,9 @@ type WalletServiceClient interface {
 	ListMobileMoneyAccounts(ctx context.Context, in *ListMobileMoneyAccountsRequest, opts ...grpc.CallOption) (*ListMobileMoneyAccountsResponse, error)
 	// Set default mobile money account for a wallet
 	SetDefaultMobileMoneyAccount(ctx context.Context, in *SetDefaultMobileMoneyAccountRequest, opts ...grpc.CallOption) (*MobileMoneyAccount, error)
+	// Methods to hold money and deduct after payment of service
+	HoldFunds(ctx context.Context, in *HoldFundsRequest, opts ...grpc.CallOption) (*HoldFundsResponse, error)
+	DeductHeldFunds(ctx context.Context, in *DeductHeldFundsRequest, opts ...grpc.CallOption) (*Transaction, error)
 }
 
 type walletServiceClient struct {
@@ -246,6 +251,26 @@ func (c *walletServiceClient) SetDefaultMobileMoneyAccount(ctx context.Context, 
 	return out, nil
 }
 
+func (c *walletServiceClient) HoldFunds(ctx context.Context, in *HoldFundsRequest, opts ...grpc.CallOption) (*HoldFundsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HoldFundsResponse)
+	err := c.cc.Invoke(ctx, WalletService_HoldFunds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *walletServiceClient) DeductHeldFunds(ctx context.Context, in *DeductHeldFundsRequest, opts ...grpc.CallOption) (*Transaction, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Transaction)
+	err := c.cc.Invoke(ctx, WalletService_DeductHeldFunds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WalletServiceServer is the server API for WalletService service.
 // All implementations must embed UnimplementedWalletServiceServer
 // for forward compatibility.
@@ -284,6 +309,9 @@ type WalletServiceServer interface {
 	ListMobileMoneyAccounts(context.Context, *ListMobileMoneyAccountsRequest) (*ListMobileMoneyAccountsResponse, error)
 	// Set default mobile money account for a wallet
 	SetDefaultMobileMoneyAccount(context.Context, *SetDefaultMobileMoneyAccountRequest) (*MobileMoneyAccount, error)
+	// Methods to hold money and deduct after payment of service
+	HoldFunds(context.Context, *HoldFundsRequest) (*HoldFundsResponse, error)
+	DeductHeldFunds(context.Context, *DeductHeldFundsRequest) (*Transaction, error)
 	mustEmbedUnimplementedWalletServiceServer()
 }
 
@@ -341,6 +369,12 @@ func (UnimplementedWalletServiceServer) ListMobileMoneyAccounts(context.Context,
 }
 func (UnimplementedWalletServiceServer) SetDefaultMobileMoneyAccount(context.Context, *SetDefaultMobileMoneyAccountRequest) (*MobileMoneyAccount, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetDefaultMobileMoneyAccount not implemented")
+}
+func (UnimplementedWalletServiceServer) HoldFunds(context.Context, *HoldFundsRequest) (*HoldFundsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HoldFunds not implemented")
+}
+func (UnimplementedWalletServiceServer) DeductHeldFunds(context.Context, *DeductHeldFundsRequest) (*Transaction, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeductHeldFunds not implemented")
 }
 func (UnimplementedWalletServiceServer) mustEmbedUnimplementedWalletServiceServer() {}
 func (UnimplementedWalletServiceServer) testEmbeddedByValue()                       {}
@@ -651,6 +685,42 @@ func _WalletService_SetDefaultMobileMoneyAccount_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletService_HoldFunds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HoldFundsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).HoldFunds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_HoldFunds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).HoldFunds(ctx, req.(*HoldFundsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WalletService_DeductHeldFunds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeductHeldFundsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).DeductHeldFunds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_DeductHeldFunds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).DeductHeldFunds(ctx, req.(*DeductHeldFundsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WalletService_ServiceDesc is the grpc.ServiceDesc for WalletService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -721,6 +791,14 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetDefaultMobileMoneyAccount",
 			Handler:    _WalletService_SetDefaultMobileMoneyAccount_Handler,
+		},
+		{
+			MethodName: "HoldFunds",
+			Handler:    _WalletService_HoldFunds_Handler,
+		},
+		{
+			MethodName: "DeductHeldFunds",
+			Handler:    _WalletService_DeductHeldFunds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

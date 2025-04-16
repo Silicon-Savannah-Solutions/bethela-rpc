@@ -56,6 +56,10 @@ service WalletService {
 
   // Set default mobile money account for a wallet
   rpc SetDefaultMobileMoneyAccount(SetDefaultMobileMoneyAccountRequest) returns (MobileMoneyAccount);
+
+  // Methods to hold money and deduct after payment of service
+  rpc HoldFunds(HoldFundsRequest) returns (HoldFundsResponse);
+  rpc DeductHeldFunds(DeductHeldFundsRequest) returns (Transaction);
 }
 
 // Currency enumeration
@@ -72,6 +76,35 @@ enum Currency {
   CURRENCY_TZS = 9; // Tanzanian Shilling
   CURRENCY_RWF = 10; // Rwandan Franc
   // Add more currencies as needed
+}
+
+
+enum HoldType {
+  HOLD_TYPE_CASINO = 0;
+  HOLD_TYPE_BETTING = 1;
+}
+
+message HoldFundsRequest {
+  string wallet_id = 1;
+  Money amount = 2;
+  string reference = 3;
+  HoldType hold_type = 4;
+}
+
+message HoldFundsResponse {
+  string hold_id = 1;
+  string wallet_id = 2;
+  Money amount = 3;
+  string reference = 4;
+  HoldType hold_type = 5;
+  google.protobuf.Timestamp expires_at = 6;
+}
+
+message DeductHeldFundsRequest {
+  string wallet_id = 1;
+  string hold_id = 2;
+  Money amount = 3;
+  string reference = 4;
 }
 
 // Money represents a monetary value with currency
