@@ -13,26 +13,26 @@ import "casino_provider.proto"; // For Game definition
 service CasinoService {
   // List available games with filtering and pagination
   rpc ListGames(ListGamesRequest) returns (ListGamesResponse);
-  
+
   // Get game details
   rpc GetGame(GetGameRequest) returns (casino.Game);
-  
+
   // Get game categories
   rpc GetCategories(GetCategoriesRequest) returns (GetCategoriesResponse);
-  
+
   // Get game providers
   rpc GetProviders(GetProvidersRequest) returns (GetProvidersResponse);
-  
+
   // Launch a game session
   rpc LaunchGame(casino.LaunchGameRequest) returns (casino.LaunchGameResponse);
-  
+
   // Get player game history
   rpc GetPlayerHistory(GetPlayerHistoryRequest) returns (GetPlayerHistoryResponse);
-  
+
   // Register webhook endpoints for game providers
   // These are implemented in the casino service but not exposed via gRPC
   // They're handled in the HTTP layer
-  
+
   // Internal methods used by the casino service
   rpc ProcessBet(ProcessBetRequest) returns (ProcessBetResponse);
   rpc ProcessWin(ProcessWinRequest) returns (ProcessWinResponse);

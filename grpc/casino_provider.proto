@@ -12,16 +12,16 @@ import "wallet.proto"; // For Money type
 service CasinoProviderInterface {
   // Get available games from the provider
   rpc GetGames(GetGamesRequest) returns (GetGamesResponse);
-  
+
   // Launch a game session
   rpc LaunchGame(LaunchGameRequest) returns (LaunchGameResponse);
-  
+
   // Process a bet transaction
   rpc ProcessBet(BetRequest) returns (BetResponse);
-  
+
   // Process a win transaction
   rpc ProcessWin(WinRequest) returns (WinResponse);
-  
+
   // Rollback a transaction
   rpc RollbackTransaction(RollbackRequest) returns (RollbackResponse);
 }

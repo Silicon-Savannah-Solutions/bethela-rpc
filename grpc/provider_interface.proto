@@ -1,141 +1,40 @@
 syntax = "proto3";
 
-package provider;
+package wallet;
 
 option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
 
-import "google/protobuf/timestamp.proto";
 import public "wallet.proto"; // Assuming this is where Money is defined
 
 // ProviderInterface - Standard API that each mobile money provider MUST implement
 // Each MNO (M-Pesa, MTN, Airtel, etc.) will implement this interface
 service ProviderInterface {
-  // Initiate a payment from customer to business (C2B)
-  rpc InitiatePayment(InitiatePaymentRequest) returns (PaymentResponse);
-
-  // Send money from business to customer (B2C)
-  rpc SendMoney(SendMoneyRequest) returns (PaymentResponse);
-
-  // Check status of a transaction
-  rpc CheckTransactionStatus(StatusRequest) returns (StatusResponse);
-
-  // Get account balance
-  rpc GetAccountBalance(BalanceRequest) returns (ProviderBalanceResponse);
-
-  // Validate a customer account
-  rpc ValidateAccount(ValidateAccountRequest) returns (ValidateAccountResponse);
-
-  // Reverse a transaction
-  rpc ReverseTransaction(ReversalRequest) returns (ReversalResponse);
+    rpc C2B(MnoC2BRequest)  returns (MnoTransactionResponse);
+    rpc B2C(MnoB2CRequest) returns (MnoTransactionResponse);
+    rpc TransactionInfo(MnoTransactionRequest) returns (MnoTransactionResponse);
 }
 
-// InitiatePaymentRequest - C2B payment
-message InitiatePaymentRequest {
-  string transaction_reference = 2; // Client-generated unique reference
-  wallet.Money amount = 3;
-  string customer_number = 4; // Phone number with country code
-  string description = 5;
-  string callback_url = 6; // Webhook URL for async completion
-  string return_url = 7; // Redirect URL for web flows
-  string transaction_type = 8; // Provider-specific type like "CustomerPayBillOnline"
-  map<string, string> metadata = 9; // Additional provider-specific parameters
+
+message MnoC2BRequest {
+  string transaction_id = 1;
+  string phone_number = 2;
+  Money amount = 3;
 }
 
-// SendMoneyRequest - B2C payment
-message SendMoneyRequest {
-  string transaction_reference = 2; // Client-generated unique reference
-  wallet.Money amount = 3;
-  string recipient_number = 4; // Phone number with country code
-  string reason = 5; // e.g., "salary", "refund", "promotion"
-  string description = 6;
-  string callback_url = 7; // Webhook URL for async completion
-  map<string, string> metadata = 8; // Additional provider-specific parameters
+message MnoB2CRequest {
+  string transaction_id = 1;
+  string phone_number = 2;
+  Money amount = 3;
 }
 
-// Common payment response format
-message PaymentResponse {
-  string provider_transaction_id = 1; // Transaction ID from provider
-  string client_transaction_id = 2; // Original reference from request
-  PaymentStatus status = 3;
-  string status_reason = 4; // Reason for success/failure
-  string receipt_number = 5; // If provider issues receipts
-  wallet.Money amount = 6;
-  google.protobuf.Timestamp created_at = 7;
-  map<string, string> provider_metadata = 8; // Provider-specific response data
+message MnoTransactionRequest {
+  string transaction_id = 1;
 }
 
-enum PaymentStatus {
-  PAYMENT_STATUS_UNSPECIFIED = 0;
-  PAYMENT_STATUS_PENDING = 1;
-  PAYMENT_STATUS_PROCESSING = 2;
-  PAYMENT_STATUS_COMPLETED = 3;
-  PAYMENT_STATUS_FAILED = 4;
-  PAYMENT_STATUS_CANCELLED = 5;
-  PAYMENT_STATUS_EXPIRED = 6;
-  PAYMENT_STATUS_REVERSED = 7;
-}
-
-// StatusRequest to check transaction status
-message StatusRequest {
-  string provider_transaction_id = 2; // Provider-generated ID
-  string client_transaction_id = 3; // Client-generated reference
-}
-
-// StatusResponse for transaction status check
-message StatusResponse {
-  string provider_transaction_id = 1;
-  string client_transaction_id = 2;
-  PaymentStatus status = 3;
-  string status_reason = 4;
-  wallet.Money amount = 5;
-  google.protobuf.Timestamp created_at = 6;
-  google.protobuf.Timestamp updated_at = 7;
-  map<string, string> provider_metadata = 8;
-}
-
-// BalanceRequest to check account balance
-message BalanceRequest {
-  string account_identifier = 2; // Optional: specific account within business
-}
-
-// ProviderBalanceResponse for account balance
-message ProviderBalanceResponse {
-  repeated wallet.Money balances = 1; // Some providers support multiple currency balances
-  string account_number = 2;
-  google.protobuf.Timestamp as_of = 3; // When the balance was determined
-  map<string, string> provider_metadata = 4;
-}
-
-// ValidateAccountRequest to validate customer account
-message ValidateAccountRequest {
-  string account_number = 2; // Typically phone number
-  string account_type = 3; // Optional: specific account type
-}
-
-// ValidateAccountResponse for account validation
-message ValidateAccountResponse {
-  bool is_valid = 1;
-  string account_holder_name = 2; // If provider returns the account holder's name
-  string account_status = 3; // "active", "dormant", etc.
+message MnoTransactionResponse {
+  string mno_transaction_id = 1;
+  string transaction_id = 2;
+  TransactionStatus status = 3;
   string message = 4;
-  map<string, string> provider_metadata = 5;
-}
-
-// ReversalRequest to reverse a transaction
-message ReversalRequest {
-  string provider_transaction_id = 2;
-  string client_transaction_id = 3;
-  wallet.Money amount = 4; // Some providers need amount for reversal
-  string reason = 5;
-  string callback_url = 6; // For async completion notification
-}
-
-// ReversalResponse for transaction reversal
-message ReversalResponse {
-  string reversal_id = 1;
-  string original_transaction_id = 2;
-  PaymentStatus status = 3;
-  string message = 4;
-  google.protobuf.Timestamp processed_at = 5;
-  map<string, string> provider_metadata = 6;
+  Money amount = 5;
 }

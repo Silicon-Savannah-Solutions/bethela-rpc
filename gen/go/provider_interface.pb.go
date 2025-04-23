@@ -9,7 +9,6 @@ package bethela_rpc
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -22,657 +21,30 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type PaymentStatus int32
-
-const (
-	PaymentStatus_PAYMENT_STATUS_UNSPECIFIED PaymentStatus = 0
-	PaymentStatus_PAYMENT_STATUS_PENDING     PaymentStatus = 1
-	PaymentStatus_PAYMENT_STATUS_PROCESSING  PaymentStatus = 2
-	PaymentStatus_PAYMENT_STATUS_COMPLETED   PaymentStatus = 3
-	PaymentStatus_PAYMENT_STATUS_FAILED      PaymentStatus = 4
-	PaymentStatus_PAYMENT_STATUS_CANCELLED   PaymentStatus = 5
-	PaymentStatus_PAYMENT_STATUS_EXPIRED     PaymentStatus = 6
-	PaymentStatus_PAYMENT_STATUS_REVERSED    PaymentStatus = 7
-)
-
-// Enum value maps for PaymentStatus.
-var (
-	PaymentStatus_name = map[int32]string{
-		0: "PAYMENT_STATUS_UNSPECIFIED",
-		1: "PAYMENT_STATUS_PENDING",
-		2: "PAYMENT_STATUS_PROCESSING",
-		3: "PAYMENT_STATUS_COMPLETED",
-		4: "PAYMENT_STATUS_FAILED",
-		5: "PAYMENT_STATUS_CANCELLED",
-		6: "PAYMENT_STATUS_EXPIRED",
-		7: "PAYMENT_STATUS_REVERSED",
-	}
-	PaymentStatus_value = map[string]int32{
-		"PAYMENT_STATUS_UNSPECIFIED": 0,
-		"PAYMENT_STATUS_PENDING":     1,
-		"PAYMENT_STATUS_PROCESSING":  2,
-		"PAYMENT_STATUS_COMPLETED":   3,
-		"PAYMENT_STATUS_FAILED":      4,
-		"PAYMENT_STATUS_CANCELLED":   5,
-		"PAYMENT_STATUS_EXPIRED":     6,
-		"PAYMENT_STATUS_REVERSED":    7,
-	}
-)
-
-func (x PaymentStatus) Enum() *PaymentStatus {
-	p := new(PaymentStatus)
-	*p = x
-	return p
-}
-
-func (x PaymentStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (PaymentStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_provider_interface_proto_enumTypes[0].Descriptor()
-}
-
-func (PaymentStatus) Type() protoreflect.EnumType {
-	return &file_provider_interface_proto_enumTypes[0]
-}
-
-func (x PaymentStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use PaymentStatus.Descriptor instead.
-func (PaymentStatus) EnumDescriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{0}
-}
-
-// InitiatePaymentRequest - C2B payment
-type InitiatePaymentRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	TransactionReference string                 `protobuf:"bytes,2,opt,name=transaction_reference,json=transactionReference,proto3" json:"transaction_reference,omitempty"` // Client-generated unique reference
-	Amount               *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
-	CustomerNumber       string                 `protobuf:"bytes,4,opt,name=customer_number,json=customerNumber,proto3" json:"customer_number,omitempty"` // Phone number with country code
-	Description          string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	CallbackUrl          string                 `protobuf:"bytes,6,opt,name=callback_url,json=callbackUrl,proto3" json:"callback_url,omitempty"`                                                  // Webhook URL for async completion
-	ReturnUrl            string                 `protobuf:"bytes,7,opt,name=return_url,json=returnUrl,proto3" json:"return_url,omitempty"`                                                        // Redirect URL for web flows
-	TransactionType      string                 `protobuf:"bytes,8,opt,name=transaction_type,json=transactionType,proto3" json:"transaction_type,omitempty"`                                      // Provider-specific type like "CustomerPayBillOnline"
-	Metadata             map[string]string      `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Additional provider-specific parameters
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *InitiatePaymentRequest) Reset() {
-	*x = InitiatePaymentRequest{}
-	mi := &file_provider_interface_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InitiatePaymentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InitiatePaymentRequest) ProtoMessage() {}
-
-func (x *InitiatePaymentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InitiatePaymentRequest.ProtoReflect.Descriptor instead.
-func (*InitiatePaymentRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *InitiatePaymentRequest) GetTransactionReference() string {
-	if x != nil {
-		return x.TransactionReference
-	}
-	return ""
-}
-
-func (x *InitiatePaymentRequest) GetAmount() *Money {
-	if x != nil {
-		return x.Amount
-	}
-	return nil
-}
-
-func (x *InitiatePaymentRequest) GetCustomerNumber() string {
-	if x != nil {
-		return x.CustomerNumber
-	}
-	return ""
-}
-
-func (x *InitiatePaymentRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *InitiatePaymentRequest) GetCallbackUrl() string {
-	if x != nil {
-		return x.CallbackUrl
-	}
-	return ""
-}
-
-func (x *InitiatePaymentRequest) GetReturnUrl() string {
-	if x != nil {
-		return x.ReturnUrl
-	}
-	return ""
-}
-
-func (x *InitiatePaymentRequest) GetTransactionType() string {
-	if x != nil {
-		return x.TransactionType
-	}
-	return ""
-}
-
-func (x *InitiatePaymentRequest) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
-// SendMoneyRequest - B2C payment
-type SendMoneyRequest struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	TransactionReference string                 `protobuf:"bytes,2,opt,name=transaction_reference,json=transactionReference,proto3" json:"transaction_reference,omitempty"` // Client-generated unique reference
-	Amount               *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
-	RecipientNumber      string                 `protobuf:"bytes,4,opt,name=recipient_number,json=recipientNumber,proto3" json:"recipient_number,omitempty"` // Phone number with country code
-	Reason               string                 `protobuf:"bytes,5,opt,name=reason,proto3" json:"reason,omitempty"`                                          // e.g., "salary", "refund", "promotion"
-	Description          string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
-	CallbackUrl          string                 `protobuf:"bytes,7,opt,name=callback_url,json=callbackUrl,proto3" json:"callback_url,omitempty"`                                                  // Webhook URL for async completion
-	Metadata             map[string]string      `protobuf:"bytes,8,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Additional provider-specific parameters
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
-}
-
-func (x *SendMoneyRequest) Reset() {
-	*x = SendMoneyRequest{}
-	mi := &file_provider_interface_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SendMoneyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SendMoneyRequest) ProtoMessage() {}
-
-func (x *SendMoneyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SendMoneyRequest.ProtoReflect.Descriptor instead.
-func (*SendMoneyRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *SendMoneyRequest) GetTransactionReference() string {
-	if x != nil {
-		return x.TransactionReference
-	}
-	return ""
-}
-
-func (x *SendMoneyRequest) GetAmount() *Money {
-	if x != nil {
-		return x.Amount
-	}
-	return nil
-}
-
-func (x *SendMoneyRequest) GetRecipientNumber() string {
-	if x != nil {
-		return x.RecipientNumber
-	}
-	return ""
-}
-
-func (x *SendMoneyRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *SendMoneyRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *SendMoneyRequest) GetCallbackUrl() string {
-	if x != nil {
-		return x.CallbackUrl
-	}
-	return ""
-}
-
-func (x *SendMoneyRequest) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
-// Common payment response format
-type PaymentResponse struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	ProviderTransactionId string                 `protobuf:"bytes,1,opt,name=provider_transaction_id,json=providerTransactionId,proto3" json:"provider_transaction_id,omitempty"` // Transaction ID from provider
-	ClientTransactionId   string                 `protobuf:"bytes,2,opt,name=client_transaction_id,json=clientTransactionId,proto3" json:"client_transaction_id,omitempty"`       // Original reference from request
-	Status                PaymentStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=provider.PaymentStatus" json:"status,omitempty"`
-	StatusReason          string                 `protobuf:"bytes,4,opt,name=status_reason,json=statusReason,proto3" json:"status_reason,omitempty"`    // Reason for success/failure
-	ReceiptNumber         string                 `protobuf:"bytes,5,opt,name=receipt_number,json=receiptNumber,proto3" json:"receipt_number,omitempty"` // If provider issues receipts
-	Amount                *Money                 `protobuf:"bytes,6,opt,name=amount,proto3" json:"amount,omitempty"`
-	CreatedAt             *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ProviderMetadata      map[string]string      `protobuf:"bytes,8,rep,name=provider_metadata,json=providerMetadata,proto3" json:"provider_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Provider-specific response data
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *PaymentResponse) Reset() {
-	*x = PaymentResponse{}
-	mi := &file_provider_interface_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PaymentResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PaymentResponse) ProtoMessage() {}
-
-func (x *PaymentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PaymentResponse.ProtoReflect.Descriptor instead.
-func (*PaymentResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *PaymentResponse) GetProviderTransactionId() string {
-	if x != nil {
-		return x.ProviderTransactionId
-	}
-	return ""
-}
-
-func (x *PaymentResponse) GetClientTransactionId() string {
-	if x != nil {
-		return x.ClientTransactionId
-	}
-	return ""
-}
-
-func (x *PaymentResponse) GetStatus() PaymentStatus {
-	if x != nil {
-		return x.Status
-	}
-	return PaymentStatus_PAYMENT_STATUS_UNSPECIFIED
-}
-
-func (x *PaymentResponse) GetStatusReason() string {
-	if x != nil {
-		return x.StatusReason
-	}
-	return ""
-}
-
-func (x *PaymentResponse) GetReceiptNumber() string {
-	if x != nil {
-		return x.ReceiptNumber
-	}
-	return ""
-}
-
-func (x *PaymentResponse) GetAmount() *Money {
-	if x != nil {
-		return x.Amount
-	}
-	return nil
-}
-
-func (x *PaymentResponse) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *PaymentResponse) GetProviderMetadata() map[string]string {
-	if x != nil {
-		return x.ProviderMetadata
-	}
-	return nil
-}
-
-// StatusRequest to check transaction status
-type StatusRequest struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	ProviderTransactionId string                 `protobuf:"bytes,2,opt,name=provider_transaction_id,json=providerTransactionId,proto3" json:"provider_transaction_id,omitempty"` // Provider-generated ID
-	ClientTransactionId   string                 `protobuf:"bytes,3,opt,name=client_transaction_id,json=clientTransactionId,proto3" json:"client_transaction_id,omitempty"`       // Client-generated reference
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *StatusRequest) Reset() {
-	*x = StatusRequest{}
-	mi := &file_provider_interface_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StatusRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StatusRequest) ProtoMessage() {}
-
-func (x *StatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StatusRequest.ProtoReflect.Descriptor instead.
-func (*StatusRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *StatusRequest) GetProviderTransactionId() string {
-	if x != nil {
-		return x.ProviderTransactionId
-	}
-	return ""
-}
-
-func (x *StatusRequest) GetClientTransactionId() string {
-	if x != nil {
-		return x.ClientTransactionId
-	}
-	return ""
-}
-
-// StatusResponse for transaction status check
-type StatusResponse struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	ProviderTransactionId string                 `protobuf:"bytes,1,opt,name=provider_transaction_id,json=providerTransactionId,proto3" json:"provider_transaction_id,omitempty"`
-	ClientTransactionId   string                 `protobuf:"bytes,2,opt,name=client_transaction_id,json=clientTransactionId,proto3" json:"client_transaction_id,omitempty"`
-	Status                PaymentStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=provider.PaymentStatus" json:"status,omitempty"`
-	StatusReason          string                 `protobuf:"bytes,4,opt,name=status_reason,json=statusReason,proto3" json:"status_reason,omitempty"`
-	Amount                *Money                 `protobuf:"bytes,5,opt,name=amount,proto3" json:"amount,omitempty"`
-	CreatedAt             *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt             *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	ProviderMetadata      map[string]string      `protobuf:"bytes,8,rep,name=provider_metadata,json=providerMetadata,proto3" json:"provider_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *StatusResponse) Reset() {
-	*x = StatusResponse{}
-	mi := &file_provider_interface_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StatusResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StatusResponse) ProtoMessage() {}
-
-func (x *StatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StatusResponse.ProtoReflect.Descriptor instead.
-func (*StatusResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *StatusResponse) GetProviderTransactionId() string {
-	if x != nil {
-		return x.ProviderTransactionId
-	}
-	return ""
-}
-
-func (x *StatusResponse) GetClientTransactionId() string {
-	if x != nil {
-		return x.ClientTransactionId
-	}
-	return ""
-}
-
-func (x *StatusResponse) GetStatus() PaymentStatus {
-	if x != nil {
-		return x.Status
-	}
-	return PaymentStatus_PAYMENT_STATUS_UNSPECIFIED
-}
-
-func (x *StatusResponse) GetStatusReason() string {
-	if x != nil {
-		return x.StatusReason
-	}
-	return ""
-}
-
-func (x *StatusResponse) GetAmount() *Money {
-	if x != nil {
-		return x.Amount
-	}
-	return nil
-}
-
-func (x *StatusResponse) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *StatusResponse) GetUpdatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return nil
-}
-
-func (x *StatusResponse) GetProviderMetadata() map[string]string {
-	if x != nil {
-		return x.ProviderMetadata
-	}
-	return nil
-}
-
-// BalanceRequest to check account balance
-type BalanceRequest struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	AccountIdentifier string                 `protobuf:"bytes,2,opt,name=account_identifier,json=accountIdentifier,proto3" json:"account_identifier,omitempty"` // Optional: specific account within business
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *BalanceRequest) Reset() {
-	*x = BalanceRequest{}
-	mi := &file_provider_interface_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *BalanceRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BalanceRequest) ProtoMessage() {}
-
-func (x *BalanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BalanceRequest.ProtoReflect.Descriptor instead.
-func (*BalanceRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *BalanceRequest) GetAccountIdentifier() string {
-	if x != nil {
-		return x.AccountIdentifier
-	}
-	return ""
-}
-
-// ProviderBalanceResponse for account balance
-type ProviderBalanceResponse struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Balances         []*Money               `protobuf:"bytes,1,rep,name=balances,proto3" json:"balances,omitempty"` // Some providers support multiple currency balances
-	AccountNumber    string                 `protobuf:"bytes,2,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"`
-	AsOf             *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=as_of,json=asOf,proto3" json:"as_of,omitempty"` // When the balance was determined
-	ProviderMetadata map[string]string      `protobuf:"bytes,4,rep,name=provider_metadata,json=providerMetadata,proto3" json:"provider_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *ProviderBalanceResponse) Reset() {
-	*x = ProviderBalanceResponse{}
-	mi := &file_provider_interface_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ProviderBalanceResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ProviderBalanceResponse) ProtoMessage() {}
-
-func (x *ProviderBalanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ProviderBalanceResponse.ProtoReflect.Descriptor instead.
-func (*ProviderBalanceResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *ProviderBalanceResponse) GetBalances() []*Money {
-	if x != nil {
-		return x.Balances
-	}
-	return nil
-}
-
-func (x *ProviderBalanceResponse) GetAccountNumber() string {
-	if x != nil {
-		return x.AccountNumber
-	}
-	return ""
-}
-
-func (x *ProviderBalanceResponse) GetAsOf() *timestamppb.Timestamp {
-	if x != nil {
-		return x.AsOf
-	}
-	return nil
-}
-
-func (x *ProviderBalanceResponse) GetProviderMetadata() map[string]string {
-	if x != nil {
-		return x.ProviderMetadata
-	}
-	return nil
-}
-
-// ValidateAccountRequest to validate customer account
-type ValidateAccountRequest struct {
+type MnoC2BRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccountNumber string                 `protobuf:"bytes,2,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"` // Typically phone number
-	AccountType   string                 `protobuf:"bytes,3,opt,name=account_type,json=accountType,proto3" json:"account_type,omitempty"`       // Optional: specific account type
+	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	PhoneNumber   string                 `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ValidateAccountRequest) Reset() {
-	*x = ValidateAccountRequest{}
-	mi := &file_provider_interface_proto_msgTypes[7]
+func (x *MnoC2BRequest) Reset() {
+	*x = MnoC2BRequest{}
+	mi := &file_provider_interface_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ValidateAccountRequest) String() string {
+func (x *MnoC2BRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateAccountRequest) ProtoMessage() {}
+func (*MnoC2BRequest) ProtoMessage() {}
 
-func (x *ValidateAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[7]
+func (x *MnoC2BRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_interface_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -683,207 +55,56 @@ func (x *ValidateAccountRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ValidateAccountRequest.ProtoReflect.Descriptor instead.
-func (*ValidateAccountRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{7}
+// Deprecated: Use MnoC2BRequest.ProtoReflect.Descriptor instead.
+func (*MnoC2BRequest) Descriptor() ([]byte, []int) {
+	return file_provider_interface_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ValidateAccountRequest) GetAccountNumber() string {
+func (x *MnoC2BRequest) GetTransactionId() string {
 	if x != nil {
-		return x.AccountNumber
+		return x.TransactionId
 	}
 	return ""
 }
 
-func (x *ValidateAccountRequest) GetAccountType() string {
+func (x *MnoC2BRequest) GetPhoneNumber() string {
 	if x != nil {
-		return x.AccountType
+		return x.PhoneNumber
 	}
 	return ""
 }
 
-// ValidateAccountResponse for account validation
-type ValidateAccountResponse struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	IsValid           bool                   `protobuf:"varint,1,opt,name=is_valid,json=isValid,proto3" json:"is_valid,omitempty"`
-	AccountHolderName string                 `protobuf:"bytes,2,opt,name=account_holder_name,json=accountHolderName,proto3" json:"account_holder_name,omitempty"` // If provider returns the account holder's name
-	AccountStatus     string                 `protobuf:"bytes,3,opt,name=account_status,json=accountStatus,proto3" json:"account_status,omitempty"`               // "active", "dormant", etc.
-	Message           string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	ProviderMetadata  map[string]string      `protobuf:"bytes,5,rep,name=provider_metadata,json=providerMetadata,proto3" json:"provider_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *ValidateAccountResponse) Reset() {
-	*x = ValidateAccountResponse{}
-	mi := &file_provider_interface_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ValidateAccountResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ValidateAccountResponse) ProtoMessage() {}
-
-func (x *ValidateAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ValidateAccountResponse.ProtoReflect.Descriptor instead.
-func (*ValidateAccountResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *ValidateAccountResponse) GetIsValid() bool {
-	if x != nil {
-		return x.IsValid
-	}
-	return false
-}
-
-func (x *ValidateAccountResponse) GetAccountHolderName() string {
-	if x != nil {
-		return x.AccountHolderName
-	}
-	return ""
-}
-
-func (x *ValidateAccountResponse) GetAccountStatus() string {
-	if x != nil {
-		return x.AccountStatus
-	}
-	return ""
-}
-
-func (x *ValidateAccountResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *ValidateAccountResponse) GetProviderMetadata() map[string]string {
-	if x != nil {
-		return x.ProviderMetadata
-	}
-	return nil
-}
-
-// ReversalRequest to reverse a transaction
-type ReversalRequest struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	ProviderTransactionId string                 `protobuf:"bytes,2,opt,name=provider_transaction_id,json=providerTransactionId,proto3" json:"provider_transaction_id,omitempty"`
-	ClientTransactionId   string                 `protobuf:"bytes,3,opt,name=client_transaction_id,json=clientTransactionId,proto3" json:"client_transaction_id,omitempty"`
-	Amount                *Money                 `protobuf:"bytes,4,opt,name=amount,proto3" json:"amount,omitempty"` // Some providers need amount for reversal
-	Reason                string                 `protobuf:"bytes,5,opt,name=reason,proto3" json:"reason,omitempty"`
-	CallbackUrl           string                 `protobuf:"bytes,6,opt,name=callback_url,json=callbackUrl,proto3" json:"callback_url,omitempty"` // For async completion notification
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *ReversalRequest) Reset() {
-	*x = ReversalRequest{}
-	mi := &file_provider_interface_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ReversalRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ReversalRequest) ProtoMessage() {}
-
-func (x *ReversalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ReversalRequest.ProtoReflect.Descriptor instead.
-func (*ReversalRequest) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *ReversalRequest) GetProviderTransactionId() string {
-	if x != nil {
-		return x.ProviderTransactionId
-	}
-	return ""
-}
-
-func (x *ReversalRequest) GetClientTransactionId() string {
-	if x != nil {
-		return x.ClientTransactionId
-	}
-	return ""
-}
-
-func (x *ReversalRequest) GetAmount() *Money {
+func (x *MnoC2BRequest) GetAmount() *Money {
 	if x != nil {
 		return x.Amount
 	}
 	return nil
 }
 
-func (x *ReversalRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
+type MnoB2CRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	PhoneNumber   string                 `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReversalRequest) GetCallbackUrl() string {
-	if x != nil {
-		return x.CallbackUrl
-	}
-	return ""
-}
-
-// ReversalResponse for transaction reversal
-type ReversalResponse struct {
-	state                 protoimpl.MessageState `protogen:"open.v1"`
-	ReversalId            string                 `protobuf:"bytes,1,opt,name=reversal_id,json=reversalId,proto3" json:"reversal_id,omitempty"`
-	OriginalTransactionId string                 `protobuf:"bytes,2,opt,name=original_transaction_id,json=originalTransactionId,proto3" json:"original_transaction_id,omitempty"`
-	Status                PaymentStatus          `protobuf:"varint,3,opt,name=status,proto3,enum=provider.PaymentStatus" json:"status,omitempty"`
-	Message               string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	ProcessedAt           *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=processed_at,json=processedAt,proto3" json:"processed_at,omitempty"`
-	ProviderMetadata      map[string]string      `protobuf:"bytes,6,rep,name=provider_metadata,json=providerMetadata,proto3" json:"provider_metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
-}
-
-func (x *ReversalResponse) Reset() {
-	*x = ReversalResponse{}
-	mi := &file_provider_interface_proto_msgTypes[10]
+func (x *MnoB2CRequest) Reset() {
+	*x = MnoB2CRequest{}
+	mi := &file_provider_interface_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ReversalResponse) String() string {
+func (x *MnoB2CRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ReversalResponse) ProtoMessage() {}
+func (*MnoB2CRequest) ProtoMessage() {}
 
-func (x *ReversalResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_provider_interface_proto_msgTypes[10]
+func (x *MnoB2CRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_interface_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -894,49 +115,148 @@ func (x *ReversalResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ReversalResponse.ProtoReflect.Descriptor instead.
-func (*ReversalResponse) Descriptor() ([]byte, []int) {
-	return file_provider_interface_proto_rawDescGZIP(), []int{10}
+// Deprecated: Use MnoB2CRequest.ProtoReflect.Descriptor instead.
+func (*MnoB2CRequest) Descriptor() ([]byte, []int) {
+	return file_provider_interface_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ReversalResponse) GetReversalId() string {
+func (x *MnoB2CRequest) GetTransactionId() string {
 	if x != nil {
-		return x.ReversalId
+		return x.TransactionId
 	}
 	return ""
 }
 
-func (x *ReversalResponse) GetOriginalTransactionId() string {
+func (x *MnoB2CRequest) GetPhoneNumber() string {
 	if x != nil {
-		return x.OriginalTransactionId
+		return x.PhoneNumber
 	}
 	return ""
 }
 
-func (x *ReversalResponse) GetStatus() PaymentStatus {
+func (x *MnoB2CRequest) GetAmount() *Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+type MnoTransactionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MnoTransactionRequest) Reset() {
+	*x = MnoTransactionRequest{}
+	mi := &file_provider_interface_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MnoTransactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MnoTransactionRequest) ProtoMessage() {}
+
+func (x *MnoTransactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_interface_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MnoTransactionRequest.ProtoReflect.Descriptor instead.
+func (*MnoTransactionRequest) Descriptor() ([]byte, []int) {
+	return file_provider_interface_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *MnoTransactionRequest) GetTransactionId() string {
+	if x != nil {
+		return x.TransactionId
+	}
+	return ""
+}
+
+type MnoTransactionResponse struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	MnoTransactionId string                 `protobuf:"bytes,1,opt,name=mno_transaction_id,json=mnoTransactionId,proto3" json:"mno_transaction_id,omitempty"`
+	TransactionId    string                 `protobuf:"bytes,2,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	Status           TransactionStatus      `protobuf:"varint,3,opt,name=status,proto3,enum=wallet.TransactionStatus" json:"status,omitempty"`
+	Message          string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	Amount           *Money                 `protobuf:"bytes,5,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *MnoTransactionResponse) Reset() {
+	*x = MnoTransactionResponse{}
+	mi := &file_provider_interface_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MnoTransactionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MnoTransactionResponse) ProtoMessage() {}
+
+func (x *MnoTransactionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_provider_interface_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MnoTransactionResponse.ProtoReflect.Descriptor instead.
+func (*MnoTransactionResponse) Descriptor() ([]byte, []int) {
+	return file_provider_interface_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *MnoTransactionResponse) GetMnoTransactionId() string {
+	if x != nil {
+		return x.MnoTransactionId
+	}
+	return ""
+}
+
+func (x *MnoTransactionResponse) GetTransactionId() string {
+	if x != nil {
+		return x.TransactionId
+	}
+	return ""
+}
+
+func (x *MnoTransactionResponse) GetStatus() TransactionStatus {
 	if x != nil {
 		return x.Status
 	}
-	return PaymentStatus_PAYMENT_STATUS_UNSPECIFIED
+	return TransactionStatus_UMBIGUOUS
 }
 
-func (x *ReversalResponse) GetMessage() string {
+func (x *MnoTransactionResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
 	return ""
 }
 
-func (x *ReversalResponse) GetProcessedAt() *timestamppb.Timestamp {
+func (x *MnoTransactionResponse) GetAmount() *Money {
 	if x != nil {
-		return x.ProcessedAt
-	}
-	return nil
-}
-
-func (x *ReversalResponse) GetProviderMetadata() map[string]string {
-	if x != nil {
-		return x.ProviderMetadata
+		return x.Amount
 	}
 	return nil
 }
@@ -945,116 +265,27 @@ var File_provider_interface_proto protoreflect.FileDescriptor
 
 const file_provider_interface_proto_rawDesc = "" +
 	"\n" +
-	"\x18provider_interface.proto\x12\bprovider\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\xb5\x03\n" +
-	"\x16InitiatePaymentRequest\x123\n" +
-	"\x15transaction_reference\x18\x02 \x01(\tR\x14transactionReference\x12%\n" +
-	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12'\n" +
-	"\x0fcustomer_number\x18\x04 \x01(\tR\x0ecustomerNumber\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x12!\n" +
-	"\fcallback_url\x18\x06 \x01(\tR\vcallbackUrl\x12\x1d\n" +
-	"\n" +
-	"return_url\x18\a \x01(\tR\treturnUrl\x12)\n" +
-	"\x10transaction_type\x18\b \x01(\tR\x0ftransactionType\x12J\n" +
-	"\bmetadata\x18\t \x03(\v2..provider.InitiatePaymentRequest.MetadataEntryR\bmetadata\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf9\x02\n" +
-	"\x10SendMoneyRequest\x123\n" +
-	"\x15transaction_reference\x18\x02 \x01(\tR\x14transactionReference\x12%\n" +
-	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12)\n" +
-	"\x10recipient_number\x18\x04 \x01(\tR\x0frecipientNumber\x12\x16\n" +
-	"\x06reason\x18\x05 \x01(\tR\x06reason\x12 \n" +
-	"\vdescription\x18\x06 \x01(\tR\vdescription\x12!\n" +
-	"\fcallback_url\x18\a \x01(\tR\vcallbackUrl\x12D\n" +
-	"\bmetadata\x18\b \x03(\v2(.provider.SendMoneyRequest.MetadataEntryR\bmetadata\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xff\x03\n" +
-	"\x0fPaymentResponse\x126\n" +
-	"\x17provider_transaction_id\x18\x01 \x01(\tR\x15providerTransactionId\x122\n" +
-	"\x15client_transaction_id\x18\x02 \x01(\tR\x13clientTransactionId\x12/\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x17.provider.PaymentStatusR\x06status\x12#\n" +
-	"\rstatus_reason\x18\x04 \x01(\tR\fstatusReason\x12%\n" +
-	"\x0ereceipt_number\x18\x05 \x01(\tR\rreceiptNumber\x12%\n" +
-	"\x06amount\x18\x06 \x01(\v2\r.wallet.MoneyR\x06amount\x129\n" +
-	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\\\n" +
-	"\x11provider_metadata\x18\b \x03(\v2/.provider.PaymentResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
-	"\x15ProviderMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"{\n" +
-	"\rStatusRequest\x126\n" +
-	"\x17provider_transaction_id\x18\x02 \x01(\tR\x15providerTransactionId\x122\n" +
-	"\x15client_transaction_id\x18\x03 \x01(\tR\x13clientTransactionId\"\x91\x04\n" +
-	"\x0eStatusResponse\x126\n" +
-	"\x17provider_transaction_id\x18\x01 \x01(\tR\x15providerTransactionId\x122\n" +
-	"\x15client_transaction_id\x18\x02 \x01(\tR\x13clientTransactionId\x12/\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x17.provider.PaymentStatusR\x06status\x12#\n" +
-	"\rstatus_reason\x18\x04 \x01(\tR\fstatusReason\x12%\n" +
-	"\x06amount\x18\x05 \x01(\v2\r.wallet.MoneyR\x06amount\x129\n" +
-	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12[\n" +
-	"\x11provider_metadata\x18\b \x03(\v2..provider.StatusResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
-	"\x15ProviderMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"?\n" +
-	"\x0eBalanceRequest\x12-\n" +
-	"\x12account_identifier\x18\x02 \x01(\tR\x11accountIdentifier\"\xc7\x02\n" +
-	"\x17ProviderBalanceResponse\x12)\n" +
-	"\bbalances\x18\x01 \x03(\v2\r.wallet.MoneyR\bbalances\x12%\n" +
-	"\x0eaccount_number\x18\x02 \x01(\tR\raccountNumber\x12/\n" +
-	"\x05as_of\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04asOf\x12d\n" +
-	"\x11provider_metadata\x18\x04 \x03(\v27.provider.ProviderBalanceResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
-	"\x15ProviderMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"b\n" +
-	"\x16ValidateAccountRequest\x12%\n" +
-	"\x0eaccount_number\x18\x02 \x01(\tR\raccountNumber\x12!\n" +
-	"\faccount_type\x18\x03 \x01(\tR\vaccountType\"\xd0\x02\n" +
-	"\x17ValidateAccountResponse\x12\x19\n" +
-	"\bis_valid\x18\x01 \x01(\bR\aisValid\x12.\n" +
-	"\x13account_holder_name\x18\x02 \x01(\tR\x11accountHolderName\x12%\n" +
-	"\x0eaccount_status\x18\x03 \x01(\tR\raccountStatus\x12\x18\n" +
-	"\amessage\x18\x04 \x01(\tR\amessage\x12d\n" +
-	"\x11provider_metadata\x18\x05 \x03(\v27.provider.ValidateAccountResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
-	"\x15ProviderMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xdf\x01\n" +
-	"\x0fReversalRequest\x126\n" +
-	"\x17provider_transaction_id\x18\x02 \x01(\tR\x15providerTransactionId\x122\n" +
-	"\x15client_transaction_id\x18\x03 \x01(\tR\x13clientTransactionId\x12%\n" +
-	"\x06amount\x18\x04 \x01(\v2\r.wallet.MoneyR\x06amount\x12\x16\n" +
-	"\x06reason\x18\x05 \x01(\tR\x06reason\x12!\n" +
-	"\fcallback_url\x18\x06 \x01(\tR\vcallbackUrl\"\x99\x03\n" +
-	"\x10ReversalResponse\x12\x1f\n" +
-	"\vreversal_id\x18\x01 \x01(\tR\n" +
-	"reversalId\x126\n" +
-	"\x17original_transaction_id\x18\x02 \x01(\tR\x15originalTransactionId\x12/\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x17.provider.PaymentStatusR\x06status\x12\x18\n" +
-	"\amessage\x18\x04 \x01(\tR\amessage\x12=\n" +
-	"\fprocessed_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\vprocessedAt\x12]\n" +
-	"\x11provider_metadata\x18\x06 \x03(\v20.provider.ReversalResponse.ProviderMetadataEntryR\x10providerMetadata\x1aC\n" +
-	"\x15ProviderMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xfa\x01\n" +
-	"\rPaymentStatus\x12\x1e\n" +
-	"\x1aPAYMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16PAYMENT_STATUS_PENDING\x10\x01\x12\x1d\n" +
-	"\x19PAYMENT_STATUS_PROCESSING\x10\x02\x12\x1c\n" +
-	"\x18PAYMENT_STATUS_COMPLETED\x10\x03\x12\x19\n" +
-	"\x15PAYMENT_STATUS_FAILED\x10\x04\x12\x1c\n" +
-	"\x18PAYMENT_STATUS_CANCELLED\x10\x05\x12\x1a\n" +
-	"\x16PAYMENT_STATUS_EXPIRED\x10\x06\x12\x1b\n" +
-	"\x17PAYMENT_STATUS_REVERSED\x10\a2\xeb\x03\n" +
-	"\x11ProviderInterface\x12N\n" +
-	"\x0fInitiatePayment\x12 .provider.InitiatePaymentRequest\x1a\x19.provider.PaymentResponse\x12B\n" +
-	"\tSendMoney\x12\x1a.provider.SendMoneyRequest\x1a\x19.provider.PaymentResponse\x12K\n" +
-	"\x16CheckTransactionStatus\x12\x17.provider.StatusRequest\x1a\x18.provider.StatusResponse\x12P\n" +
-	"\x11GetAccountBalance\x12\x18.provider.BalanceRequest\x1a!.provider.ProviderBalanceResponse\x12V\n" +
-	"\x0fValidateAccount\x12 .provider.ValidateAccountRequest\x1a!.provider.ValidateAccountResponse\x12K\n" +
-	"\x12ReverseTransaction\x12\x19.provider.ReversalRequest\x1a\x1a.provider.ReversalResponseB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcP\x01b\x06proto3"
+	"\x18provider_interface.proto\x12\x06wallet\x1a\fwallet.proto\"\x80\x01\n" +
+	"\rMnoC2BRequest\x12%\n" +
+	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12!\n" +
+	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\x12%\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\"\x80\x01\n" +
+	"\rMnoB2CRequest\x12%\n" +
+	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12!\n" +
+	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\x12%\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\">\n" +
+	"\x15MnoTransactionRequest\x12%\n" +
+	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\"\xe1\x01\n" +
+	"\x16MnoTransactionResponse\x12,\n" +
+	"\x12mno_transaction_id\x18\x01 \x01(\tR\x10mnoTransactionId\x12%\n" +
+	"\x0etransaction_id\x18\x02 \x01(\tR\rtransactionId\x121\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x19.wallet.TransactionStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x04 \x01(\tR\amessage\x12%\n" +
+	"\x06amount\x18\x05 \x01(\v2\r.wallet.MoneyR\x06amount2\xe1\x01\n" +
+	"\x11ProviderInterface\x12<\n" +
+	"\x03C2B\x12\x15.wallet.MnoC2BRequest\x1a\x1e.wallet.MnoTransactionResponse\x12<\n" +
+	"\x03B2C\x12\x15.wallet.MnoB2CRequest\x1a\x1e.wallet.MnoTransactionResponse\x12P\n" +
+	"\x0fTransactionInfo\x12\x1d.wallet.MnoTransactionRequest\x1a\x1e.wallet.MnoTransactionResponseB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcP\x00b\x06proto3"
 
 var (
 	file_provider_interface_proto_rawDescOnce sync.Once
@@ -1068,70 +299,31 @@ func file_provider_interface_proto_rawDescGZIP() []byte {
 	return file_provider_interface_proto_rawDescData
 }
 
-var file_provider_interface_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_provider_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_provider_interface_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_provider_interface_proto_goTypes = []any{
-	(PaymentStatus)(0),              // 0: provider.PaymentStatus
-	(*InitiatePaymentRequest)(nil),  // 1: provider.InitiatePaymentRequest
-	(*SendMoneyRequest)(nil),        // 2: provider.SendMoneyRequest
-	(*PaymentResponse)(nil),         // 3: provider.PaymentResponse
-	(*StatusRequest)(nil),           // 4: provider.StatusRequest
-	(*StatusResponse)(nil),          // 5: provider.StatusResponse
-	(*BalanceRequest)(nil),          // 6: provider.BalanceRequest
-	(*ProviderBalanceResponse)(nil), // 7: provider.ProviderBalanceResponse
-	(*ValidateAccountRequest)(nil),  // 8: provider.ValidateAccountRequest
-	(*ValidateAccountResponse)(nil), // 9: provider.ValidateAccountResponse
-	(*ReversalRequest)(nil),         // 10: provider.ReversalRequest
-	(*ReversalResponse)(nil),        // 11: provider.ReversalResponse
-	nil,                             // 12: provider.InitiatePaymentRequest.MetadataEntry
-	nil,                             // 13: provider.SendMoneyRequest.MetadataEntry
-	nil,                             // 14: provider.PaymentResponse.ProviderMetadataEntry
-	nil,                             // 15: provider.StatusResponse.ProviderMetadataEntry
-	nil,                             // 16: provider.ProviderBalanceResponse.ProviderMetadataEntry
-	nil,                             // 17: provider.ValidateAccountResponse.ProviderMetadataEntry
-	nil,                             // 18: provider.ReversalResponse.ProviderMetadataEntry
-	(*Money)(nil),                   // 19: wallet.Money
-	(*timestamppb.Timestamp)(nil),   // 20: google.protobuf.Timestamp
+	(*MnoC2BRequest)(nil),          // 0: wallet.MnoC2BRequest
+	(*MnoB2CRequest)(nil),          // 1: wallet.MnoB2CRequest
+	(*MnoTransactionRequest)(nil),  // 2: wallet.MnoTransactionRequest
+	(*MnoTransactionResponse)(nil), // 3: wallet.MnoTransactionResponse
+	(*Money)(nil),                  // 4: wallet.Money
+	(TransactionStatus)(0),         // 5: wallet.TransactionStatus
 }
 var file_provider_interface_proto_depIdxs = []int32{
-	19, // 0: provider.InitiatePaymentRequest.amount:type_name -> wallet.Money
-	12, // 1: provider.InitiatePaymentRequest.metadata:type_name -> provider.InitiatePaymentRequest.MetadataEntry
-	19, // 2: provider.SendMoneyRequest.amount:type_name -> wallet.Money
-	13, // 3: provider.SendMoneyRequest.metadata:type_name -> provider.SendMoneyRequest.MetadataEntry
-	0,  // 4: provider.PaymentResponse.status:type_name -> provider.PaymentStatus
-	19, // 5: provider.PaymentResponse.amount:type_name -> wallet.Money
-	20, // 6: provider.PaymentResponse.created_at:type_name -> google.protobuf.Timestamp
-	14, // 7: provider.PaymentResponse.provider_metadata:type_name -> provider.PaymentResponse.ProviderMetadataEntry
-	0,  // 8: provider.StatusResponse.status:type_name -> provider.PaymentStatus
-	19, // 9: provider.StatusResponse.amount:type_name -> wallet.Money
-	20, // 10: provider.StatusResponse.created_at:type_name -> google.protobuf.Timestamp
-	20, // 11: provider.StatusResponse.updated_at:type_name -> google.protobuf.Timestamp
-	15, // 12: provider.StatusResponse.provider_metadata:type_name -> provider.StatusResponse.ProviderMetadataEntry
-	19, // 13: provider.ProviderBalanceResponse.balances:type_name -> wallet.Money
-	20, // 14: provider.ProviderBalanceResponse.as_of:type_name -> google.protobuf.Timestamp
-	16, // 15: provider.ProviderBalanceResponse.provider_metadata:type_name -> provider.ProviderBalanceResponse.ProviderMetadataEntry
-	17, // 16: provider.ValidateAccountResponse.provider_metadata:type_name -> provider.ValidateAccountResponse.ProviderMetadataEntry
-	19, // 17: provider.ReversalRequest.amount:type_name -> wallet.Money
-	0,  // 18: provider.ReversalResponse.status:type_name -> provider.PaymentStatus
-	20, // 19: provider.ReversalResponse.processed_at:type_name -> google.protobuf.Timestamp
-	18, // 20: provider.ReversalResponse.provider_metadata:type_name -> provider.ReversalResponse.ProviderMetadataEntry
-	1,  // 21: provider.ProviderInterface.InitiatePayment:input_type -> provider.InitiatePaymentRequest
-	2,  // 22: provider.ProviderInterface.SendMoney:input_type -> provider.SendMoneyRequest
-	4,  // 23: provider.ProviderInterface.CheckTransactionStatus:input_type -> provider.StatusRequest
-	6,  // 24: provider.ProviderInterface.GetAccountBalance:input_type -> provider.BalanceRequest
-	8,  // 25: provider.ProviderInterface.ValidateAccount:input_type -> provider.ValidateAccountRequest
-	10, // 26: provider.ProviderInterface.ReverseTransaction:input_type -> provider.ReversalRequest
-	3,  // 27: provider.ProviderInterface.InitiatePayment:output_type -> provider.PaymentResponse
-	3,  // 28: provider.ProviderInterface.SendMoney:output_type -> provider.PaymentResponse
-	5,  // 29: provider.ProviderInterface.CheckTransactionStatus:output_type -> provider.StatusResponse
-	7,  // 30: provider.ProviderInterface.GetAccountBalance:output_type -> provider.ProviderBalanceResponse
-	9,  // 31: provider.ProviderInterface.ValidateAccount:output_type -> provider.ValidateAccountResponse
-	11, // 32: provider.ProviderInterface.ReverseTransaction:output_type -> provider.ReversalResponse
-	27, // [27:33] is the sub-list for method output_type
-	21, // [21:27] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	4, // 0: wallet.MnoC2BRequest.amount:type_name -> wallet.Money
+	4, // 1: wallet.MnoB2CRequest.amount:type_name -> wallet.Money
+	5, // 2: wallet.MnoTransactionResponse.status:type_name -> wallet.TransactionStatus
+	4, // 3: wallet.MnoTransactionResponse.amount:type_name -> wallet.Money
+	0, // 4: wallet.ProviderInterface.C2B:input_type -> wallet.MnoC2BRequest
+	1, // 5: wallet.ProviderInterface.B2C:input_type -> wallet.MnoB2CRequest
+	2, // 6: wallet.ProviderInterface.TransactionInfo:input_type -> wallet.MnoTransactionRequest
+	3, // 7: wallet.ProviderInterface.C2B:output_type -> wallet.MnoTransactionResponse
+	3, // 8: wallet.ProviderInterface.B2C:output_type -> wallet.MnoTransactionResponse
+	3, // 9: wallet.ProviderInterface.TransactionInfo:output_type -> wallet.MnoTransactionResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_provider_interface_proto_init() }
@@ -1145,14 +337,13 @@ func file_provider_interface_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_provider_interface_proto_rawDesc), len(file_provider_interface_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   18,
+			NumEnums:      0,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_provider_interface_proto_goTypes,
 		DependencyIndexes: file_provider_interface_proto_depIdxs,
-		EnumInfos:         file_provider_interface_proto_enumTypes,
 		MessageInfos:      file_provider_interface_proto_msgTypes,
 	}.Build()
 	File_provider_interface_proto = out.File

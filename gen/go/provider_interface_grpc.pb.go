@@ -19,12 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProviderInterface_InitiatePayment_FullMethodName        = "/provider.ProviderInterface/InitiatePayment"
-	ProviderInterface_SendMoney_FullMethodName              = "/provider.ProviderInterface/SendMoney"
-	ProviderInterface_CheckTransactionStatus_FullMethodName = "/provider.ProviderInterface/CheckTransactionStatus"
-	ProviderInterface_GetAccountBalance_FullMethodName      = "/provider.ProviderInterface/GetAccountBalance"
-	ProviderInterface_ValidateAccount_FullMethodName        = "/provider.ProviderInterface/ValidateAccount"
-	ProviderInterface_ReverseTransaction_FullMethodName     = "/provider.ProviderInterface/ReverseTransaction"
+	ProviderInterface_C2B_FullMethodName             = "/wallet.ProviderInterface/C2B"
+	ProviderInterface_B2C_FullMethodName             = "/wallet.ProviderInterface/B2C"
+	ProviderInterface_TransactionInfo_FullMethodName = "/wallet.ProviderInterface/TransactionInfo"
 )
 
 // ProviderInterfaceClient is the client API for ProviderInterface service.
@@ -34,18 +31,9 @@ const (
 // ProviderInterface - Standard API that each mobile money provider MUST implement
 // Each MNO (M-Pesa, MTN, Airtel, etc.) will implement this interface
 type ProviderInterfaceClient interface {
-	// Initiate a payment from customer to business (C2B)
-	InitiatePayment(ctx context.Context, in *InitiatePaymentRequest, opts ...grpc.CallOption) (*PaymentResponse, error)
-	// Send money from business to customer (B2C)
-	SendMoney(ctx context.Context, in *SendMoneyRequest, opts ...grpc.CallOption) (*PaymentResponse, error)
-	// Check status of a transaction
-	CheckTransactionStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*StatusResponse, error)
-	// Get account balance
-	GetAccountBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*ProviderBalanceResponse, error)
-	// Validate a customer account
-	ValidateAccount(ctx context.Context, in *ValidateAccountRequest, opts ...grpc.CallOption) (*ValidateAccountResponse, error)
-	// Reverse a transaction
-	ReverseTransaction(ctx context.Context, in *ReversalRequest, opts ...grpc.CallOption) (*ReversalResponse, error)
+	C2B(ctx context.Context, in *MnoC2BRequest, opts ...grpc.CallOption) (*MnoTransactionResponse, error)
+	B2C(ctx context.Context, in *MnoB2CRequest, opts ...grpc.CallOption) (*MnoTransactionResponse, error)
+	TransactionInfo(ctx context.Context, in *MnoTransactionRequest, opts ...grpc.CallOption) (*MnoTransactionResponse, error)
 }
 
 type providerInterfaceClient struct {
@@ -56,60 +44,30 @@ func NewProviderInterfaceClient(cc grpc.ClientConnInterface) ProviderInterfaceCl
 	return &providerInterfaceClient{cc}
 }
 
-func (c *providerInterfaceClient) InitiatePayment(ctx context.Context, in *InitiatePaymentRequest, opts ...grpc.CallOption) (*PaymentResponse, error) {
+func (c *providerInterfaceClient) C2B(ctx context.Context, in *MnoC2BRequest, opts ...grpc.CallOption) (*MnoTransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PaymentResponse)
-	err := c.cc.Invoke(ctx, ProviderInterface_InitiatePayment_FullMethodName, in, out, cOpts...)
+	out := new(MnoTransactionResponse)
+	err := c.cc.Invoke(ctx, ProviderInterface_C2B_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *providerInterfaceClient) SendMoney(ctx context.Context, in *SendMoneyRequest, opts ...grpc.CallOption) (*PaymentResponse, error) {
+func (c *providerInterfaceClient) B2C(ctx context.Context, in *MnoB2CRequest, opts ...grpc.CallOption) (*MnoTransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PaymentResponse)
-	err := c.cc.Invoke(ctx, ProviderInterface_SendMoney_FullMethodName, in, out, cOpts...)
+	out := new(MnoTransactionResponse)
+	err := c.cc.Invoke(ctx, ProviderInterface_B2C_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *providerInterfaceClient) CheckTransactionStatus(ctx context.Context, in *StatusRequest, opts ...grpc.CallOption) (*StatusResponse, error) {
+func (c *providerInterfaceClient) TransactionInfo(ctx context.Context, in *MnoTransactionRequest, opts ...grpc.CallOption) (*MnoTransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(StatusResponse)
-	err := c.cc.Invoke(ctx, ProviderInterface_CheckTransactionStatus_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *providerInterfaceClient) GetAccountBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*ProviderBalanceResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ProviderBalanceResponse)
-	err := c.cc.Invoke(ctx, ProviderInterface_GetAccountBalance_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *providerInterfaceClient) ValidateAccount(ctx context.Context, in *ValidateAccountRequest, opts ...grpc.CallOption) (*ValidateAccountResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ValidateAccountResponse)
-	err := c.cc.Invoke(ctx, ProviderInterface_ValidateAccount_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *providerInterfaceClient) ReverseTransaction(ctx context.Context, in *ReversalRequest, opts ...grpc.CallOption) (*ReversalResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReversalResponse)
-	err := c.cc.Invoke(ctx, ProviderInterface_ReverseTransaction_FullMethodName, in, out, cOpts...)
+	out := new(MnoTransactionResponse)
+	err := c.cc.Invoke(ctx, ProviderInterface_TransactionInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,18 +81,9 @@ func (c *providerInterfaceClient) ReverseTransaction(ctx context.Context, in *Re
 // ProviderInterface - Standard API that each mobile money provider MUST implement
 // Each MNO (M-Pesa, MTN, Airtel, etc.) will implement this interface
 type ProviderInterfaceServer interface {
-	// Initiate a payment from customer to business (C2B)
-	InitiatePayment(context.Context, *InitiatePaymentRequest) (*PaymentResponse, error)
-	// Send money from business to customer (B2C)
-	SendMoney(context.Context, *SendMoneyRequest) (*PaymentResponse, error)
-	// Check status of a transaction
-	CheckTransactionStatus(context.Context, *StatusRequest) (*StatusResponse, error)
-	// Get account balance
-	GetAccountBalance(context.Context, *BalanceRequest) (*ProviderBalanceResponse, error)
-	// Validate a customer account
-	ValidateAccount(context.Context, *ValidateAccountRequest) (*ValidateAccountResponse, error)
-	// Reverse a transaction
-	ReverseTransaction(context.Context, *ReversalRequest) (*ReversalResponse, error)
+	C2B(context.Context, *MnoC2BRequest) (*MnoTransactionResponse, error)
+	B2C(context.Context, *MnoB2CRequest) (*MnoTransactionResponse, error)
+	TransactionInfo(context.Context, *MnoTransactionRequest) (*MnoTransactionResponse, error)
 	mustEmbedUnimplementedProviderInterfaceServer()
 }
 
@@ -145,23 +94,14 @@ type ProviderInterfaceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedProviderInterfaceServer struct{}
 
-func (UnimplementedProviderInterfaceServer) InitiatePayment(context.Context, *InitiatePaymentRequest) (*PaymentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InitiatePayment not implemented")
+func (UnimplementedProviderInterfaceServer) C2B(context.Context, *MnoC2BRequest) (*MnoTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method C2B not implemented")
 }
-func (UnimplementedProviderInterfaceServer) SendMoney(context.Context, *SendMoneyRequest) (*PaymentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendMoney not implemented")
+func (UnimplementedProviderInterfaceServer) B2C(context.Context, *MnoB2CRequest) (*MnoTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method B2C not implemented")
 }
-func (UnimplementedProviderInterfaceServer) CheckTransactionStatus(context.Context, *StatusRequest) (*StatusResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CheckTransactionStatus not implemented")
-}
-func (UnimplementedProviderInterfaceServer) GetAccountBalance(context.Context, *BalanceRequest) (*ProviderBalanceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAccountBalance not implemented")
-}
-func (UnimplementedProviderInterfaceServer) ValidateAccount(context.Context, *ValidateAccountRequest) (*ValidateAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidateAccount not implemented")
-}
-func (UnimplementedProviderInterfaceServer) ReverseTransaction(context.Context, *ReversalRequest) (*ReversalResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReverseTransaction not implemented")
+func (UnimplementedProviderInterfaceServer) TransactionInfo(context.Context, *MnoTransactionRequest) (*MnoTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransactionInfo not implemented")
 }
 func (UnimplementedProviderInterfaceServer) mustEmbedUnimplementedProviderInterfaceServer() {}
 func (UnimplementedProviderInterfaceServer) testEmbeddedByValue()                           {}
@@ -184,110 +124,56 @@ func RegisterProviderInterfaceServer(s grpc.ServiceRegistrar, srv ProviderInterf
 	s.RegisterService(&ProviderInterface_ServiceDesc, srv)
 }
 
-func _ProviderInterface_InitiatePayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InitiatePaymentRequest)
+func _ProviderInterface_C2B_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MnoC2BRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProviderInterfaceServer).InitiatePayment(ctx, in)
+		return srv.(ProviderInterfaceServer).C2B(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ProviderInterface_InitiatePayment_FullMethodName,
+		FullMethod: ProviderInterface_C2B_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProviderInterfaceServer).InitiatePayment(ctx, req.(*InitiatePaymentRequest))
+		return srv.(ProviderInterfaceServer).C2B(ctx, req.(*MnoC2BRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProviderInterface_SendMoney_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendMoneyRequest)
+func _ProviderInterface_B2C_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MnoB2CRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProviderInterfaceServer).SendMoney(ctx, in)
+		return srv.(ProviderInterfaceServer).B2C(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ProviderInterface_SendMoney_FullMethodName,
+		FullMethod: ProviderInterface_B2C_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProviderInterfaceServer).SendMoney(ctx, req.(*SendMoneyRequest))
+		return srv.(ProviderInterfaceServer).B2C(ctx, req.(*MnoB2CRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProviderInterface_CheckTransactionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StatusRequest)
+func _ProviderInterface_TransactionInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MnoTransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProviderInterfaceServer).CheckTransactionStatus(ctx, in)
+		return srv.(ProviderInterfaceServer).TransactionInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ProviderInterface_CheckTransactionStatus_FullMethodName,
+		FullMethod: ProviderInterface_TransactionInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProviderInterfaceServer).CheckTransactionStatus(ctx, req.(*StatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProviderInterface_GetAccountBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BalanceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProviderInterfaceServer).GetAccountBalance(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProviderInterface_GetAccountBalance_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProviderInterfaceServer).GetAccountBalance(ctx, req.(*BalanceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProviderInterface_ValidateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ValidateAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProviderInterfaceServer).ValidateAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProviderInterface_ValidateAccount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProviderInterfaceServer).ValidateAccount(ctx, req.(*ValidateAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProviderInterface_ReverseTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReversalRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProviderInterfaceServer).ReverseTransaction(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProviderInterface_ReverseTransaction_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProviderInterfaceServer).ReverseTransaction(ctx, req.(*ReversalRequest))
+		return srv.(ProviderInterfaceServer).TransactionInfo(ctx, req.(*MnoTransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -296,32 +182,20 @@ func _ProviderInterface_ReverseTransaction_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProviderInterface_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "provider.ProviderInterface",
+	ServiceName: "wallet.ProviderInterface",
 	HandlerType: (*ProviderInterfaceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "InitiatePayment",
-			Handler:    _ProviderInterface_InitiatePayment_Handler,
+			MethodName: "C2B",
+			Handler:    _ProviderInterface_C2B_Handler,
 		},
 		{
-			MethodName: "SendMoney",
-			Handler:    _ProviderInterface_SendMoney_Handler,
+			MethodName: "B2C",
+			Handler:    _ProviderInterface_B2C_Handler,
 		},
 		{
-			MethodName: "CheckTransactionStatus",
-			Handler:    _ProviderInterface_CheckTransactionStatus_Handler,
-		},
-		{
-			MethodName: "GetAccountBalance",
-			Handler:    _ProviderInterface_GetAccountBalance_Handler,
-		},
-		{
-			MethodName: "ValidateAccount",
-			Handler:    _ProviderInterface_ValidateAccount_Handler,
-		},
-		{
-			MethodName: "ReverseTransaction",
-			Handler:    _ProviderInterface_ReverseTransaction_Handler,
+			MethodName: "TransactionInfo",
+			Handler:    _ProviderInterface_TransactionInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -11,7 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,67 +19,30 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	WalletService_CreateWallet_FullMethodName                 = "/wallet.WalletService/CreateWallet"
-	WalletService_GetWallet_FullMethodName                    = "/wallet.WalletService/GetWallet"
-	WalletService_GetWalletByUser_FullMethodName              = "/wallet.WalletService/GetWalletByUser"
-	WalletService_UpdateWallet_FullMethodName                 = "/wallet.WalletService/UpdateWallet"
-	WalletService_GetBalance_FullMethodName                   = "/wallet.WalletService/GetBalance"
-	WalletService_ListTransactions_FullMethodName             = "/wallet.WalletService/ListTransactions"
-	WalletService_DepositViaMobileMoney_FullMethodName        = "/wallet.WalletService/DepositViaMobileMoney"
-	WalletService_WithdrawToMobileMoney_FullMethodName        = "/wallet.WalletService/WithdrawToMobileMoney"
-	WalletService_TransferFunds_FullMethodName                = "/wallet.WalletService/TransferFunds"
-	WalletService_PayMerchant_FullMethodName                  = "/wallet.WalletService/PayMerchant"
-	WalletService_GetTransactionStatus_FullMethodName         = "/wallet.WalletService/GetTransactionStatus"
-	WalletService_RequestRefund_FullMethodName                = "/wallet.WalletService/RequestRefund"
-	WalletService_AddMobileMoneyAccount_FullMethodName        = "/wallet.WalletService/AddMobileMoneyAccount"
-	WalletService_RemoveMobileMoneyAccount_FullMethodName     = "/wallet.WalletService/RemoveMobileMoneyAccount"
-	WalletService_ListMobileMoneyAccounts_FullMethodName      = "/wallet.WalletService/ListMobileMoneyAccounts"
-	WalletService_SetDefaultMobileMoneyAccount_FullMethodName = "/wallet.WalletService/SetDefaultMobileMoneyAccount"
-	WalletService_HoldFunds_FullMethodName                    = "/wallet.WalletService/HoldFunds"
-	WalletService_DeductHeldFunds_FullMethodName              = "/wallet.WalletService/DeductHeldFunds"
+	WalletService_C2B_FullMethodName                  = "/wallet.WalletService/C2B"
+	WalletService_B2C_FullMethodName                  = "/wallet.WalletService/B2C"
+	WalletService_TransactionInfo_FullMethodName      = "/wallet.WalletService/TransactionInfo"
+	WalletService_Deposit_FullMethodName              = "/wallet.WalletService/Deposit"
+	WalletService_Withdraw_FullMethodName             = "/wallet.WalletService/Withdraw"
+	WalletService_TakeLien_FullMethodName             = "/wallet.WalletService/TakeLien"
+	WalletService_Revertlien_FullMethodName           = "/wallet.WalletService/Revertlien"
+	WalletService_CommitLien_FullMethodName           = "/wallet.WalletService/CommitLien"
+	WalletService_ManualReconciliation_FullMethodName = "/wallet.WalletService/ManualReconciliation"
 )
 
 // WalletServiceClient is the client API for WalletService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-//
-// WalletService provides APIs for digital wallet management and mobile money operations
 type WalletServiceClient interface {
-	// Create a new wallet for a user
-	CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*Wallet, error)
-	// Get wallet by ID
-	GetWallet(ctx context.Context, in *GetWalletRequest, opts ...grpc.CallOption) (*Wallet, error)
-	// Get wallet by user ID
-	GetWalletByUser(ctx context.Context, in *GetWalletByUserRequest, opts ...grpc.CallOption) (*Wallet, error)
-	// Update wallet information
-	UpdateWallet(ctx context.Context, in *UpdateWalletRequest, opts ...grpc.CallOption) (*Wallet, error)
-	// Get wallet balance
-	GetBalance(ctx context.Context, in *GetBalanceRequest, opts ...grpc.CallOption) (*BalanceResponse, error)
-	// List transactions for a wallet with pagination
-	ListTransactions(ctx context.Context, in *ListTransactionsRequest, opts ...grpc.CallOption) (*ListTransactionsResponse, error)
-	// Deposit funds into wallet via mobile money
-	DepositViaMobileMoney(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*Transaction, error)
-	// Withdraw funds from wallet to mobile money
-	WithdrawToMobileMoney(ctx context.Context, in *WithdrawRequest, opts ...grpc.CallOption) (*Transaction, error)
-	// Transfer funds between wallets
-	TransferFunds(ctx context.Context, in *TransferRequest, opts ...grpc.CallOption) (*Transaction, error)
-	// Pay merchant
-	PayMerchant(ctx context.Context, in *PayMerchantRequest, opts ...grpc.CallOption) (*Transaction, error)
-	// Get transaction status
-	GetTransactionStatus(ctx context.Context, in *GetTransactionStatusRequest, opts ...grpc.CallOption) (*TransactionStatus, error)
-	// Request refund for a transaction
-	RequestRefund(ctx context.Context, in *RefundRequest, opts ...grpc.CallOption) (*RefundResponse, error)
-	// Add mobile money account to wallet
-	AddMobileMoneyAccount(ctx context.Context, in *AddMobileMoneyAccountRequest, opts ...grpc.CallOption) (*MobileMoneyAccount, error)
-	// Remove mobile money account from wallet
-	RemoveMobileMoneyAccount(ctx context.Context, in *RemoveMobileMoneyAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// List mobile money accounts for a wallet
-	ListMobileMoneyAccounts(ctx context.Context, in *ListMobileMoneyAccountsRequest, opts ...grpc.CallOption) (*ListMobileMoneyAccountsResponse, error)
-	// Set default mobile money account for a wallet
-	SetDefaultMobileMoneyAccount(ctx context.Context, in *SetDefaultMobileMoneyAccountRequest, opts ...grpc.CallOption) (*MobileMoneyAccount, error)
-	// Methods to hold money and deduct after payment of service
-	HoldFunds(ctx context.Context, in *HoldFundsRequest, opts ...grpc.CallOption) (*HoldFundsResponse, error)
-	DeductHeldFunds(ctx context.Context, in *DeductHeldFundsRequest, opts ...grpc.CallOption) (*Transaction, error)
+	C2B(ctx context.Context, in *C2BRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	B2C(ctx context.Context, in *B2CRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	TransactionInfo(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	Deposit(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*DepositResponse, error)
+	Withdraw(ctx context.Context, in *WithdrawRequest, opts ...grpc.CallOption) (*WithdrawResponse, error)
+	TakeLien(ctx context.Context, in *LienRequest, opts ...grpc.CallOption) (*LienResponse, error)
+	Revertlien(ctx context.Context, in *RevertLienRequest, opts ...grpc.CallOption) (*RevertLienResponse, error)
+	CommitLien(ctx context.Context, in *CommitLienRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	ManualReconciliation(ctx context.Context, in *ManualReconciliationRequest, opts ...grpc.CallOption) (*ManualReconciliationResponse, error)
 }
 
 type walletServiceClient struct {
@@ -91,180 +53,90 @@ func NewWalletServiceClient(cc grpc.ClientConnInterface) WalletServiceClient {
 	return &walletServiceClient{cc}
 }
 
-func (c *walletServiceClient) CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*Wallet, error) {
+func (c *walletServiceClient) C2B(ctx context.Context, in *C2BRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Wallet)
-	err := c.cc.Invoke(ctx, WalletService_CreateWallet_FullMethodName, in, out, cOpts...)
+	out := new(TransactionResponse)
+	err := c.cc.Invoke(ctx, WalletService_C2B_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) GetWallet(ctx context.Context, in *GetWalletRequest, opts ...grpc.CallOption) (*Wallet, error) {
+func (c *walletServiceClient) B2C(ctx context.Context, in *B2CRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Wallet)
-	err := c.cc.Invoke(ctx, WalletService_GetWallet_FullMethodName, in, out, cOpts...)
+	out := new(TransactionResponse)
+	err := c.cc.Invoke(ctx, WalletService_B2C_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) GetWalletByUser(ctx context.Context, in *GetWalletByUserRequest, opts ...grpc.CallOption) (*Wallet, error) {
+func (c *walletServiceClient) TransactionInfo(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Wallet)
-	err := c.cc.Invoke(ctx, WalletService_GetWalletByUser_FullMethodName, in, out, cOpts...)
+	out := new(TransactionResponse)
+	err := c.cc.Invoke(ctx, WalletService_TransactionInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) UpdateWallet(ctx context.Context, in *UpdateWalletRequest, opts ...grpc.CallOption) (*Wallet, error) {
+func (c *walletServiceClient) Deposit(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*DepositResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Wallet)
-	err := c.cc.Invoke(ctx, WalletService_UpdateWallet_FullMethodName, in, out, cOpts...)
+	out := new(DepositResponse)
+	err := c.cc.Invoke(ctx, WalletService_Deposit_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) GetBalance(ctx context.Context, in *GetBalanceRequest, opts ...grpc.CallOption) (*BalanceResponse, error) {
+func (c *walletServiceClient) Withdraw(ctx context.Context, in *WithdrawRequest, opts ...grpc.CallOption) (*WithdrawResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(BalanceResponse)
-	err := c.cc.Invoke(ctx, WalletService_GetBalance_FullMethodName, in, out, cOpts...)
+	out := new(WithdrawResponse)
+	err := c.cc.Invoke(ctx, WalletService_Withdraw_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) ListTransactions(ctx context.Context, in *ListTransactionsRequest, opts ...grpc.CallOption) (*ListTransactionsResponse, error) {
+func (c *walletServiceClient) TakeLien(ctx context.Context, in *LienRequest, opts ...grpc.CallOption) (*LienResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListTransactionsResponse)
-	err := c.cc.Invoke(ctx, WalletService_ListTransactions_FullMethodName, in, out, cOpts...)
+	out := new(LienResponse)
+	err := c.cc.Invoke(ctx, WalletService_TakeLien_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) DepositViaMobileMoney(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*Transaction, error) {
+func (c *walletServiceClient) Revertlien(ctx context.Context, in *RevertLienRequest, opts ...grpc.CallOption) (*RevertLienResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Transaction)
-	err := c.cc.Invoke(ctx, WalletService_DepositViaMobileMoney_FullMethodName, in, out, cOpts...)
+	out := new(RevertLienResponse)
+	err := c.cc.Invoke(ctx, WalletService_Revertlien_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) WithdrawToMobileMoney(ctx context.Context, in *WithdrawRequest, opts ...grpc.CallOption) (*Transaction, error) {
+func (c *walletServiceClient) CommitLien(ctx context.Context, in *CommitLienRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Transaction)
-	err := c.cc.Invoke(ctx, WalletService_WithdrawToMobileMoney_FullMethodName, in, out, cOpts...)
+	out := new(TransactionResponse)
+	err := c.cc.Invoke(ctx, WalletService_CommitLien_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *walletServiceClient) TransferFunds(ctx context.Context, in *TransferRequest, opts ...grpc.CallOption) (*Transaction, error) {
+func (c *walletServiceClient) ManualReconciliation(ctx context.Context, in *ManualReconciliationRequest, opts ...grpc.CallOption) (*ManualReconciliationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Transaction)
-	err := c.cc.Invoke(ctx, WalletService_TransferFunds_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) PayMerchant(ctx context.Context, in *PayMerchantRequest, opts ...grpc.CallOption) (*Transaction, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Transaction)
-	err := c.cc.Invoke(ctx, WalletService_PayMerchant_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) GetTransactionStatus(ctx context.Context, in *GetTransactionStatusRequest, opts ...grpc.CallOption) (*TransactionStatus, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TransactionStatus)
-	err := c.cc.Invoke(ctx, WalletService_GetTransactionStatus_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) RequestRefund(ctx context.Context, in *RefundRequest, opts ...grpc.CallOption) (*RefundResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RefundResponse)
-	err := c.cc.Invoke(ctx, WalletService_RequestRefund_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) AddMobileMoneyAccount(ctx context.Context, in *AddMobileMoneyAccountRequest, opts ...grpc.CallOption) (*MobileMoneyAccount, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MobileMoneyAccount)
-	err := c.cc.Invoke(ctx, WalletService_AddMobileMoneyAccount_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) RemoveMobileMoneyAccount(ctx context.Context, in *RemoveMobileMoneyAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, WalletService_RemoveMobileMoneyAccount_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) ListMobileMoneyAccounts(ctx context.Context, in *ListMobileMoneyAccountsRequest, opts ...grpc.CallOption) (*ListMobileMoneyAccountsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListMobileMoneyAccountsResponse)
-	err := c.cc.Invoke(ctx, WalletService_ListMobileMoneyAccounts_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) SetDefaultMobileMoneyAccount(ctx context.Context, in *SetDefaultMobileMoneyAccountRequest, opts ...grpc.CallOption) (*MobileMoneyAccount, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(MobileMoneyAccount)
-	err := c.cc.Invoke(ctx, WalletService_SetDefaultMobileMoneyAccount_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) HoldFunds(ctx context.Context, in *HoldFundsRequest, opts ...grpc.CallOption) (*HoldFundsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HoldFundsResponse)
-	err := c.cc.Invoke(ctx, WalletService_HoldFunds_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *walletServiceClient) DeductHeldFunds(ctx context.Context, in *DeductHeldFundsRequest, opts ...grpc.CallOption) (*Transaction, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Transaction)
-	err := c.cc.Invoke(ctx, WalletService_DeductHeldFunds_FullMethodName, in, out, cOpts...)
+	out := new(ManualReconciliationResponse)
+	err := c.cc.Invoke(ctx, WalletService_ManualReconciliation_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -274,44 +146,16 @@ func (c *walletServiceClient) DeductHeldFunds(ctx context.Context, in *DeductHel
 // WalletServiceServer is the server API for WalletService service.
 // All implementations must embed UnimplementedWalletServiceServer
 // for forward compatibility.
-//
-// WalletService provides APIs for digital wallet management and mobile money operations
 type WalletServiceServer interface {
-	// Create a new wallet for a user
-	CreateWallet(context.Context, *CreateWalletRequest) (*Wallet, error)
-	// Get wallet by ID
-	GetWallet(context.Context, *GetWalletRequest) (*Wallet, error)
-	// Get wallet by user ID
-	GetWalletByUser(context.Context, *GetWalletByUserRequest) (*Wallet, error)
-	// Update wallet information
-	UpdateWallet(context.Context, *UpdateWalletRequest) (*Wallet, error)
-	// Get wallet balance
-	GetBalance(context.Context, *GetBalanceRequest) (*BalanceResponse, error)
-	// List transactions for a wallet with pagination
-	ListTransactions(context.Context, *ListTransactionsRequest) (*ListTransactionsResponse, error)
-	// Deposit funds into wallet via mobile money
-	DepositViaMobileMoney(context.Context, *DepositRequest) (*Transaction, error)
-	// Withdraw funds from wallet to mobile money
-	WithdrawToMobileMoney(context.Context, *WithdrawRequest) (*Transaction, error)
-	// Transfer funds between wallets
-	TransferFunds(context.Context, *TransferRequest) (*Transaction, error)
-	// Pay merchant
-	PayMerchant(context.Context, *PayMerchantRequest) (*Transaction, error)
-	// Get transaction status
-	GetTransactionStatus(context.Context, *GetTransactionStatusRequest) (*TransactionStatus, error)
-	// Request refund for a transaction
-	RequestRefund(context.Context, *RefundRequest) (*RefundResponse, error)
-	// Add mobile money account to wallet
-	AddMobileMoneyAccount(context.Context, *AddMobileMoneyAccountRequest) (*MobileMoneyAccount, error)
-	// Remove mobile money account from wallet
-	RemoveMobileMoneyAccount(context.Context, *RemoveMobileMoneyAccountRequest) (*emptypb.Empty, error)
-	// List mobile money accounts for a wallet
-	ListMobileMoneyAccounts(context.Context, *ListMobileMoneyAccountsRequest) (*ListMobileMoneyAccountsResponse, error)
-	// Set default mobile money account for a wallet
-	SetDefaultMobileMoneyAccount(context.Context, *SetDefaultMobileMoneyAccountRequest) (*MobileMoneyAccount, error)
-	// Methods to hold money and deduct after payment of service
-	HoldFunds(context.Context, *HoldFundsRequest) (*HoldFundsResponse, error)
-	DeductHeldFunds(context.Context, *DeductHeldFundsRequest) (*Transaction, error)
+	C2B(context.Context, *C2BRequest) (*TransactionResponse, error)
+	B2C(context.Context, *B2CRequest) (*TransactionResponse, error)
+	TransactionInfo(context.Context, *TransactionRequest) (*TransactionResponse, error)
+	Deposit(context.Context, *DepositRequest) (*DepositResponse, error)
+	Withdraw(context.Context, *WithdrawRequest) (*WithdrawResponse, error)
+	TakeLien(context.Context, *LienRequest) (*LienResponse, error)
+	Revertlien(context.Context, *RevertLienRequest) (*RevertLienResponse, error)
+	CommitLien(context.Context, *CommitLienRequest) (*TransactionResponse, error)
+	ManualReconciliation(context.Context, *ManualReconciliationRequest) (*ManualReconciliationResponse, error)
 	mustEmbedUnimplementedWalletServiceServer()
 }
 
@@ -322,59 +166,32 @@ type WalletServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedWalletServiceServer struct{}
 
-func (UnimplementedWalletServiceServer) CreateWallet(context.Context, *CreateWalletRequest) (*Wallet, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateWallet not implemented")
+func (UnimplementedWalletServiceServer) C2B(context.Context, *C2BRequest) (*TransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method C2B not implemented")
 }
-func (UnimplementedWalletServiceServer) GetWallet(context.Context, *GetWalletRequest) (*Wallet, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWallet not implemented")
+func (UnimplementedWalletServiceServer) B2C(context.Context, *B2CRequest) (*TransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method B2C not implemented")
 }
-func (UnimplementedWalletServiceServer) GetWalletByUser(context.Context, *GetWalletByUserRequest) (*Wallet, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWalletByUser not implemented")
+func (UnimplementedWalletServiceServer) TransactionInfo(context.Context, *TransactionRequest) (*TransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransactionInfo not implemented")
 }
-func (UnimplementedWalletServiceServer) UpdateWallet(context.Context, *UpdateWalletRequest) (*Wallet, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateWallet not implemented")
+func (UnimplementedWalletServiceServer) Deposit(context.Context, *DepositRequest) (*DepositResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Deposit not implemented")
 }
-func (UnimplementedWalletServiceServer) GetBalance(context.Context, *GetBalanceRequest) (*BalanceResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBalance not implemented")
+func (UnimplementedWalletServiceServer) Withdraw(context.Context, *WithdrawRequest) (*WithdrawResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Withdraw not implemented")
 }
-func (UnimplementedWalletServiceServer) ListTransactions(context.Context, *ListTransactionsRequest) (*ListTransactionsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListTransactions not implemented")
+func (UnimplementedWalletServiceServer) TakeLien(context.Context, *LienRequest) (*LienResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TakeLien not implemented")
 }
-func (UnimplementedWalletServiceServer) DepositViaMobileMoney(context.Context, *DepositRequest) (*Transaction, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DepositViaMobileMoney not implemented")
+func (UnimplementedWalletServiceServer) Revertlien(context.Context, *RevertLienRequest) (*RevertLienResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Revertlien not implemented")
 }
-func (UnimplementedWalletServiceServer) WithdrawToMobileMoney(context.Context, *WithdrawRequest) (*Transaction, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WithdrawToMobileMoney not implemented")
+func (UnimplementedWalletServiceServer) CommitLien(context.Context, *CommitLienRequest) (*TransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommitLien not implemented")
 }
-func (UnimplementedWalletServiceServer) TransferFunds(context.Context, *TransferRequest) (*Transaction, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TransferFunds not implemented")
-}
-func (UnimplementedWalletServiceServer) PayMerchant(context.Context, *PayMerchantRequest) (*Transaction, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PayMerchant not implemented")
-}
-func (UnimplementedWalletServiceServer) GetTransactionStatus(context.Context, *GetTransactionStatusRequest) (*TransactionStatus, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTransactionStatus not implemented")
-}
-func (UnimplementedWalletServiceServer) RequestRefund(context.Context, *RefundRequest) (*RefundResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RequestRefund not implemented")
-}
-func (UnimplementedWalletServiceServer) AddMobileMoneyAccount(context.Context, *AddMobileMoneyAccountRequest) (*MobileMoneyAccount, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddMobileMoneyAccount not implemented")
-}
-func (UnimplementedWalletServiceServer) RemoveMobileMoneyAccount(context.Context, *RemoveMobileMoneyAccountRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveMobileMoneyAccount not implemented")
-}
-func (UnimplementedWalletServiceServer) ListMobileMoneyAccounts(context.Context, *ListMobileMoneyAccountsRequest) (*ListMobileMoneyAccountsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListMobileMoneyAccounts not implemented")
-}
-func (UnimplementedWalletServiceServer) SetDefaultMobileMoneyAccount(context.Context, *SetDefaultMobileMoneyAccountRequest) (*MobileMoneyAccount, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetDefaultMobileMoneyAccount not implemented")
-}
-func (UnimplementedWalletServiceServer) HoldFunds(context.Context, *HoldFundsRequest) (*HoldFundsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HoldFunds not implemented")
-}
-func (UnimplementedWalletServiceServer) DeductHeldFunds(context.Context, *DeductHeldFundsRequest) (*Transaction, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeductHeldFunds not implemented")
+func (UnimplementedWalletServiceServer) ManualReconciliation(context.Context, *ManualReconciliationRequest) (*ManualReconciliationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ManualReconciliation not implemented")
 }
 func (UnimplementedWalletServiceServer) mustEmbedUnimplementedWalletServiceServer() {}
 func (UnimplementedWalletServiceServer) testEmbeddedByValue()                       {}
@@ -397,326 +214,164 @@ func RegisterWalletServiceServer(s grpc.ServiceRegistrar, srv WalletServiceServe
 	s.RegisterService(&WalletService_ServiceDesc, srv)
 }
 
-func _WalletService_CreateWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateWalletRequest)
+func _WalletService_C2B_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(C2BRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).CreateWallet(ctx, in)
+		return srv.(WalletServiceServer).C2B(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_CreateWallet_FullMethodName,
+		FullMethod: WalletService_C2B_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).CreateWallet(ctx, req.(*CreateWalletRequest))
+		return srv.(WalletServiceServer).C2B(ctx, req.(*C2BRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_GetWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWalletRequest)
+func _WalletService_B2C_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(B2CRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).GetWallet(ctx, in)
+		return srv.(WalletServiceServer).B2C(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_GetWallet_FullMethodName,
+		FullMethod: WalletService_B2C_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).GetWallet(ctx, req.(*GetWalletRequest))
+		return srv.(WalletServiceServer).B2C(ctx, req.(*B2CRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_GetWalletByUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWalletByUserRequest)
+func _WalletService_TransactionInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).GetWalletByUser(ctx, in)
+		return srv.(WalletServiceServer).TransactionInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_GetWalletByUser_FullMethodName,
+		FullMethod: WalletService_TransactionInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).GetWalletByUser(ctx, req.(*GetWalletByUserRequest))
+		return srv.(WalletServiceServer).TransactionInfo(ctx, req.(*TransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_UpdateWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateWalletRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).UpdateWallet(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_UpdateWallet_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).UpdateWallet(ctx, req.(*UpdateWalletRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_GetBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBalanceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).GetBalance(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_GetBalance_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).GetBalance(ctx, req.(*GetBalanceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_ListTransactions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListTransactionsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).ListTransactions(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_ListTransactions_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).ListTransactions(ctx, req.(*ListTransactionsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_DepositViaMobileMoney_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _WalletService_Deposit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DepositRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).DepositViaMobileMoney(ctx, in)
+		return srv.(WalletServiceServer).Deposit(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_DepositViaMobileMoney_FullMethodName,
+		FullMethod: WalletService_Deposit_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).DepositViaMobileMoney(ctx, req.(*DepositRequest))
+		return srv.(WalletServiceServer).Deposit(ctx, req.(*DepositRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_WithdrawToMobileMoney_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _WalletService_Withdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithdrawRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).WithdrawToMobileMoney(ctx, in)
+		return srv.(WalletServiceServer).Withdraw(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_WithdrawToMobileMoney_FullMethodName,
+		FullMethod: WalletService_Withdraw_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).WithdrawToMobileMoney(ctx, req.(*WithdrawRequest))
+		return srv.(WalletServiceServer).Withdraw(ctx, req.(*WithdrawRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_TransferFunds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TransferRequest)
+func _WalletService_TakeLien_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LienRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).TransferFunds(ctx, in)
+		return srv.(WalletServiceServer).TakeLien(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_TransferFunds_FullMethodName,
+		FullMethod: WalletService_TakeLien_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).TransferFunds(ctx, req.(*TransferRequest))
+		return srv.(WalletServiceServer).TakeLien(ctx, req.(*LienRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_PayMerchant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PayMerchantRequest)
+func _WalletService_Revertlien_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevertLienRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).PayMerchant(ctx, in)
+		return srv.(WalletServiceServer).Revertlien(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_PayMerchant_FullMethodName,
+		FullMethod: WalletService_Revertlien_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).PayMerchant(ctx, req.(*PayMerchantRequest))
+		return srv.(WalletServiceServer).Revertlien(ctx, req.(*RevertLienRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_GetTransactionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTransactionStatusRequest)
+func _WalletService_CommitLien_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommitLienRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).GetTransactionStatus(ctx, in)
+		return srv.(WalletServiceServer).CommitLien(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_GetTransactionStatus_FullMethodName,
+		FullMethod: WalletService_CommitLien_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).GetTransactionStatus(ctx, req.(*GetTransactionStatusRequest))
+		return srv.(WalletServiceServer).CommitLien(ctx, req.(*CommitLienRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WalletService_RequestRefund_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RefundRequest)
+func _WalletService_ManualReconciliation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ManualReconciliationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WalletServiceServer).RequestRefund(ctx, in)
+		return srv.(WalletServiceServer).ManualReconciliation(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WalletService_RequestRefund_FullMethodName,
+		FullMethod: WalletService_ManualReconciliation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).RequestRefund(ctx, req.(*RefundRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_AddMobileMoneyAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddMobileMoneyAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).AddMobileMoneyAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_AddMobileMoneyAccount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).AddMobileMoneyAccount(ctx, req.(*AddMobileMoneyAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_RemoveMobileMoneyAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveMobileMoneyAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).RemoveMobileMoneyAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_RemoveMobileMoneyAccount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).RemoveMobileMoneyAccount(ctx, req.(*RemoveMobileMoneyAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_ListMobileMoneyAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListMobileMoneyAccountsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).ListMobileMoneyAccounts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_ListMobileMoneyAccounts_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).ListMobileMoneyAccounts(ctx, req.(*ListMobileMoneyAccountsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_SetDefaultMobileMoneyAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetDefaultMobileMoneyAccountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).SetDefaultMobileMoneyAccount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_SetDefaultMobileMoneyAccount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).SetDefaultMobileMoneyAccount(ctx, req.(*SetDefaultMobileMoneyAccountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_HoldFunds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HoldFundsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).HoldFunds(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_HoldFunds_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).HoldFunds(ctx, req.(*HoldFundsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WalletService_DeductHeldFunds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeductHeldFundsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WalletServiceServer).DeductHeldFunds(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WalletService_DeductHeldFunds_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).DeductHeldFunds(ctx, req.(*DeductHeldFundsRequest))
+		return srv.(WalletServiceServer).ManualReconciliation(ctx, req.(*ManualReconciliationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -729,76 +384,40 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*WalletServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateWallet",
-			Handler:    _WalletService_CreateWallet_Handler,
+			MethodName: "C2B",
+			Handler:    _WalletService_C2B_Handler,
 		},
 		{
-			MethodName: "GetWallet",
-			Handler:    _WalletService_GetWallet_Handler,
+			MethodName: "B2C",
+			Handler:    _WalletService_B2C_Handler,
 		},
 		{
-			MethodName: "GetWalletByUser",
-			Handler:    _WalletService_GetWalletByUser_Handler,
+			MethodName: "TransactionInfo",
+			Handler:    _WalletService_TransactionInfo_Handler,
 		},
 		{
-			MethodName: "UpdateWallet",
-			Handler:    _WalletService_UpdateWallet_Handler,
+			MethodName: "Deposit",
+			Handler:    _WalletService_Deposit_Handler,
 		},
 		{
-			MethodName: "GetBalance",
-			Handler:    _WalletService_GetBalance_Handler,
+			MethodName: "Withdraw",
+			Handler:    _WalletService_Withdraw_Handler,
 		},
 		{
-			MethodName: "ListTransactions",
-			Handler:    _WalletService_ListTransactions_Handler,
+			MethodName: "TakeLien",
+			Handler:    _WalletService_TakeLien_Handler,
 		},
 		{
-			MethodName: "DepositViaMobileMoney",
-			Handler:    _WalletService_DepositViaMobileMoney_Handler,
+			MethodName: "Revertlien",
+			Handler:    _WalletService_Revertlien_Handler,
 		},
 		{
-			MethodName: "WithdrawToMobileMoney",
-			Handler:    _WalletService_WithdrawToMobileMoney_Handler,
+			MethodName: "CommitLien",
+			Handler:    _WalletService_CommitLien_Handler,
 		},
 		{
-			MethodName: "TransferFunds",
-			Handler:    _WalletService_TransferFunds_Handler,
-		},
-		{
-			MethodName: "PayMerchant",
-			Handler:    _WalletService_PayMerchant_Handler,
-		},
-		{
-			MethodName: "GetTransactionStatus",
-			Handler:    _WalletService_GetTransactionStatus_Handler,
-		},
-		{
-			MethodName: "RequestRefund",
-			Handler:    _WalletService_RequestRefund_Handler,
-		},
-		{
-			MethodName: "AddMobileMoneyAccount",
-			Handler:    _WalletService_AddMobileMoneyAccount_Handler,
-		},
-		{
-			MethodName: "RemoveMobileMoneyAccount",
-			Handler:    _WalletService_RemoveMobileMoneyAccount_Handler,
-		},
-		{
-			MethodName: "ListMobileMoneyAccounts",
-			Handler:    _WalletService_ListMobileMoneyAccounts_Handler,
-		},
-		{
-			MethodName: "SetDefaultMobileMoneyAccount",
-			Handler:    _WalletService_SetDefaultMobileMoneyAccount_Handler,
-		},
-		{
-			MethodName: "HoldFunds",
-			Handler:    _WalletService_HoldFunds_Handler,
-		},
-		{
-			MethodName: "DeductHeldFunds",
-			Handler:    _WalletService_DeductHeldFunds_Handler,
+			MethodName: "ManualReconciliation",
+			Handler:    _WalletService_ManualReconciliation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
