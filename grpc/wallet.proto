@@ -95,6 +95,7 @@ message GetWalletByUserIDRequest {
 
 message CreateWalletRequest {
     string user_id = 1;
+    string currency = 2;
 }
 
 message GetWalletByIDRequest {

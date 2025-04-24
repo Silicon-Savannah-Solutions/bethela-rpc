@@ -620,6 +620,7 @@ func (x *GetWalletByUserIDRequest) GetUserId() string {
 type CreateWalletRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Currency      string                 `protobuf:"bytes,2,opt,name=currency,proto3" json:"currency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -657,6 +658,13 @@ func (*CreateWalletRequest) Descriptor() ([]byte, []int) {
 func (x *CreateWalletRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
+	}
+	return ""
+}
+
+func (x *CreateWalletRequest) GetCurrency() string {
+	if x != nil {
+		return x.Currency
 	}
 	return ""
 }
@@ -1425,9 +1433,10 @@ const file_wallet_proto_rawDesc = "" +
 	"\x06status\x18\x04 \x01(\x0e2\x19.wallet.TransactionStatusR\x06status\x12\x18\n" +
 	"\amessage\x18\x05 \x01(\tR\amessage\"3\n" +
 	"\x18GetWalletByUserIDRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\".\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"J\n" +
 	"\x13CreateWalletRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"3\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
+	"\bcurrency\x18\x02 \x01(\tR\bcurrency\"3\n" +
 	"\x14GetWalletByIDRequest\x12\x1b\n" +
 	"\twallet_id\x18\x01 \x01(\tR\bwalletId\"I\n" +
 	"\x11GetBalanceRequest\x12\x17\n" +
