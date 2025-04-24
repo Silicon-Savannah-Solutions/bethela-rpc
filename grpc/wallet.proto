@@ -23,6 +23,12 @@ service WalletService {
     rpc CommitLien(CommitLienRequest) returns (TransactionResponse);
 
     rpc ManualReconciliation(ManualReconciliationRequest) returns (ManualReconciliationResponse);
+
+    // wallet info
+    rpc GetWalletByUserID(GetWalletByUserIDRequest) returns (Wallet);
+    rpc CreateWallet(CreateWalletRequest) returns (Wallet);
+    rpc GetWalletByID(GetWalletByIDRequest) returns (Wallet);
+    rpc GetBalance(GetBalanceRequest) returns (Balance);
 }
 
 enum TransactionStatus {
@@ -32,9 +38,26 @@ enum TransactionStatus {
     FAILED = 3;
 }
 
+enum LienType {
+    ALL = 0;
+    WiTHDRAW = 1;
+    NON_WITHDRAW = 2;
+    BONUS = 3;
+}
+
 message Money {
     int64 amount = 1;
     string currency = 2;
+}
+
+message Balance {
+    string balance_type =1;
+    Money amount = 2;
+}
+
+message Wallet {
+    string wallet_id = 1;
+    repeated Money balances = 2;
 }
 
 message C2BRequest {
@@ -66,6 +89,23 @@ message TransactionInfo {
     string message = 5;
 }
 
+message GetWalletByUserIDRequest {
+    string user_id = 1;
+}
+
+message CreateWalletRequest {
+    string user_id = 1;
+}
+
+message GetWalletByIDRequest {
+    string wallet_id = 1;
+}
+
+message GetBalanceRequest {
+    string user_id = 1;
+    string wallet_id = 2;
+}
+
 // used by the wallets after transaction is completed
 
 message DepositRequest {
@@ -91,12 +131,12 @@ message WithdrawResponse {
 message LienRequest {
     string user_id = 1;
     Money amount = 2;
-    TransactionStatus status = 3;
+    LienType lien_type = 3;
 }
 
 message LienResponse {
     uint64 lien_id = 1;
-    bool success = 2;
+    TransactionStatus status = 2;
     string message = 3;
 }
 
