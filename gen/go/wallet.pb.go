@@ -1397,6 +1397,234 @@ func (x *ManualReconciliationResponse) GetMessage() string {
 	return ""
 }
 
+type ListTransactionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WalletId      string                 `protobuf:"bytes,1,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTransactionsRequest) Reset() {
+	*x = ListTransactionsRequest{}
+	mi := &file_wallet_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTransactionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTransactionsRequest) ProtoMessage() {}
+
+func (x *ListTransactionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wallet_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTransactionsRequest.ProtoReflect.Descriptor instead.
+func (*ListTransactionsRequest) Descriptor() ([]byte, []int) {
+	return file_wallet_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ListTransactionsRequest) GetWalletId() string {
+	if x != nil {
+		return x.WalletId
+	}
+	return ""
+}
+
+func (x *ListTransactionsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListTransactionsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type Transaction struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	Status        TransactionStatus      `protobuf:"varint,4,opt,name=status,proto3,enum=wallet.TransactionStatus" json:"status,omitempty"`
+	Message       string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`
+	Reference     string                 `protobuf:"bytes,6,opt,name=reference,proto3" json:"reference,omitempty"`
+	Description   string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
+	CreatedAt     int64                  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     int64                  `protobuf:"varint,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Transaction) Reset() {
+	*x = Transaction{}
+	mi := &file_wallet_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Transaction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Transaction) ProtoMessage() {}
+
+func (x *Transaction) ProtoReflect() protoreflect.Message {
+	mi := &file_wallet_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Transaction.ProtoReflect.Descriptor instead.
+func (*Transaction) Descriptor() ([]byte, []int) {
+	return file_wallet_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *Transaction) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Transaction) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Transaction) GetAmount() *Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *Transaction) GetStatus() TransactionStatus {
+	if x != nil {
+		return x.Status
+	}
+	return TransactionStatus_UMBIGUOUS
+}
+
+func (x *Transaction) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *Transaction) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
+func (x *Transaction) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Transaction) GetCreatedAt() int64 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *Transaction) GetUpdatedAt() int64 {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return 0
+}
+
+type ListTransactionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transactions  []*Transaction         `protobuf:"bytes,1,rep,name=transactions,proto3" json:"transactions,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,3,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTransactionsResponse) Reset() {
+	*x = ListTransactionsResponse{}
+	mi := &file_wallet_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTransactionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTransactionsResponse) ProtoMessage() {}
+
+func (x *ListTransactionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wallet_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTransactionsResponse.ProtoReflect.Descriptor instead.
+func (*ListTransactionsResponse) Descriptor() ([]byte, []int) {
+	return file_wallet_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *ListTransactionsResponse) GetTransactions() []*Transaction {
+	if x != nil {
+		return x.Transactions
+	}
+	return nil
+}
+
+func (x *ListTransactionsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+func (x *ListTransactionsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
 var File_wallet_proto protoreflect.FileDescriptor
 
 const file_wallet_proto_rawDesc = "" +
@@ -1478,7 +1706,29 @@ const file_wallet_proto_rawDesc = "" +
 	"\x06amount\x18\x02 \x01(\v2\r.wallet.MoneyR\x06amount\"R\n" +
 	"\x1cManualReconciliationResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage*H\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"r\n" +
+	"\x17ListTransactionsRequest\x12\x1b\n" +
+	"\twallet_id\x18\x01 \x01(\tR\bwalletId\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\xa8\x02\n" +
+	"\vTransaction\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12%\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x121\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x19.wallet.TransactionStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x05 \x01(\tR\amessage\x12\x1c\n" +
+	"\treference\x18\x06 \x01(\tR\treference\x12 \n" +
+	"\vdescription\x18\a \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\b \x01(\x03R\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\t \x01(\x03R\tupdatedAt\"\x9c\x01\n" +
+	"\x18ListTransactionsResponse\x127\n" +
+	"\ftransactions\x18\x01 \x03(\v2\x13.wallet.TransactionR\ftransactions\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
+	"\vtotal_count\x18\x03 \x01(\x05R\n" +
+	"totalCount*H\n" +
 	"\x11TransactionStatus\x12\r\n" +
 	"\tUMBIGUOUS\x10\x00\x12\v\n" +
 	"\aPENDING\x10\x01\x12\v\n" +
@@ -1489,7 +1739,7 @@ const file_wallet_proto_rawDesc = "" +
 	"\x03ALL\x10\x00\x12\f\n" +
 	"\bWiTHDRAW\x10\x01\x12\x10\n" +
 	"\fNON_WITHDRAW\x10\x02\x12\t\n" +
-	"\x05BONUS\x10\x032\xe8\x06\n" +
+	"\x05BONUS\x10\x032\xbf\a\n" +
 	"\rWalletService\x126\n" +
 	"\x03C2B\x12\x12.wallet.C2BRequest\x1a\x1b.wallet.TransactionResponse\x126\n" +
 	"\x03B2C\x12\x12.wallet.B2CRequest\x1a\x1b.wallet.TransactionResponse\x12J\n" +
@@ -1506,7 +1756,8 @@ const file_wallet_proto_rawDesc = "" +
 	"\fCreateWallet\x12\x1b.wallet.CreateWalletRequest\x1a\x0e.wallet.Wallet\x12=\n" +
 	"\rGetWalletByID\x12\x1c.wallet.GetWalletByIDRequest\x1a\x0e.wallet.Wallet\x128\n" +
 	"\n" +
-	"GetBalance\x12\x19.wallet.GetBalanceRequest\x1a\x0f.wallet.BalanceB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcb\x06proto3"
+	"GetBalance\x12\x19.wallet.GetBalanceRequest\x1a\x0f.wallet.Balance\x12U\n" +
+	"\x10ListTransactions\x12\x1f.wallet.ListTransactionsRequest\x1a .wallet.ListTransactionsResponseB3Z1github.com/Silicon-Savannah-Solutions/bethela-rpcb\x06proto3"
 
 var (
 	file_wallet_proto_rawDescOnce sync.Once
@@ -1521,7 +1772,7 @@ func file_wallet_proto_rawDescGZIP() []byte {
 }
 
 var file_wallet_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_wallet_proto_goTypes = []any{
 	(TransactionStatus)(0),               // 0: wallet.TransactionStatus
 	(LienType)(0),                        // 1: wallet.LienType
@@ -1549,6 +1800,9 @@ var file_wallet_proto_goTypes = []any{
 	(*CommitLienResponse)(nil),           // 23: wallet.CommitLienResponse
 	(*ManualReconciliationRequest)(nil),  // 24: wallet.ManualReconciliationRequest
 	(*ManualReconciliationResponse)(nil), // 25: wallet.ManualReconciliationResponse
+	(*ListTransactionsRequest)(nil),      // 26: wallet.ListTransactionsRequest
+	(*Transaction)(nil),                  // 27: wallet.Transaction
+	(*ListTransactionsResponse)(nil),     // 28: wallet.ListTransactionsResponse
 }
 var file_wallet_proto_depIdxs = []int32{
 	2,  // 0: wallet.Balance.amount:type_name -> wallet.Money
@@ -1567,37 +1821,42 @@ var file_wallet_proto_depIdxs = []int32{
 	1,  // 13: wallet.LienRequest.lien_type:type_name -> wallet.LienType
 	0,  // 14: wallet.LienResponse.status:type_name -> wallet.TransactionStatus
 	2,  // 15: wallet.ManualReconciliationRequest.amount:type_name -> wallet.Money
-	5,  // 16: wallet.WalletService.C2B:input_type -> wallet.C2BRequest
-	6,  // 17: wallet.WalletService.B2C:input_type -> wallet.B2CRequest
-	7,  // 18: wallet.WalletService.TransactionInfo:input_type -> wallet.TransactionRequest
-	14, // 19: wallet.WalletService.Deposit:input_type -> wallet.DepositRequest
-	16, // 20: wallet.WalletService.Withdraw:input_type -> wallet.WithdrawRequest
-	18, // 21: wallet.WalletService.TakeLien:input_type -> wallet.LienRequest
-	20, // 22: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
-	22, // 23: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
-	24, // 24: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
-	10, // 25: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
-	11, // 26: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
-	12, // 27: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
-	13, // 28: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
-	8,  // 29: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
-	8,  // 30: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
-	8,  // 31: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
-	15, // 32: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
-	17, // 33: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
-	19, // 34: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
-	21, // 35: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
-	8,  // 36: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
-	25, // 37: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
-	4,  // 38: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
-	4,  // 39: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
-	4,  // 40: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
-	3,  // 41: wallet.WalletService.GetBalance:output_type -> wallet.Balance
-	29, // [29:42] is the sub-list for method output_type
-	16, // [16:29] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	2,  // 16: wallet.Transaction.amount:type_name -> wallet.Money
+	0,  // 17: wallet.Transaction.status:type_name -> wallet.TransactionStatus
+	27, // 18: wallet.ListTransactionsResponse.transactions:type_name -> wallet.Transaction
+	5,  // 19: wallet.WalletService.C2B:input_type -> wallet.C2BRequest
+	6,  // 20: wallet.WalletService.B2C:input_type -> wallet.B2CRequest
+	7,  // 21: wallet.WalletService.TransactionInfo:input_type -> wallet.TransactionRequest
+	14, // 22: wallet.WalletService.Deposit:input_type -> wallet.DepositRequest
+	16, // 23: wallet.WalletService.Withdraw:input_type -> wallet.WithdrawRequest
+	18, // 24: wallet.WalletService.TakeLien:input_type -> wallet.LienRequest
+	20, // 25: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
+	22, // 26: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
+	24, // 27: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
+	10, // 28: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
+	11, // 29: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
+	12, // 30: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
+	13, // 31: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
+	26, // 32: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
+	8,  // 33: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
+	8,  // 34: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
+	8,  // 35: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
+	15, // 36: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
+	17, // 37: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
+	19, // 38: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
+	21, // 39: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
+	8,  // 40: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
+	25, // 41: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
+	4,  // 42: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
+	4,  // 43: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
+	4,  // 44: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
+	3,  // 45: wallet.WalletService.GetBalance:output_type -> wallet.Balance
+	28, // 46: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
+	33, // [33:47] is the sub-list for method output_type
+	19, // [19:33] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_wallet_proto_init() }
@@ -1611,7 +1870,7 @@ func file_wallet_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wallet_proto_rawDesc), len(file_wallet_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   24,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

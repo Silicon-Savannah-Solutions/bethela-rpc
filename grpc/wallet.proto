@@ -29,6 +29,9 @@ service WalletService {
     rpc CreateWallet(CreateWalletRequest) returns (Wallet);
     rpc GetWalletByID(GetWalletByIDRequest) returns (Wallet);
     rpc GetBalance(GetBalanceRequest) returns (Balance);
+    
+    // List transactions for a wallet
+    rpc ListTransactions(ListTransactionsRequest) returns (ListTransactionsResponse);
 }
 
 enum TransactionStatus {
@@ -168,4 +171,28 @@ message ManualReconciliationRequest {
 message ManualReconciliationResponse {
     bool success = 1;
     string message = 2;
+}
+
+message ListTransactionsRequest {
+    string wallet_id = 1;
+    int32 page_size = 2;
+    string page_token = 3;
+}
+
+message Transaction {
+    string id = 1;
+    string user_id = 2;
+    Money amount = 3;
+    TransactionStatus status = 4;
+    string message = 5;
+    string reference = 6;
+    string description = 7;
+    int64 created_at = 8;
+    int64 updated_at = 9;
+}
+
+message ListTransactionsResponse {
+    repeated Transaction transactions = 1;
+    string next_page_token = 2;
+    int32 total_count = 3;
 }

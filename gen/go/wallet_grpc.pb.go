@@ -32,6 +32,7 @@ const (
 	WalletService_CreateWallet_FullMethodName         = "/wallet.WalletService/CreateWallet"
 	WalletService_GetWalletByID_FullMethodName        = "/wallet.WalletService/GetWalletByID"
 	WalletService_GetBalance_FullMethodName           = "/wallet.WalletService/GetBalance"
+	WalletService_ListTransactions_FullMethodName     = "/wallet.WalletService/ListTransactions"
 )
 
 // WalletServiceClient is the client API for WalletService service.
@@ -52,6 +53,8 @@ type WalletServiceClient interface {
 	CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*Wallet, error)
 	GetWalletByID(ctx context.Context, in *GetWalletByIDRequest, opts ...grpc.CallOption) (*Wallet, error)
 	GetBalance(ctx context.Context, in *GetBalanceRequest, opts ...grpc.CallOption) (*Balance, error)
+	// List transactions for a wallet
+	ListTransactions(ctx context.Context, in *ListTransactionsRequest, opts ...grpc.CallOption) (*ListTransactionsResponse, error)
 }
 
 type walletServiceClient struct {
@@ -192,6 +195,16 @@ func (c *walletServiceClient) GetBalance(ctx context.Context, in *GetBalanceRequ
 	return out, nil
 }
 
+func (c *walletServiceClient) ListTransactions(ctx context.Context, in *ListTransactionsRequest, opts ...grpc.CallOption) (*ListTransactionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListTransactionsResponse)
+	err := c.cc.Invoke(ctx, WalletService_ListTransactions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WalletServiceServer is the server API for WalletService service.
 // All implementations must embed UnimplementedWalletServiceServer
 // for forward compatibility.
@@ -210,6 +223,8 @@ type WalletServiceServer interface {
 	CreateWallet(context.Context, *CreateWalletRequest) (*Wallet, error)
 	GetWalletByID(context.Context, *GetWalletByIDRequest) (*Wallet, error)
 	GetBalance(context.Context, *GetBalanceRequest) (*Balance, error)
+	// List transactions for a wallet
+	ListTransactions(context.Context, *ListTransactionsRequest) (*ListTransactionsResponse, error)
 	mustEmbedUnimplementedWalletServiceServer()
 }
 
@@ -258,6 +273,9 @@ func (UnimplementedWalletServiceServer) GetWalletByID(context.Context, *GetWalle
 }
 func (UnimplementedWalletServiceServer) GetBalance(context.Context, *GetBalanceRequest) (*Balance, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBalance not implemented")
+}
+func (UnimplementedWalletServiceServer) ListTransactions(context.Context, *ListTransactionsRequest) (*ListTransactionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTransactions not implemented")
 }
 func (UnimplementedWalletServiceServer) mustEmbedUnimplementedWalletServiceServer() {}
 func (UnimplementedWalletServiceServer) testEmbeddedByValue()                       {}
@@ -514,6 +532,24 @@ func _WalletService_GetBalance_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletService_ListTransactions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTransactionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).ListTransactions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_ListTransactions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).ListTransactions(ctx, req.(*ListTransactionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WalletService_ServiceDesc is the grpc.ServiceDesc for WalletService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -572,6 +608,10 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBalance",
 			Handler:    _WalletService_GetBalance_Handler,
+		},
+		{
+			MethodName: "ListTransactions",
+			Handler:    _WalletService_ListTransactions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
