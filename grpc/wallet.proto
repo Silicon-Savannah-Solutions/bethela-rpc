@@ -29,7 +29,7 @@ service WalletService {
     rpc CreateWallet(CreateWalletRequest) returns (Wallet);
     rpc GetWalletByID(GetWalletByIDRequest) returns (Wallet);
     rpc GetBalance(GetBalanceRequest) returns (Balance);
-    
+
     // List transactions for a wallet
     rpc ListTransactions(ListTransactionsRequest) returns (ListTransactionsResponse);
 }
@@ -189,6 +189,7 @@ message Transaction {
     string description = 7;
     int64 created_at = 8;
     int64 updated_at = 9;
+    string type = 10;
 }
 
 message ListTransactionsResponse {

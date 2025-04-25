@@ -1468,6 +1468,7 @@ type Transaction struct {
 	Description   string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
 	CreatedAt     int64                  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     int64                  `protobuf:"varint,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Type          string                 `protobuf:"bytes,10,opt,name=type,proto3" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1563,6 +1564,13 @@ func (x *Transaction) GetUpdatedAt() int64 {
 		return x.UpdatedAt
 	}
 	return 0
+}
+
+func (x *Transaction) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
 }
 
 type ListTransactionsResponse struct {
@@ -1711,7 +1719,7 @@ const file_wallet_proto_rawDesc = "" +
 	"\twallet_id\x18\x01 \x01(\tR\bwalletId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\xa8\x02\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\xbc\x02\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12%\n" +
@@ -1723,7 +1731,9 @@ const file_wallet_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\b \x01(\x03R\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\x03R\tupdatedAt\"\x9c\x01\n" +
+	"updated_at\x18\t \x01(\x03R\tupdatedAt\x12\x12\n" +
+	"\x04type\x18\n" +
+	" \x01(\tR\x04type\"\x9c\x01\n" +
 	"\x18ListTransactionsResponse\x127\n" +
 	"\ftransactions\x18\x01 \x03(\v2\x13.wallet.TransactionR\ftransactions\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
