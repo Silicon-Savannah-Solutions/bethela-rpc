@@ -164,13 +164,20 @@ message CommitLienResponse {
 }
 
 message ManualReconciliationRequest {
-    string transaction_id = 1;
+    string user_id = 1;
     Money amount = 2;
+    string balance_type = 3;
+    string operation = 4; // "credit" or "debit"
+    string reason = 5;
+    string transaction_id = 6;
 }
 
 message ManualReconciliationResponse {
     bool success = 1;
     string message = 2;
+    string transaction_id = 3;
+    TransactionStatus status = 4;
+    Money amount = 5;
 }
 
 message ListTransactionsRequest {
