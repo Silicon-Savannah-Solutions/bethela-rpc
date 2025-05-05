@@ -26,6 +26,7 @@ type MnoC2BRequest struct {
 	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	PhoneNumber   string                 `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
 	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	UserId        string                 `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,11 +82,19 @@ func (x *MnoC2BRequest) GetAmount() *Money {
 	return nil
 }
 
+func (x *MnoC2BRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
 type MnoB2CRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	PhoneNumber   string                 `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
 	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	UserId        string                 `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -139,6 +148,13 @@ func (x *MnoB2CRequest) GetAmount() *Money {
 		return x.Amount
 	}
 	return nil
+}
+
+func (x *MnoB2CRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
 }
 
 type MnoTransactionRequest struct {
@@ -265,15 +281,17 @@ var File_provider_interface_proto protoreflect.FileDescriptor
 
 const file_provider_interface_proto_rawDesc = "" +
 	"\n" +
-	"\x18provider_interface.proto\x12\x06wallet\x1a\fwallet.proto\"\x80\x01\n" +
+	"\x18provider_interface.proto\x12\x06wallet\x1a\fwallet.proto\"\x99\x01\n" +
 	"\rMnoC2BRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12!\n" +
 	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\x12%\n" +
-	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\"\x80\x01\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12\x17\n" +
+	"\auser_id\x18\x04 \x01(\tR\x06userId\"\x99\x01\n" +
 	"\rMnoB2CRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12!\n" +
 	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\x12%\n" +
-	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\">\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12\x17\n" +
+	"\auser_id\x18\x04 \x01(\tR\x06userId\">\n" +
 	"\x15MnoTransactionRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\"\xe1\x01\n" +
 	"\x16MnoTransactionResponse\x12,\n" +

@@ -19,12 +19,14 @@ message MnoC2BRequest {
   string transaction_id = 1;
   string phone_number = 2;
   Money amount = 3;
+  string user_id = 4;
 }
 
 message MnoB2CRequest {
   string transaction_id = 1;
   string phone_number = 2;
   Money amount = 3;
+  string user_id = 4;
 }
 
 message MnoTransactionRequest {
