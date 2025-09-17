@@ -14,7 +14,7 @@ service WalletService {
 
     rpc Deposit(DepositRequest) returns (DepositResponse);
 
-    rpc Reward(DepositRequest) returns (DepositResponse);
+    rpc Reward(RewardRequest) returns (DepositResponse);
 
     rpc Withdraw(WithdrawRequest) returns (WithdrawResponse);
 
@@ -48,6 +48,12 @@ enum LienType {
     WiTHDRAW = 1;
     NON_WITHDRAW = 2;
     BONUS = 3;
+}
+
+enum WalletType {
+    BONUS_WALLET = 0;
+    NON_WITHDRAWABLE_WALLET = 1;
+    WITHDRAWABLE_WALLET = 2;
 }
 
 message Money {
@@ -118,6 +124,13 @@ message DepositRequest {
     string transaction_id = 1;
     Money amount = 2;
     TransactionStatus status = 3;
+}
+
+message RewardRequest {
+    string user_id = 1;
+    string transaction_id = 2;
+    Money amount = 3;
+    WalletType reward_type = 4;
 }
 
 message DepositResponse {

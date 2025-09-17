@@ -44,7 +44,7 @@ type WalletServiceClient interface {
 	B2C(ctx context.Context, in *B2CRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
 	TransactionInfo(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
 	Deposit(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*DepositResponse, error)
-	Reward(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*DepositResponse, error)
+	Reward(ctx context.Context, in *RewardRequest, opts ...grpc.CallOption) (*DepositResponse, error)
 	Withdraw(ctx context.Context, in *WithdrawRequest, opts ...grpc.CallOption) (*WithdrawResponse, error)
 	TakeLien(ctx context.Context, in *LienRequest, opts ...grpc.CallOption) (*LienResponse, error)
 	Revertlien(ctx context.Context, in *RevertLienRequest, opts ...grpc.CallOption) (*RevertLienResponse, error)
@@ -107,7 +107,7 @@ func (c *walletServiceClient) Deposit(ctx context.Context, in *DepositRequest, o
 	return out, nil
 }
 
-func (c *walletServiceClient) Reward(ctx context.Context, in *DepositRequest, opts ...grpc.CallOption) (*DepositResponse, error) {
+func (c *walletServiceClient) Reward(ctx context.Context, in *RewardRequest, opts ...grpc.CallOption) (*DepositResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DepositResponse)
 	err := c.cc.Invoke(ctx, WalletService_Reward_FullMethodName, in, out, cOpts...)
@@ -225,7 +225,7 @@ type WalletServiceServer interface {
 	B2C(context.Context, *B2CRequest) (*TransactionResponse, error)
 	TransactionInfo(context.Context, *TransactionRequest) (*TransactionResponse, error)
 	Deposit(context.Context, *DepositRequest) (*DepositResponse, error)
-	Reward(context.Context, *DepositRequest) (*DepositResponse, error)
+	Reward(context.Context, *RewardRequest) (*DepositResponse, error)
 	Withdraw(context.Context, *WithdrawRequest) (*WithdrawResponse, error)
 	TakeLien(context.Context, *LienRequest) (*LienResponse, error)
 	Revertlien(context.Context, *RevertLienRequest) (*RevertLienResponse, error)
@@ -260,7 +260,7 @@ func (UnimplementedWalletServiceServer) TransactionInfo(context.Context, *Transa
 func (UnimplementedWalletServiceServer) Deposit(context.Context, *DepositRequest) (*DepositResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deposit not implemented")
 }
-func (UnimplementedWalletServiceServer) Reward(context.Context, *DepositRequest) (*DepositResponse, error) {
+func (UnimplementedWalletServiceServer) Reward(context.Context, *RewardRequest) (*DepositResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Reward not implemented")
 }
 func (UnimplementedWalletServiceServer) Withdraw(context.Context, *WithdrawRequest) (*WithdrawResponse, error) {
@@ -387,7 +387,7 @@ func _WalletService_Deposit_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _WalletService_Reward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DepositRequest)
+	in := new(RewardRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -399,7 +399,7 @@ func _WalletService_Reward_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: WalletService_Reward_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WalletServiceServer).Reward(ctx, req.(*DepositRequest))
+		return srv.(WalletServiceServer).Reward(ctx, req.(*RewardRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
