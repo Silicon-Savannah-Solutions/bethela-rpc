@@ -56,6 +56,16 @@ enum WalletType {
     WITHDRAWABLE_WALLET = 2;
 }
 
+enum TransactionDestination {
+    MNO_DESTINATION = 0;
+    CASINO_DESTINATION = 1;
+    PLAYER_DESTINATION = 2;
+    ADMIN_DESTINATION = 3;
+    SYSTEM_DESTINATION = 4;
+    PROVIDER_DESTINATION = 5;
+    BONUS_DESTINATION = 6;
+}
+
 message Money {
     int64 amount = 1;
     string currency = 2;
@@ -151,6 +161,7 @@ message LienRequest {
     string user_id = 1;
     Money amount = 2;
     LienType lien_type = 3;
+    TransactionDestination transaction_destination = 4;
 }
 
 message LienResponse {
