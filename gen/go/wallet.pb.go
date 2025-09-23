@@ -1711,6 +1711,8 @@ type Transaction struct {
 	CreatedAt     int64                  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     int64                  `protobuf:"varint,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	Type          string                 `protobuf:"bytes,10,opt,name=type,proto3" json:"type,omitempty"`
+	Source        string                 `protobuf:"bytes,11,opt,name=source,proto3" json:"source,omitempty"`
+	Destination   TransactionDestination `protobuf:"varint,12,opt,name=destination,proto3,enum=wallet.TransactionDestination" json:"destination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1813,6 +1815,20 @@ func (x *Transaction) GetType() string {
 		return x.Type
 	}
 	return ""
+}
+
+func (x *Transaction) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *Transaction) GetDestination() TransactionDestination {
+	if x != nil {
+		return x.Destination
+	}
+	return TransactionDestination_MNO_DESTINATION
 }
 
 type ListTransactionsResponse struct {
@@ -1975,7 +1991,7 @@ const file_wallet_proto_rawDesc = "" +
 	"\twallet_id\x18\x01 \x01(\tR\bwalletId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\xbc\x02\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\"\x96\x03\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12%\n" +
@@ -1989,7 +2005,9 @@ const file_wallet_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\t \x01(\x03R\tupdatedAt\x12\x12\n" +
 	"\x04type\x18\n" +
-	" \x01(\tR\x04type\"\x9c\x01\n" +
+	" \x01(\tR\x04type\x12\x16\n" +
+	"\x06source\x18\v \x01(\tR\x06source\x12@\n" +
+	"\vdestination\x18\f \x01(\x0e2\x1e.wallet.TransactionDestinationR\vdestination\"\x9c\x01\n" +
 	"\x18ListTransactionsResponse\x127\n" +
 	"\ftransactions\x18\x01 \x03(\v2\x13.wallet.TransactionR\ftransactions\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
@@ -2111,42 +2129,43 @@ var file_wallet_proto_depIdxs = []int32{
 	4,  // 20: wallet.ManualReconciliationResponse.amount:type_name -> wallet.Money
 	4,  // 21: wallet.Transaction.amount:type_name -> wallet.Money
 	0,  // 22: wallet.Transaction.status:type_name -> wallet.TransactionStatus
-	30, // 23: wallet.ListTransactionsResponse.transactions:type_name -> wallet.Transaction
-	7,  // 24: wallet.WalletService.C2B:input_type -> wallet.C2BRequest
-	8,  // 25: wallet.WalletService.B2C:input_type -> wallet.B2CRequest
-	9,  // 26: wallet.WalletService.TransactionInfo:input_type -> wallet.TransactionRequest
-	16, // 27: wallet.WalletService.Deposit:input_type -> wallet.DepositRequest
-	17, // 28: wallet.WalletService.Reward:input_type -> wallet.RewardRequest
-	19, // 29: wallet.WalletService.Withdraw:input_type -> wallet.WithdrawRequest
-	21, // 30: wallet.WalletService.TakeLien:input_type -> wallet.LienRequest
-	23, // 31: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
-	25, // 32: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
-	27, // 33: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
-	12, // 34: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
-	13, // 35: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
-	14, // 36: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
-	15, // 37: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
-	29, // 38: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
-	10, // 39: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
-	10, // 40: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
-	10, // 41: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
-	18, // 42: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
-	18, // 43: wallet.WalletService.Reward:output_type -> wallet.DepositResponse
-	20, // 44: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
-	22, // 45: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
-	24, // 46: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
-	10, // 47: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
-	28, // 48: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
-	6,  // 49: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
-	6,  // 50: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
-	6,  // 51: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
-	5,  // 52: wallet.WalletService.GetBalance:output_type -> wallet.Balance
-	31, // 53: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
-	39, // [39:54] is the sub-list for method output_type
-	24, // [24:39] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	3,  // 23: wallet.Transaction.destination:type_name -> wallet.TransactionDestination
+	30, // 24: wallet.ListTransactionsResponse.transactions:type_name -> wallet.Transaction
+	7,  // 25: wallet.WalletService.C2B:input_type -> wallet.C2BRequest
+	8,  // 26: wallet.WalletService.B2C:input_type -> wallet.B2CRequest
+	9,  // 27: wallet.WalletService.TransactionInfo:input_type -> wallet.TransactionRequest
+	16, // 28: wallet.WalletService.Deposit:input_type -> wallet.DepositRequest
+	17, // 29: wallet.WalletService.Reward:input_type -> wallet.RewardRequest
+	19, // 30: wallet.WalletService.Withdraw:input_type -> wallet.WithdrawRequest
+	21, // 31: wallet.WalletService.TakeLien:input_type -> wallet.LienRequest
+	23, // 32: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
+	25, // 33: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
+	27, // 34: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
+	12, // 35: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
+	13, // 36: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
+	14, // 37: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
+	15, // 38: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
+	29, // 39: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
+	10, // 40: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
+	10, // 41: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
+	10, // 42: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
+	18, // 43: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
+	18, // 44: wallet.WalletService.Reward:output_type -> wallet.DepositResponse
+	20, // 45: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
+	22, // 46: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
+	24, // 47: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
+	10, // 48: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
+	28, // 49: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
+	6,  // 50: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
+	6,  // 51: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
+	6,  // 52: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
+	5,  // 53: wallet.WalletService.GetBalance:output_type -> wallet.Balance
+	31, // 54: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
+	40, // [40:55] is the sub-list for method output_type
+	25, // [25:40] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_wallet_proto_init() }
