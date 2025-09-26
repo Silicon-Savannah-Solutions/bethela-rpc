@@ -25,15 +25,16 @@ const (
 
 // ListGamesRequest is used to list games with filters
 type ListGamesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PageSize      int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`   // Number of games per page
-	PageToken     string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"` // Pagination token
-	Category      string                 `protobuf:"bytes,3,opt,name=category,proto3" json:"category,omitempty"`                    // Filter by category
-	Provider      string                 `protobuf:"bytes,4,opt,name=provider,proto3" json:"provider,omitempty"`                    // Filter by provider
-	Currency      string                 `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`                    // Filter by currency support
-	Search        string                 `protobuf:"bytes,6,opt,name=search,proto3" json:"search,omitempty"`                        // Search by name
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	PageSize        int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`                      // Number of games per page
+	PageToken       string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`                    // Pagination token
+	Category        string                 `protobuf:"bytes,3,opt,name=category,proto3" json:"category,omitempty"`                                       // Filter by category
+	Provider        string                 `protobuf:"bytes,4,opt,name=provider,proto3" json:"provider,omitempty"`                                       // Filter by provider
+	Currency        string                 `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`                                       // Filter by currency support
+	Search          string                 `protobuf:"bytes,6,opt,name=search,proto3" json:"search,omitempty"`                                           // Search by name
+	IncludeInactive bool                   `protobuf:"varint,7,opt,name=include_inactive,json=includeInactive,proto3" json:"include_inactive,omitempty"` // Include inactive/invisible games (for admin use)
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ListGamesRequest) Reset() {
@@ -106,6 +107,13 @@ func (x *ListGamesRequest) GetSearch() string {
 		return x.Search
 	}
 	return ""
+}
+
+func (x *ListGamesRequest) GetIncludeInactive() bool {
+	if x != nil {
+		return x.IncludeInactive
+	}
+	return false
 }
 
 // ListGamesResponse contains a list of games and pagination info
@@ -1319,7 +1327,7 @@ var File_casino_service_proto protoreflect.FileDescriptor
 
 const file_casino_service_proto_rawDesc = "" +
 	"\n" +
-	"\x14casino_service.proto\x12\x06casino\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\fwallet.proto\x1a\x15casino_provider.proto\"\xba\x01\n" +
+	"\x14casino_service.proto\x12\x06casino\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\fwallet.proto\x1a\x15casino_provider.proto\"\xe5\x01\n" +
 	"\x10ListGamesRequest\x12\x1b\n" +
 	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
@@ -1327,7 +1335,8 @@ const file_casino_service_proto_rawDesc = "" +
 	"\bcategory\x18\x03 \x01(\tR\bcategory\x12\x1a\n" +
 	"\bprovider\x18\x04 \x01(\tR\bprovider\x12\x1a\n" +
 	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x12\x16\n" +
-	"\x06search\x18\x06 \x01(\tR\x06search\"\x80\x01\n" +
+	"\x06search\x18\x06 \x01(\tR\x06search\x12)\n" +
+	"\x10include_inactive\x18\a \x01(\bR\x0fincludeInactive\"\x80\x01\n" +
 	"\x11ListGamesResponse\x12\"\n" +
 	"\x05games\x18\x01 \x03(\v2\f.casino.GameR\x05games\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +

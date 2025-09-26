@@ -47,6 +47,7 @@ message ListGamesRequest {
   string provider = 4;         // Filter by provider
   string currency = 5;         // Filter by currency support
   string search = 6;           // Search by name
+  bool include_inactive = 7;   // Include inactive/invisible games (for admin use)
 }
 
 // ListGamesResponse contains a list of games and pagination info
