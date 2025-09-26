@@ -25,6 +25,7 @@ const (
 	CasinoService_GetProviders_FullMethodName     = "/casino.CasinoService/GetProviders"
 	CasinoService_LaunchGame_FullMethodName       = "/casino.CasinoService/LaunchGame"
 	CasinoService_GetPlayerHistory_FullMethodName = "/casino.CasinoService/GetPlayerHistory"
+	CasinoService_UpdateGameStatus_FullMethodName = "/casino.CasinoService/UpdateGameStatus"
 	CasinoService_ProcessBet_FullMethodName       = "/casino.CasinoService/ProcessBet"
 	CasinoService_ProcessWin_FullMethodName       = "/casino.CasinoService/ProcessWin"
 	CasinoService_ProcessRollback_FullMethodName  = "/casino.CasinoService/ProcessRollback"
@@ -48,6 +49,8 @@ type CasinoServiceClient interface {
 	LaunchGame(ctx context.Context, in *LaunchGameRequest, opts ...grpc.CallOption) (*LaunchGameResponse, error)
 	// Get player game history
 	GetPlayerHistory(ctx context.Context, in *GetPlayerHistoryRequest, opts ...grpc.CallOption) (*GetPlayerHistoryResponse, error)
+	// Admin methods for game management
+	UpdateGameStatus(ctx context.Context, in *UpdateGameStatusRequest, opts ...grpc.CallOption) (*UpdateGameStatusResponse, error)
 	// Internal methods used by the casino service
 	ProcessBet(ctx context.Context, in *ProcessBetRequest, opts ...grpc.CallOption) (*ProcessBetResponse, error)
 	ProcessWin(ctx context.Context, in *ProcessWinRequest, opts ...grpc.CallOption) (*ProcessWinResponse, error)
@@ -122,6 +125,16 @@ func (c *casinoServiceClient) GetPlayerHistory(ctx context.Context, in *GetPlaye
 	return out, nil
 }
 
+func (c *casinoServiceClient) UpdateGameStatus(ctx context.Context, in *UpdateGameStatusRequest, opts ...grpc.CallOption) (*UpdateGameStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateGameStatusResponse)
+	err := c.cc.Invoke(ctx, CasinoService_UpdateGameStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *casinoServiceClient) ProcessBet(ctx context.Context, in *ProcessBetRequest, opts ...grpc.CallOption) (*ProcessBetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProcessBetResponse)
@@ -170,6 +183,8 @@ type CasinoServiceServer interface {
 	LaunchGame(context.Context, *LaunchGameRequest) (*LaunchGameResponse, error)
 	// Get player game history
 	GetPlayerHistory(context.Context, *GetPlayerHistoryRequest) (*GetPlayerHistoryResponse, error)
+	// Admin methods for game management
+	UpdateGameStatus(context.Context, *UpdateGameStatusRequest) (*UpdateGameStatusResponse, error)
 	// Internal methods used by the casino service
 	ProcessBet(context.Context, *ProcessBetRequest) (*ProcessBetResponse, error)
 	ProcessWin(context.Context, *ProcessWinRequest) (*ProcessWinResponse, error)
@@ -201,6 +216,9 @@ func (UnimplementedCasinoServiceServer) LaunchGame(context.Context, *LaunchGameR
 }
 func (UnimplementedCasinoServiceServer) GetPlayerHistory(context.Context, *GetPlayerHistoryRequest) (*GetPlayerHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPlayerHistory not implemented")
+}
+func (UnimplementedCasinoServiceServer) UpdateGameStatus(context.Context, *UpdateGameStatusRequest) (*UpdateGameStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGameStatus not implemented")
 }
 func (UnimplementedCasinoServiceServer) ProcessBet(context.Context, *ProcessBetRequest) (*ProcessBetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProcessBet not implemented")
@@ -340,6 +358,24 @@ func _CasinoService_GetPlayerHistory_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CasinoService_UpdateGameStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGameStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CasinoServiceServer).UpdateGameStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CasinoService_UpdateGameStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CasinoServiceServer).UpdateGameStatus(ctx, req.(*UpdateGameStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CasinoService_ProcessBet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProcessBetRequest)
 	if err := dec(in); err != nil {
@@ -424,6 +460,10 @@ var CasinoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPlayerHistory",
 			Handler:    _CasinoService_GetPlayerHistory_Handler,
+		},
+		{
+			MethodName: "UpdateGameStatus",
+			Handler:    _CasinoService_UpdateGameStatus_Handler,
 		},
 		{
 			MethodName: "ProcessBet",

@@ -33,6 +33,9 @@ service CasinoService {
   // These are implemented in the casino service but not exposed via gRPC
   // They're handled in the HTTP layer
 
+  // Admin methods for game management
+  rpc UpdateGameStatus(UpdateGameStatusRequest) returns (UpdateGameStatusResponse);
+
   // Internal methods used by the casino service
   rpc ProcessBet(ProcessBetRequest) returns (ProcessBetResponse);
   rpc ProcessWin(ProcessWinRequest) returns (ProcessWinResponse);
@@ -189,4 +192,18 @@ message ProcessRollbackResponse {
   string error_code = 3;       // Error code if unsuccessful
   string error_message = 4;    // Error message if unsuccessful
   wallet.Money balance = 5;    // Updated balance
+}
+
+// UpdateGameStatusRequest is used to update game status
+message UpdateGameStatusRequest {
+  string game_id = 1;          // Internal game ID
+  optional bool is_active = 2; // Set active status (null = no change)
+  optional bool is_visible = 3; // Set visible status (null = no change)
+}
+
+// UpdateGameStatusResponse is returned after updating game status
+message UpdateGameStatusResponse {
+  bool success = 1;            // Whether the update was successful
+  string error_message = 2;    // Error message if unsuccessful
+  casino.Game game = 3;        // Updated game data
 }
