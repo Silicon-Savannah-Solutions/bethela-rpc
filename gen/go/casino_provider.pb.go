@@ -37,6 +37,7 @@ type Game struct {
 	SupportedCurrencies []string               `protobuf:"bytes,10,rep,name=supported_currencies,json=supportedCurrencies,proto3" json:"supported_currencies,omitempty"`                                                     // List of supported currencies
 	IsActive            bool                   `protobuf:"varint,11,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`                                                                                     // Whether the game is active
 	UpdatedAt           *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                                                   // Last update time
+	IsVisible           bool                   `protobuf:"varint,13,opt,name=is_visible,json=isVisible,proto3" json:"is_visible,omitempty"`                                                                                  // Whether the game is visible to players
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -153,6 +154,13 @@ func (x *Game) GetUpdatedAt() *timestamppb.Timestamp {
 		return x.UpdatedAt
 	}
 	return nil
+}
+
+func (x *Game) GetIsVisible() bool {
+	if x != nil {
+		return x.IsVisible
+	}
+	return false
 }
 
 // GetGamesRequest is used to retrieve games from a provider
@@ -1009,7 +1017,7 @@ var File_casino_provider_proto protoreflect.FileDescriptor
 
 const file_casino_provider_proto_rawDesc = "" +
 	"\n" +
-	"\x15casino_provider.proto\x12\x06casino\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\xc8\x05\n" +
+	"\x15casino_provider.proto\x12\x06casino\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\xe7\x05\n" +
 	"\x04Game\x12\x17\n" +
 	"\agame_id\x18\x01 \x01(\tR\x06gameId\x12\x1b\n" +
 	"\tgame_uuid\x18\x02 \x01(\tR\bgameUuid\x12\x12\n" +
@@ -1025,7 +1033,9 @@ const file_casino_provider_proto_rawDesc = "" +
 	" \x03(\tR\x13supportedCurrencies\x12\x1b\n" +
 	"\tis_active\x18\v \x01(\bR\bisActive\x129\n" +
 	"\n" +
-	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x1a?\n" +
+	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x1d\n" +
+	"\n" +
+	"is_visible\x18\r \x01(\bR\tisVisible\x1a?\n" +
 	"\x11MinimumStakeEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a?\n" +

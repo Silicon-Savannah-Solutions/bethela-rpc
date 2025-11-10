@@ -40,6 +40,7 @@ message Game {
   repeated string supported_currencies = 10; // List of supported currencies
   bool is_active = 11;         // Whether the game is active
   google.protobuf.Timestamp updated_at = 12; // Last update time
+  bool is_visible = 13;        // Whether the game is visible to players
 }
 
 // GetGamesRequest is used to retrieve games from a provider
