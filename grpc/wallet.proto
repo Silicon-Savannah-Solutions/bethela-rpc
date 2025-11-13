@@ -66,6 +66,7 @@ enum TransactionDestination {
     BONUS_DESTINATION = 6;
 }
 
+
 message Money {
     int64 amount = 1;
     string currency = 2;
@@ -210,7 +211,7 @@ message ListTransactionsRequest {
     string wallet_id = 1;
     int32 page_size = 2;
     string page_token = 3;
-    
+
     // Filter fields for server-side filtering
     optional string user_id = 4;                    // Filter by specific user
     optional string transaction_type = 5;           // Filter by transaction type

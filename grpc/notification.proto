@@ -1,0 +1,272 @@
+syntax = "proto3";
+
+package notification;
+
+option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// NotificationService provides APIs for sending notifications to users
+service NotificationService {
+  // Send an SMS notification to a user
+  rpc SendSMS(SendSMSRequest) returns (SendSMSResponse);
+  
+  // Send a bulk SMS to multiple users
+  rpc SendBulkSMS(SendBulkSMSRequest) returns (SendBulkSMSResponse);
+  
+  // Get notification status by ID
+  rpc GetNotificationStatus(GetNotificationStatusRequest) returns (NotificationStatus);
+  
+  // List notifications for a user with pagination
+  rpc ListUserNotifications(ListUserNotificationsRequest) returns (ListUserNotificationsResponse);
+  
+  // Create notification templates for reuse
+  rpc CreateTemplate(CreateTemplateRequest) returns (NotificationTemplate);
+  
+  // Update an existing template
+  rpc UpdateTemplate(UpdateTemplateRequest) returns (NotificationTemplate);
+  
+  // Delete a template
+  rpc DeleteTemplate(DeleteTemplateRequest) returns (google.protobuf.Empty);
+  
+  // List available templates
+  rpc ListTemplates(ListTemplatesRequest) returns (ListTemplatesResponse);
+  
+  // Send notification using a template
+  rpc SendTemplatedNotification(SendTemplatedNotificationRequest) returns (SendSMSResponse);
+  
+  // Subscribe/unsubscribe user from notification types
+  rpc UpdateUserPreferences(UpdateUserPreferencesRequest) returns (UserNotificationPreferences);
+  
+  // Get user notification preferences
+  rpc GetUserPreferences(GetUserPreferencesRequest) returns (UserNotificationPreferences);
+}
+
+// NotificationType represents different types of notifications
+enum NotificationType {
+  NOTIFICATION_TYPE_UNSPECIFIED = 0;
+  NOTIFICATION_TYPE_SMS = 1;
+  NOTIFICATION_TYPE_EMAIL = 2;
+  NOTIFICATION_TYPE_PUSH = 3;
+}
+
+// NotificationCategory represents different categories of notifications
+enum NotificationCategory {
+  NOTIFICATION_CATEGORY_UNSPECIFIED = 0;
+  NOTIFICATION_CATEGORY_TRANSACTION = 1;
+  NOTIFICATION_CATEGORY_GAME = 2;
+  NOTIFICATION_CATEGORY_PROMOTIONAL = 3;
+  NOTIFICATION_CATEGORY_SECURITY = 4;
+  NOTIFICATION_CATEGORY_SYSTEM = 5;
+  NOTIFICATION_CATEGORY_VERIFICATION = 6;
+}
+
+// NotificationPriority represents the urgency of a notification
+enum NotificationPriority {
+  NOTIFICATION_PRIORITY_UNSPECIFIED = 0;
+  NOTIFICATION_PRIORITY_LOW = 1;
+  NOTIFICATION_PRIORITY_MEDIUM = 2;
+  NOTIFICATION_PRIORITY_HIGH = 3;
+  NOTIFICATION_PRIORITY_URGENT = 4;
+}
+
+// DeliveryStatus represents the current status of a notification delivery
+enum DeliveryStatus {
+  DELIVERY_STATUS_UNSPECIFIED = 0;
+  DELIVERY_STATUS_PENDING = 1;
+  DELIVERY_STATUS_SENT = 2;
+  DELIVERY_STATUS_DELIVERED = 3;
+  DELIVERY_STATUS_FAILED = 4;
+  DELIVERY_STATUS_EXPIRED = 5;
+}
+
+// SendSMSRequest is used to send an SMS notification
+message SendSMSRequest {
+  string user_id = 1;                           // Target user ID
+  string phone_number = 2;                      // Phone number to send to
+  string message = 3;                           // SMS message content
+  NotificationCategory category = 4;            // Notification category
+  NotificationPriority priority = 5;            // Message priority
+  optional string reference_id = 6;             // External reference (e.g., transaction ID)
+  optional int32 ttl_seconds = 7;              // Time to live in seconds
+  map<string, string> metadata = 8;            // Additional metadata
+}
+
+// SendSMSResponse contains the result of sending an SMS
+message SendSMSResponse {
+  string notification_id = 1;                   // Unique notification ID
+  bool success = 2;                            // Whether sending was initiated successfully
+  string message = 3;                          // Status message
+  DeliveryStatus delivery_status = 4;          // Current delivery status
+  google.protobuf.Timestamp created_at = 5;   // When the notification was created
+  optional google.protobuf.Timestamp estimated_delivery = 6; // Estimated delivery time
+}
+
+// SendBulkSMSRequest is used to send SMS to multiple users
+message SendBulkSMSRequest {
+  repeated BulkSMSRecipient recipients = 1;    // List of recipients
+  string message = 2;                          // SMS message content
+  NotificationCategory category = 3;           // Notification category
+  NotificationPriority priority = 4;           // Message priority
+  optional string campaign_id = 5;             // Campaign identifier
+  optional int32 ttl_seconds = 6;             // Time to live in seconds
+  map<string, string> metadata = 7;           // Additional metadata
+}
+
+// BulkSMSRecipient represents a recipient in bulk SMS
+message BulkSMSRecipient {
+  string user_id = 1;                          // User ID
+  string phone_number = 2;                     // Phone number
+  map<string, string> personalization = 3;    // Personalization data for the message
+}
+
+// SendBulkSMSResponse contains the result of bulk SMS sending
+message SendBulkSMSResponse {
+  string batch_id = 1;                         // Bulk operation batch ID
+  int32 total_recipients = 2;                  // Total number of recipients
+  int32 successful_sends = 3;                  // Number of successful sends
+  int32 failed_sends = 4;                      // Number of failed sends
+  repeated SendSMSResponse individual_results = 5; // Individual results for each recipient
+  google.protobuf.Timestamp created_at = 6;   // When the bulk operation was created
+}
+
+// GetNotificationStatusRequest is used to get notification status
+message GetNotificationStatusRequest {
+  string notification_id = 1;                  // Notification ID to query
+}
+
+// NotificationStatus contains detailed status information
+message NotificationStatus {
+  string notification_id = 1;                  // Notification ID
+  string user_id = 2;                          // Target user ID
+  string phone_number = 3;                     // Destination phone number
+  string message = 4;                          // Message content
+  NotificationType type = 5;                   // Notification type
+  NotificationCategory category = 6;           // Notification category
+  NotificationPriority priority = 7;           // Message priority
+  DeliveryStatus delivery_status = 8;          // Current delivery status
+  google.protobuf.Timestamp created_at = 9;   // Creation timestamp
+  optional google.protobuf.Timestamp sent_at = 10;     // When sent to provider
+  optional google.protobuf.Timestamp delivered_at = 11; // When delivered
+  optional string error_message = 12;          // Error message if failed
+  optional string reference_id = 13;           // External reference
+  map<string, string> metadata = 14;          // Additional metadata
+  string provider_message_id = 15;            // Provider's message ID
+}
+
+// ListUserNotificationsRequest is used to get user's notification history
+message ListUserNotificationsRequest {
+  string user_id = 1;                          // User ID
+  int32 page_size = 2;                         // Number of items per page
+  string page_token = 3;                       // Pagination token
+  optional NotificationCategory category = 4;  // Filter by category
+  optional DeliveryStatus status = 5;          // Filter by delivery status
+  optional google.protobuf.Timestamp start_date = 6; // Date range start
+  optional google.protobuf.Timestamp end_date = 7;   // Date range end
+}
+
+// ListUserNotificationsResponse contains user's notification history
+message ListUserNotificationsResponse {
+  repeated NotificationStatus notifications = 1; // List of notifications
+  string next_page_token = 2;                  // Token for next page
+  int32 total_count = 3;                       // Total count of notifications
+}
+
+// NotificationTemplate represents a reusable message template
+message NotificationTemplate {
+  string template_id = 1;                      // Template ID
+  string name = 2;                             // Template name
+  string description = 3;                      // Template description
+  NotificationCategory category = 4;           // Associated category
+  string message_template = 5;                 // Message template with placeholders
+  repeated string required_variables = 6;      // Required template variables
+  bool is_active = 7;                          // Whether template is active
+  google.protobuf.Timestamp created_at = 8;   // Creation timestamp
+  google.protobuf.Timestamp updated_at = 9;   // Last update timestamp
+  string created_by = 10;                      // User ID who created the template
+}
+
+// CreateTemplateRequest is used to create a new template
+message CreateTemplateRequest {
+  string name = 1;                             // Template name
+  string description = 2;                      // Template description
+  NotificationCategory category = 3;           // Associated category
+  string message_template = 4;                 // Message template with placeholders
+  repeated string required_variables = 5;      // Required template variables
+  string created_by = 6;                       // User ID creating the template
+}
+
+// UpdateTemplateRequest is used to update an existing template
+message UpdateTemplateRequest {
+  string template_id = 1;                      // Template ID to update
+  optional string name = 2;                    // Updated name
+  optional string description = 3;             // Updated description
+  optional NotificationCategory category = 4;  // Updated category
+  optional string message_template = 5;        // Updated message template
+  repeated string required_variables = 6;      // Updated required variables
+  optional bool is_active = 7;                // Updated active status
+}
+
+// DeleteTemplateRequest is used to delete a template
+message DeleteTemplateRequest {
+  string template_id = 1;                      // Template ID to delete
+}
+
+// ListTemplatesRequest is used to list available templates
+message ListTemplatesRequest {
+  int32 page_size = 1;                         // Number of items per page
+  string page_token = 2;                       // Pagination token
+  optional NotificationCategory category = 3;  // Filter by category
+  optional bool is_active = 4;                // Filter by active status
+  string search_query = 5;                    // Search in name/description
+}
+
+// ListTemplatesResponse contains list of templates
+message ListTemplatesResponse {
+  repeated NotificationTemplate templates = 1; // List of templates
+  string next_page_token = 2;                 // Token for next page
+  int32 total_count = 3;                      // Total count of templates
+}
+
+// SendTemplatedNotificationRequest is used to send notification using a template
+message SendTemplatedNotificationRequest {
+  string user_id = 1;                          // Target user ID
+  string phone_number = 2;                     // Phone number to send to
+  string template_id = 3;                      // Template to use
+  map<string, string> template_variables = 4;  // Variables for template substitution
+  NotificationPriority priority = 5;           // Message priority (overrides template)
+  optional string reference_id = 6;            // External reference
+  optional int32 ttl_seconds = 7;             // Time to live in seconds
+  map<string, string> metadata = 8;           // Additional metadata
+}
+
+// UserNotificationPreferences represents user's notification settings
+message UserNotificationPreferences {
+  string user_id = 1;                          // User ID
+  bool sms_enabled = 2;                        // Whether SMS notifications are enabled
+  bool email_enabled = 3;                      // Whether email notifications are enabled
+  bool push_enabled = 4;                       // Whether push notifications are enabled
+  repeated NotificationCategory subscribed_categories = 5; // Subscribed categories
+  repeated NotificationCategory blocked_categories = 6;    // Blocked categories
+  string phone_number = 7;                     // User's phone number for SMS
+  string email = 8;                            // User's email for notifications
+  google.protobuf.Timestamp updated_at = 9;   // Last update timestamp
+}
+
+// UpdateUserPreferencesRequest is used to update user notification preferences
+message UpdateUserPreferencesRequest {
+  string user_id = 1;                          // User ID
+  optional bool sms_enabled = 2;               // Update SMS enabled status
+  optional bool email_enabled = 3;             // Update email enabled status
+  optional bool push_enabled = 4;              // Update push enabled status
+  repeated NotificationCategory subscribe_to = 5;   // Categories to subscribe to
+  repeated NotificationCategory unsubscribe_from = 6; // Categories to unsubscribe from
+  optional string phone_number = 7;            // Update phone number
+  optional string email = 8;                   // Update email
+}
+
+// GetUserPreferencesRequest is used to get user notification preferences
+message GetUserPreferencesRequest {
+  string user_id = 1;                          // User ID
+}
