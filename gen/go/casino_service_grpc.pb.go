@@ -19,16 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CasinoService_ListGames_FullMethodName        = "/casino.CasinoService/ListGames"
-	CasinoService_GetGame_FullMethodName          = "/casino.CasinoService/GetGame"
-	CasinoService_GetCategories_FullMethodName    = "/casino.CasinoService/GetCategories"
-	CasinoService_GetProviders_FullMethodName     = "/casino.CasinoService/GetProviders"
-	CasinoService_LaunchGame_FullMethodName       = "/casino.CasinoService/LaunchGame"
-	CasinoService_GetPlayerHistory_FullMethodName = "/casino.CasinoService/GetPlayerHistory"
-	CasinoService_UpdateGameStatus_FullMethodName = "/casino.CasinoService/UpdateGameStatus"
-	CasinoService_ProcessBet_FullMethodName       = "/casino.CasinoService/ProcessBet"
-	CasinoService_ProcessWin_FullMethodName       = "/casino.CasinoService/ProcessWin"
-	CasinoService_ProcessRollback_FullMethodName  = "/casino.CasinoService/ProcessRollback"
+	CasinoService_ListGames_FullMethodName         = "/casino.CasinoService/ListGames"
+	CasinoService_ListOriginalGames_FullMethodName = "/casino.CasinoService/ListOriginalGames"
+	CasinoService_GetGame_FullMethodName           = "/casino.CasinoService/GetGame"
+	CasinoService_GetCategories_FullMethodName     = "/casino.CasinoService/GetCategories"
+	CasinoService_GetProviders_FullMethodName      = "/casino.CasinoService/GetProviders"
+	CasinoService_LaunchGame_FullMethodName        = "/casino.CasinoService/LaunchGame"
+	CasinoService_GetPlayerHistory_FullMethodName  = "/casino.CasinoService/GetPlayerHistory"
+	CasinoService_UpdateGameStatus_FullMethodName  = "/casino.CasinoService/UpdateGameStatus"
+	CasinoService_ProcessBet_FullMethodName        = "/casino.CasinoService/ProcessBet"
+	CasinoService_ProcessWin_FullMethodName        = "/casino.CasinoService/ProcessWin"
+	CasinoService_ProcessRollback_FullMethodName   = "/casino.CasinoService/ProcessRollback"
 )
 
 // CasinoServiceClient is the client API for CasinoService service.
@@ -39,6 +40,8 @@ const (
 type CasinoServiceClient interface {
 	// List available games with filtering and pagination
 	ListGames(ctx context.Context, in *ListGamesRequest, opts ...grpc.CallOption) (*ListGamesResponse, error)
+	// List games marked as originals
+	ListOriginalGames(ctx context.Context, in *ListGamesRequest, opts ...grpc.CallOption) (*ListGamesResponse, error)
 	// Get game details
 	GetGame(ctx context.Context, in *GetGameRequest, opts ...grpc.CallOption) (*Game, error)
 	// Get game categories
@@ -69,6 +72,16 @@ func (c *casinoServiceClient) ListGames(ctx context.Context, in *ListGamesReques
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListGamesResponse)
 	err := c.cc.Invoke(ctx, CasinoService_ListGames_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *casinoServiceClient) ListOriginalGames(ctx context.Context, in *ListGamesRequest, opts ...grpc.CallOption) (*ListGamesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListGamesResponse)
+	err := c.cc.Invoke(ctx, CasinoService_ListOriginalGames_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -173,6 +186,8 @@ func (c *casinoServiceClient) ProcessRollback(ctx context.Context, in *ProcessRo
 type CasinoServiceServer interface {
 	// List available games with filtering and pagination
 	ListGames(context.Context, *ListGamesRequest) (*ListGamesResponse, error)
+	// List games marked as originals
+	ListOriginalGames(context.Context, *ListGamesRequest) (*ListGamesResponse, error)
 	// Get game details
 	GetGame(context.Context, *GetGameRequest) (*Game, error)
 	// Get game categories
@@ -201,6 +216,9 @@ type UnimplementedCasinoServiceServer struct{}
 
 func (UnimplementedCasinoServiceServer) ListGames(context.Context, *ListGamesRequest) (*ListGamesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListGames not implemented")
+}
+func (UnimplementedCasinoServiceServer) ListOriginalGames(context.Context, *ListGamesRequest) (*ListGamesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOriginalGames not implemented")
 }
 func (UnimplementedCasinoServiceServer) GetGame(context.Context, *GetGameRequest) (*Game, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGame not implemented")
@@ -264,6 +282,24 @@ func _CasinoService_ListGames_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CasinoServiceServer).ListGames(ctx, req.(*ListGamesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CasinoService_ListOriginalGames_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGamesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CasinoServiceServer).ListOriginalGames(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CasinoService_ListOriginalGames_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CasinoServiceServer).ListOriginalGames(ctx, req.(*ListGamesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -440,6 +476,10 @@ var CasinoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListGames",
 			Handler:    _CasinoService_ListGames_Handler,
+		},
+		{
+			MethodName: "ListOriginalGames",
+			Handler:    _CasinoService_ListOriginalGames_Handler,
 		},
 		{
 			MethodName: "GetGame",

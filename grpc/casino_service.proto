@@ -14,6 +14,9 @@ service CasinoService {
   // List available games with filtering and pagination
   rpc ListGames(ListGamesRequest) returns (ListGamesResponse);
 
+  // List games marked as originals
+  rpc ListOriginalGames(ListGamesRequest) returns (ListGamesResponse);
+
   // Get game details
   rpc GetGame(GetGameRequest) returns (casino.Game);
 
@@ -199,6 +202,7 @@ message UpdateGameStatusRequest {
   string game_id = 1;          // Internal game ID
   optional bool is_active = 2; // Set active status (null = no change)
   optional bool is_visible = 3; // Set visible status (null = no change)
+  optional bool is_original = 4; // Set original status (null = no change)
 }
 
 // UpdateGameStatusResponse is returned after updating game status

@@ -1326,9 +1326,10 @@ func (x *ProcessRollbackResponse) GetBalance() *Money {
 // UpdateGameStatusRequest is used to update game status
 type UpdateGameStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`                 // Internal game ID
-	IsActive      *bool                  `protobuf:"varint,2,opt,name=is_active,json=isActive,proto3,oneof" json:"is_active,omitempty"`    // Set active status (null = no change)
-	IsVisible     *bool                  `protobuf:"varint,3,opt,name=is_visible,json=isVisible,proto3,oneof" json:"is_visible,omitempty"` // Set visible status (null = no change)
+	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`                    // Internal game ID
+	IsActive      *bool                  `protobuf:"varint,2,opt,name=is_active,json=isActive,proto3,oneof" json:"is_active,omitempty"`       // Set active status (null = no change)
+	IsVisible     *bool                  `protobuf:"varint,3,opt,name=is_visible,json=isVisible,proto3,oneof" json:"is_visible,omitempty"`    // Set visible status (null = no change)
+	IsOriginal    *bool                  `protobuf:"varint,4,opt,name=is_original,json=isOriginal,proto3,oneof" json:"is_original,omitempty"` // Set original status (null = no change)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1380,6 +1381,13 @@ func (x *UpdateGameStatusRequest) GetIsActive() bool {
 func (x *UpdateGameStatusRequest) GetIsVisible() bool {
 	if x != nil && x.IsVisible != nil {
 		return *x.IsVisible
+	}
+	return false
+}
+
+func (x *UpdateGameStatusRequest) GetIsOriginal() bool {
+	if x != nil && x.IsOriginal != nil {
+		return *x.IsOriginal
 	}
 	return false
 }
@@ -1565,21 +1573,25 @@ const file_casino_service_proto_rawDesc = "" +
 	"\n" +
 	"error_code\x18\x03 \x01(\tR\terrorCode\x12#\n" +
 	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage\x12'\n" +
-	"\abalance\x18\x05 \x01(\v2\r.wallet.MoneyR\abalance\"\x95\x01\n" +
+	"\abalance\x18\x05 \x01(\v2\r.wallet.MoneyR\abalance\"\xcb\x01\n" +
 	"\x17UpdateGameStatusRequest\x12\x17\n" +
 	"\agame_id\x18\x01 \x01(\tR\x06gameId\x12 \n" +
 	"\tis_active\x18\x02 \x01(\bH\x00R\bisActive\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"is_visible\x18\x03 \x01(\bH\x01R\tisVisible\x88\x01\x01B\f\n" +
+	"is_visible\x18\x03 \x01(\bH\x01R\tisVisible\x88\x01\x01\x12$\n" +
+	"\vis_original\x18\x04 \x01(\bH\x02R\n" +
+	"isOriginal\x88\x01\x01B\f\n" +
 	"\n" +
 	"_is_activeB\r\n" +
-	"\v_is_visible\"{\n" +
+	"\v_is_visibleB\x0e\n" +
+	"\f_is_original\"{\n" +
 	"\x18UpdateGameStatusResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12#\n" +
 	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\x12 \n" +
-	"\x04game\x18\x03 \x01(\v2\f.casino.GameR\x04game2\xec\x05\n" +
+	"\x04game\x18\x03 \x01(\v2\f.casino.GameR\x04game2\xb6\x06\n" +
 	"\rCasinoService\x12@\n" +
-	"\tListGames\x12\x18.casino.ListGamesRequest\x1a\x19.casino.ListGamesResponse\x12/\n" +
+	"\tListGames\x12\x18.casino.ListGamesRequest\x1a\x19.casino.ListGamesResponse\x12H\n" +
+	"\x11ListOriginalGames\x12\x18.casino.ListGamesRequest\x1a\x19.casino.ListGamesResponse\x12/\n" +
 	"\aGetGame\x12\x16.casino.GetGameRequest\x1a\f.casino.Game\x12L\n" +
 	"\rGetCategories\x12\x1c.casino.GetCategoriesRequest\x1a\x1d.casino.GetCategoriesResponse\x12I\n" +
 	"\fGetProviders\x12\x1b.casino.GetProvidersRequest\x1a\x1c.casino.GetProvidersResponse\x12C\n" +
@@ -1659,27 +1671,29 @@ var file_casino_service_proto_depIdxs = []int32{
 	24, // 17: casino.ProcessRollbackResponse.balance:type_name -> wallet.Money
 	22, // 18: casino.UpdateGameStatusResponse.game:type_name -> casino.Game
 	0,  // 19: casino.CasinoService.ListGames:input_type -> casino.ListGamesRequest
-	2,  // 20: casino.CasinoService.GetGame:input_type -> casino.GetGameRequest
-	3,  // 21: casino.CasinoService.GetCategories:input_type -> casino.GetCategoriesRequest
-	6,  // 22: casino.CasinoService.GetProviders:input_type -> casino.GetProvidersRequest
-	28, // 23: casino.CasinoService.LaunchGame:input_type -> casino.LaunchGameRequest
-	11, // 24: casino.CasinoService.GetPlayerHistory:input_type -> casino.GetPlayerHistoryRequest
-	20, // 25: casino.CasinoService.UpdateGameStatus:input_type -> casino.UpdateGameStatusRequest
-	14, // 26: casino.CasinoService.ProcessBet:input_type -> casino.ProcessBetRequest
-	16, // 27: casino.CasinoService.ProcessWin:input_type -> casino.ProcessWinRequest
-	18, // 28: casino.CasinoService.ProcessRollback:input_type -> casino.ProcessRollbackRequest
-	1,  // 29: casino.CasinoService.ListGames:output_type -> casino.ListGamesResponse
-	22, // 30: casino.CasinoService.GetGame:output_type -> casino.Game
-	5,  // 31: casino.CasinoService.GetCategories:output_type -> casino.GetCategoriesResponse
-	8,  // 32: casino.CasinoService.GetProviders:output_type -> casino.GetProvidersResponse
-	29, // 33: casino.CasinoService.LaunchGame:output_type -> casino.LaunchGameResponse
-	13, // 34: casino.CasinoService.GetPlayerHistory:output_type -> casino.GetPlayerHistoryResponse
-	21, // 35: casino.CasinoService.UpdateGameStatus:output_type -> casino.UpdateGameStatusResponse
-	15, // 36: casino.CasinoService.ProcessBet:output_type -> casino.ProcessBetResponse
-	17, // 37: casino.CasinoService.ProcessWin:output_type -> casino.ProcessWinResponse
-	19, // 38: casino.CasinoService.ProcessRollback:output_type -> casino.ProcessRollbackResponse
-	29, // [29:39] is the sub-list for method output_type
-	19, // [19:29] is the sub-list for method input_type
+	0,  // 20: casino.CasinoService.ListOriginalGames:input_type -> casino.ListGamesRequest
+	2,  // 21: casino.CasinoService.GetGame:input_type -> casino.GetGameRequest
+	3,  // 22: casino.CasinoService.GetCategories:input_type -> casino.GetCategoriesRequest
+	6,  // 23: casino.CasinoService.GetProviders:input_type -> casino.GetProvidersRequest
+	28, // 24: casino.CasinoService.LaunchGame:input_type -> casino.LaunchGameRequest
+	11, // 25: casino.CasinoService.GetPlayerHistory:input_type -> casino.GetPlayerHistoryRequest
+	20, // 26: casino.CasinoService.UpdateGameStatus:input_type -> casino.UpdateGameStatusRequest
+	14, // 27: casino.CasinoService.ProcessBet:input_type -> casino.ProcessBetRequest
+	16, // 28: casino.CasinoService.ProcessWin:input_type -> casino.ProcessWinRequest
+	18, // 29: casino.CasinoService.ProcessRollback:input_type -> casino.ProcessRollbackRequest
+	1,  // 30: casino.CasinoService.ListGames:output_type -> casino.ListGamesResponse
+	1,  // 31: casino.CasinoService.ListOriginalGames:output_type -> casino.ListGamesResponse
+	22, // 32: casino.CasinoService.GetGame:output_type -> casino.Game
+	5,  // 33: casino.CasinoService.GetCategories:output_type -> casino.GetCategoriesResponse
+	8,  // 34: casino.CasinoService.GetProviders:output_type -> casino.GetProvidersResponse
+	29, // 35: casino.CasinoService.LaunchGame:output_type -> casino.LaunchGameResponse
+	13, // 36: casino.CasinoService.GetPlayerHistory:output_type -> casino.GetPlayerHistoryResponse
+	21, // 37: casino.CasinoService.UpdateGameStatus:output_type -> casino.UpdateGameStatusResponse
+	15, // 38: casino.CasinoService.ProcessBet:output_type -> casino.ProcessBetResponse
+	17, // 39: casino.CasinoService.ProcessWin:output_type -> casino.ProcessWinResponse
+	19, // 40: casino.CasinoService.ProcessRollback:output_type -> casino.ProcessRollbackResponse
+	30, // [30:41] is the sub-list for method output_type
+	19, // [19:30] is the sub-list for method input_type
 	19, // [19:19] is the sub-list for extension type_name
 	19, // [19:19] is the sub-list for extension extendee
 	0,  // [0:19] is the sub-list for field type_name

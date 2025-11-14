@@ -41,6 +41,7 @@ message Game {
   bool is_active = 11;         // Whether the game is active
   google.protobuf.Timestamp updated_at = 12; // Last update time
   bool is_visible = 13;        // Whether the game is visible to players
+  bool is_original = 14;       // Whether the game appears in originals section
 }
 
 // GetGamesRequest is used to retrieve games from a provider
