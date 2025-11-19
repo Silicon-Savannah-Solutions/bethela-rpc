@@ -9,7 +9,6 @@ package bethela_rpc
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -1374,6 +1373,58 @@ func (x *DeleteTemplateRequest) GetTemplateId() string {
 	return ""
 }
 
+type DeleteTemplateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"` // Whether deletion was successful
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`  // Status message
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteTemplateResponse) Reset() {
+	*x = DeleteTemplateResponse{}
+	mi := &file_notification_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteTemplateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteTemplateResponse) ProtoMessage() {}
+
+func (x *DeleteTemplateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_notification_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteTemplateResponse.ProtoReflect.Descriptor instead.
+func (*DeleteTemplateResponse) Descriptor() ([]byte, []int) {
+	return file_notification_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *DeleteTemplateResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *DeleteTemplateResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 // ListTemplatesRequest is used to list available templates
 type ListTemplatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1388,7 +1439,7 @@ type ListTemplatesRequest struct {
 
 func (x *ListTemplatesRequest) Reset() {
 	*x = ListTemplatesRequest{}
-	mi := &file_notification_proto_msgTypes[13]
+	mi := &file_notification_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1400,7 +1451,7 @@ func (x *ListTemplatesRequest) String() string {
 func (*ListTemplatesRequest) ProtoMessage() {}
 
 func (x *ListTemplatesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_notification_proto_msgTypes[13]
+	mi := &file_notification_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1413,7 +1464,7 @@ func (x *ListTemplatesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTemplatesRequest.ProtoReflect.Descriptor instead.
 func (*ListTemplatesRequest) Descriptor() ([]byte, []int) {
-	return file_notification_proto_rawDescGZIP(), []int{13}
+	return file_notification_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListTemplatesRequest) GetPageSize() int32 {
@@ -1463,7 +1514,7 @@ type ListTemplatesResponse struct {
 
 func (x *ListTemplatesResponse) Reset() {
 	*x = ListTemplatesResponse{}
-	mi := &file_notification_proto_msgTypes[14]
+	mi := &file_notification_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1475,7 +1526,7 @@ func (x *ListTemplatesResponse) String() string {
 func (*ListTemplatesResponse) ProtoMessage() {}
 
 func (x *ListTemplatesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_notification_proto_msgTypes[14]
+	mi := &file_notification_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1488,7 +1539,7 @@ func (x *ListTemplatesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTemplatesResponse.ProtoReflect.Descriptor instead.
 func (*ListTemplatesResponse) Descriptor() ([]byte, []int) {
-	return file_notification_proto_rawDescGZIP(), []int{14}
+	return file_notification_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListTemplatesResponse) GetTemplates() []*NotificationTemplate {
@@ -1529,7 +1580,7 @@ type SendTemplatedNotificationRequest struct {
 
 func (x *SendTemplatedNotificationRequest) Reset() {
 	*x = SendTemplatedNotificationRequest{}
-	mi := &file_notification_proto_msgTypes[15]
+	mi := &file_notification_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1541,7 +1592,7 @@ func (x *SendTemplatedNotificationRequest) String() string {
 func (*SendTemplatedNotificationRequest) ProtoMessage() {}
 
 func (x *SendTemplatedNotificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_notification_proto_msgTypes[15]
+	mi := &file_notification_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1554,7 +1605,7 @@ func (x *SendTemplatedNotificationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendTemplatedNotificationRequest.ProtoReflect.Descriptor instead.
 func (*SendTemplatedNotificationRequest) Descriptor() ([]byte, []int) {
-	return file_notification_proto_rawDescGZIP(), []int{15}
+	return file_notification_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *SendTemplatedNotificationRequest) GetUserId() string {
@@ -1631,7 +1682,7 @@ type UserNotificationPreferences struct {
 
 func (x *UserNotificationPreferences) Reset() {
 	*x = UserNotificationPreferences{}
-	mi := &file_notification_proto_msgTypes[16]
+	mi := &file_notification_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1643,7 +1694,7 @@ func (x *UserNotificationPreferences) String() string {
 func (*UserNotificationPreferences) ProtoMessage() {}
 
 func (x *UserNotificationPreferences) ProtoReflect() protoreflect.Message {
-	mi := &file_notification_proto_msgTypes[16]
+	mi := &file_notification_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1656,7 +1707,7 @@ func (x *UserNotificationPreferences) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserNotificationPreferences.ProtoReflect.Descriptor instead.
 func (*UserNotificationPreferences) Descriptor() ([]byte, []int) {
-	return file_notification_proto_rawDescGZIP(), []int{16}
+	return file_notification_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *UserNotificationPreferences) GetUserId() string {
@@ -1739,7 +1790,7 @@ type UpdateUserPreferencesRequest struct {
 
 func (x *UpdateUserPreferencesRequest) Reset() {
 	*x = UpdateUserPreferencesRequest{}
-	mi := &file_notification_proto_msgTypes[17]
+	mi := &file_notification_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1751,7 +1802,7 @@ func (x *UpdateUserPreferencesRequest) String() string {
 func (*UpdateUserPreferencesRequest) ProtoMessage() {}
 
 func (x *UpdateUserPreferencesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_notification_proto_msgTypes[17]
+	mi := &file_notification_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1764,7 +1815,7 @@ func (x *UpdateUserPreferencesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateUserPreferencesRequest.ProtoReflect.Descriptor instead.
 func (*UpdateUserPreferencesRequest) Descriptor() ([]byte, []int) {
-	return file_notification_proto_rawDescGZIP(), []int{17}
+	return file_notification_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *UpdateUserPreferencesRequest) GetUserId() string {
@@ -1833,7 +1884,7 @@ type GetUserPreferencesRequest struct {
 
 func (x *GetUserPreferencesRequest) Reset() {
 	*x = GetUserPreferencesRequest{}
-	mi := &file_notification_proto_msgTypes[18]
+	mi := &file_notification_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1845,7 +1896,7 @@ func (x *GetUserPreferencesRequest) String() string {
 func (*GetUserPreferencesRequest) ProtoMessage() {}
 
 func (x *GetUserPreferencesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_notification_proto_msgTypes[18]
+	mi := &file_notification_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1858,7 +1909,7 @@ func (x *GetUserPreferencesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserPreferencesRequest.ProtoReflect.Descriptor instead.
 func (*GetUserPreferencesRequest) Descriptor() ([]byte, []int) {
-	return file_notification_proto_rawDescGZIP(), []int{18}
+	return file_notification_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetUserPreferencesRequest) GetUserId() string {
@@ -1872,7 +1923,7 @@ var File_notification_proto protoreflect.FileDescriptor
 
 const file_notification_proto_rawDesc = "" +
 	"\n" +
-	"\x12notification.proto\x12\fnotification\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xda\x03\n" +
+	"\x12notification.proto\x12\fnotification\x1a\x1fgoogle/protobuf/timestamp.proto\"\xda\x03\n" +
 	"\x0eSendSMSRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12!\n" +
 	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\x12\x18\n" +
@@ -2017,7 +2068,10 @@ const file_notification_proto_rawDesc = "" +
 	"_is_active\"8\n" +
 	"\x15DeleteTemplateRequest\x12\x1f\n" +
 	"\vtemplate_id\x18\x01 \x01(\tR\n" +
-	"templateId\"\xf7\x01\n" +
+	"templateId\"L\n" +
+	"\x16DeleteTemplateResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xf7\x01\n" +
 	"\x14ListTemplatesRequest\x12\x1b\n" +
 	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
@@ -2106,15 +2160,15 @@ const file_notification_proto_rawDesc = "" +
 	"\x14DELIVERY_STATUS_SENT\x10\x02\x12\x1d\n" +
 	"\x19DELIVERY_STATUS_DELIVERED\x10\x03\x12\x1a\n" +
 	"\x16DELIVERY_STATUS_FAILED\x10\x04\x12\x1b\n" +
-	"\x17DELIVERY_STATUS_EXPIRED\x10\x052\xaf\b\n" +
+	"\x17DELIVERY_STATUS_EXPIRED\x10\x052\xbd\b\n" +
 	"\x13NotificationService\x12F\n" +
 	"\aSendSMS\x12\x1c.notification.SendSMSRequest\x1a\x1d.notification.SendSMSResponse\x12R\n" +
 	"\vSendBulkSMS\x12 .notification.SendBulkSMSRequest\x1a!.notification.SendBulkSMSResponse\x12e\n" +
 	"\x15GetNotificationStatus\x12*.notification.GetNotificationStatusRequest\x1a .notification.NotificationStatus\x12p\n" +
 	"\x15ListUserNotifications\x12*.notification.ListUserNotificationsRequest\x1a+.notification.ListUserNotificationsResponse\x12Y\n" +
 	"\x0eCreateTemplate\x12#.notification.CreateTemplateRequest\x1a\".notification.NotificationTemplate\x12Y\n" +
-	"\x0eUpdateTemplate\x12#.notification.UpdateTemplateRequest\x1a\".notification.NotificationTemplate\x12M\n" +
-	"\x0eDeleteTemplate\x12#.notification.DeleteTemplateRequest\x1a\x16.google.protobuf.Empty\x12X\n" +
+	"\x0eUpdateTemplate\x12#.notification.UpdateTemplateRequest\x1a\".notification.NotificationTemplate\x12[\n" +
+	"\x0eDeleteTemplate\x12#.notification.DeleteTemplateRequest\x1a$.notification.DeleteTemplateResponse\x12X\n" +
 	"\rListTemplates\x12\".notification.ListTemplatesRequest\x1a#.notification.ListTemplatesResponse\x12j\n" +
 	"\x19SendTemplatedNotification\x12..notification.SendTemplatedNotificationRequest\x1a\x1d.notification.SendSMSResponse\x12n\n" +
 	"\x15UpdateUserPreferences\x12*.notification.UpdateUserPreferencesRequest\x1a).notification.UserNotificationPreferences\x12h\n" +
@@ -2133,7 +2187,7 @@ func file_notification_proto_rawDescGZIP() []byte {
 }
 
 var file_notification_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_notification_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_notification_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_notification_proto_goTypes = []any{
 	(NotificationType)(0),                    // 0: notification.NotificationType
 	(NotificationCategory)(0),                // 1: notification.NotificationCategory
@@ -2152,61 +2206,61 @@ var file_notification_proto_goTypes = []any{
 	(*CreateTemplateRequest)(nil),            // 14: notification.CreateTemplateRequest
 	(*UpdateTemplateRequest)(nil),            // 15: notification.UpdateTemplateRequest
 	(*DeleteTemplateRequest)(nil),            // 16: notification.DeleteTemplateRequest
-	(*ListTemplatesRequest)(nil),             // 17: notification.ListTemplatesRequest
-	(*ListTemplatesResponse)(nil),            // 18: notification.ListTemplatesResponse
-	(*SendTemplatedNotificationRequest)(nil), // 19: notification.SendTemplatedNotificationRequest
-	(*UserNotificationPreferences)(nil),      // 20: notification.UserNotificationPreferences
-	(*UpdateUserPreferencesRequest)(nil),     // 21: notification.UpdateUserPreferencesRequest
-	(*GetUserPreferencesRequest)(nil),        // 22: notification.GetUserPreferencesRequest
-	nil,                                      // 23: notification.SendSMSRequest.MetadataEntry
-	nil,                                      // 24: notification.SendBulkSMSRequest.MetadataEntry
-	nil,                                      // 25: notification.BulkSMSRecipient.PersonalizationEntry
-	nil,                                      // 26: notification.NotificationStatus.MetadataEntry
-	nil,                                      // 27: notification.SendTemplatedNotificationRequest.TemplateVariablesEntry
-	nil,                                      // 28: notification.SendTemplatedNotificationRequest.MetadataEntry
-	(*timestamppb.Timestamp)(nil),            // 29: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),                    // 30: google.protobuf.Empty
+	(*DeleteTemplateResponse)(nil),           // 17: notification.DeleteTemplateResponse
+	(*ListTemplatesRequest)(nil),             // 18: notification.ListTemplatesRequest
+	(*ListTemplatesResponse)(nil),            // 19: notification.ListTemplatesResponse
+	(*SendTemplatedNotificationRequest)(nil), // 20: notification.SendTemplatedNotificationRequest
+	(*UserNotificationPreferences)(nil),      // 21: notification.UserNotificationPreferences
+	(*UpdateUserPreferencesRequest)(nil),     // 22: notification.UpdateUserPreferencesRequest
+	(*GetUserPreferencesRequest)(nil),        // 23: notification.GetUserPreferencesRequest
+	nil,                                      // 24: notification.SendSMSRequest.MetadataEntry
+	nil,                                      // 25: notification.SendBulkSMSRequest.MetadataEntry
+	nil,                                      // 26: notification.BulkSMSRecipient.PersonalizationEntry
+	nil,                                      // 27: notification.NotificationStatus.MetadataEntry
+	nil,                                      // 28: notification.SendTemplatedNotificationRequest.TemplateVariablesEntry
+	nil,                                      // 29: notification.SendTemplatedNotificationRequest.MetadataEntry
+	(*timestamppb.Timestamp)(nil),            // 30: google.protobuf.Timestamp
 }
 var file_notification_proto_depIdxs = []int32{
 	1,  // 0: notification.SendSMSRequest.category:type_name -> notification.NotificationCategory
 	2,  // 1: notification.SendSMSRequest.priority:type_name -> notification.NotificationPriority
-	23, // 2: notification.SendSMSRequest.metadata:type_name -> notification.SendSMSRequest.MetadataEntry
+	24, // 2: notification.SendSMSRequest.metadata:type_name -> notification.SendSMSRequest.MetadataEntry
 	3,  // 3: notification.SendSMSResponse.delivery_status:type_name -> notification.DeliveryStatus
-	29, // 4: notification.SendSMSResponse.created_at:type_name -> google.protobuf.Timestamp
-	29, // 5: notification.SendSMSResponse.estimated_delivery:type_name -> google.protobuf.Timestamp
+	30, // 4: notification.SendSMSResponse.created_at:type_name -> google.protobuf.Timestamp
+	30, // 5: notification.SendSMSResponse.estimated_delivery:type_name -> google.protobuf.Timestamp
 	7,  // 6: notification.SendBulkSMSRequest.recipients:type_name -> notification.BulkSMSRecipient
 	1,  // 7: notification.SendBulkSMSRequest.category:type_name -> notification.NotificationCategory
 	2,  // 8: notification.SendBulkSMSRequest.priority:type_name -> notification.NotificationPriority
-	24, // 9: notification.SendBulkSMSRequest.metadata:type_name -> notification.SendBulkSMSRequest.MetadataEntry
-	25, // 10: notification.BulkSMSRecipient.personalization:type_name -> notification.BulkSMSRecipient.PersonalizationEntry
+	25, // 9: notification.SendBulkSMSRequest.metadata:type_name -> notification.SendBulkSMSRequest.MetadataEntry
+	26, // 10: notification.BulkSMSRecipient.personalization:type_name -> notification.BulkSMSRecipient.PersonalizationEntry
 	5,  // 11: notification.SendBulkSMSResponse.individual_results:type_name -> notification.SendSMSResponse
-	29, // 12: notification.SendBulkSMSResponse.created_at:type_name -> google.protobuf.Timestamp
+	30, // 12: notification.SendBulkSMSResponse.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 13: notification.NotificationStatus.type:type_name -> notification.NotificationType
 	1,  // 14: notification.NotificationStatus.category:type_name -> notification.NotificationCategory
 	2,  // 15: notification.NotificationStatus.priority:type_name -> notification.NotificationPriority
 	3,  // 16: notification.NotificationStatus.delivery_status:type_name -> notification.DeliveryStatus
-	29, // 17: notification.NotificationStatus.created_at:type_name -> google.protobuf.Timestamp
-	29, // 18: notification.NotificationStatus.sent_at:type_name -> google.protobuf.Timestamp
-	29, // 19: notification.NotificationStatus.delivered_at:type_name -> google.protobuf.Timestamp
-	26, // 20: notification.NotificationStatus.metadata:type_name -> notification.NotificationStatus.MetadataEntry
+	30, // 17: notification.NotificationStatus.created_at:type_name -> google.protobuf.Timestamp
+	30, // 18: notification.NotificationStatus.sent_at:type_name -> google.protobuf.Timestamp
+	30, // 19: notification.NotificationStatus.delivered_at:type_name -> google.protobuf.Timestamp
+	27, // 20: notification.NotificationStatus.metadata:type_name -> notification.NotificationStatus.MetadataEntry
 	1,  // 21: notification.ListUserNotificationsRequest.category:type_name -> notification.NotificationCategory
 	3,  // 22: notification.ListUserNotificationsRequest.status:type_name -> notification.DeliveryStatus
-	29, // 23: notification.ListUserNotificationsRequest.start_date:type_name -> google.protobuf.Timestamp
-	29, // 24: notification.ListUserNotificationsRequest.end_date:type_name -> google.protobuf.Timestamp
+	30, // 23: notification.ListUserNotificationsRequest.start_date:type_name -> google.protobuf.Timestamp
+	30, // 24: notification.ListUserNotificationsRequest.end_date:type_name -> google.protobuf.Timestamp
 	10, // 25: notification.ListUserNotificationsResponse.notifications:type_name -> notification.NotificationStatus
 	1,  // 26: notification.NotificationTemplate.category:type_name -> notification.NotificationCategory
-	29, // 27: notification.NotificationTemplate.created_at:type_name -> google.protobuf.Timestamp
-	29, // 28: notification.NotificationTemplate.updated_at:type_name -> google.protobuf.Timestamp
+	30, // 27: notification.NotificationTemplate.created_at:type_name -> google.protobuf.Timestamp
+	30, // 28: notification.NotificationTemplate.updated_at:type_name -> google.protobuf.Timestamp
 	1,  // 29: notification.CreateTemplateRequest.category:type_name -> notification.NotificationCategory
 	1,  // 30: notification.UpdateTemplateRequest.category:type_name -> notification.NotificationCategory
 	1,  // 31: notification.ListTemplatesRequest.category:type_name -> notification.NotificationCategory
 	13, // 32: notification.ListTemplatesResponse.templates:type_name -> notification.NotificationTemplate
-	27, // 33: notification.SendTemplatedNotificationRequest.template_variables:type_name -> notification.SendTemplatedNotificationRequest.TemplateVariablesEntry
+	28, // 33: notification.SendTemplatedNotificationRequest.template_variables:type_name -> notification.SendTemplatedNotificationRequest.TemplateVariablesEntry
 	2,  // 34: notification.SendTemplatedNotificationRequest.priority:type_name -> notification.NotificationPriority
-	28, // 35: notification.SendTemplatedNotificationRequest.metadata:type_name -> notification.SendTemplatedNotificationRequest.MetadataEntry
+	29, // 35: notification.SendTemplatedNotificationRequest.metadata:type_name -> notification.SendTemplatedNotificationRequest.MetadataEntry
 	1,  // 36: notification.UserNotificationPreferences.subscribed_categories:type_name -> notification.NotificationCategory
 	1,  // 37: notification.UserNotificationPreferences.blocked_categories:type_name -> notification.NotificationCategory
-	29, // 38: notification.UserNotificationPreferences.updated_at:type_name -> google.protobuf.Timestamp
+	30, // 38: notification.UserNotificationPreferences.updated_at:type_name -> google.protobuf.Timestamp
 	1,  // 39: notification.UpdateUserPreferencesRequest.subscribe_to:type_name -> notification.NotificationCategory
 	1,  // 40: notification.UpdateUserPreferencesRequest.unsubscribe_from:type_name -> notification.NotificationCategory
 	4,  // 41: notification.NotificationService.SendSMS:input_type -> notification.SendSMSRequest
@@ -2216,21 +2270,21 @@ var file_notification_proto_depIdxs = []int32{
 	14, // 45: notification.NotificationService.CreateTemplate:input_type -> notification.CreateTemplateRequest
 	15, // 46: notification.NotificationService.UpdateTemplate:input_type -> notification.UpdateTemplateRequest
 	16, // 47: notification.NotificationService.DeleteTemplate:input_type -> notification.DeleteTemplateRequest
-	17, // 48: notification.NotificationService.ListTemplates:input_type -> notification.ListTemplatesRequest
-	19, // 49: notification.NotificationService.SendTemplatedNotification:input_type -> notification.SendTemplatedNotificationRequest
-	21, // 50: notification.NotificationService.UpdateUserPreferences:input_type -> notification.UpdateUserPreferencesRequest
-	22, // 51: notification.NotificationService.GetUserPreferences:input_type -> notification.GetUserPreferencesRequest
+	18, // 48: notification.NotificationService.ListTemplates:input_type -> notification.ListTemplatesRequest
+	20, // 49: notification.NotificationService.SendTemplatedNotification:input_type -> notification.SendTemplatedNotificationRequest
+	22, // 50: notification.NotificationService.UpdateUserPreferences:input_type -> notification.UpdateUserPreferencesRequest
+	23, // 51: notification.NotificationService.GetUserPreferences:input_type -> notification.GetUserPreferencesRequest
 	5,  // 52: notification.NotificationService.SendSMS:output_type -> notification.SendSMSResponse
 	8,  // 53: notification.NotificationService.SendBulkSMS:output_type -> notification.SendBulkSMSResponse
 	10, // 54: notification.NotificationService.GetNotificationStatus:output_type -> notification.NotificationStatus
 	12, // 55: notification.NotificationService.ListUserNotifications:output_type -> notification.ListUserNotificationsResponse
 	13, // 56: notification.NotificationService.CreateTemplate:output_type -> notification.NotificationTemplate
 	13, // 57: notification.NotificationService.UpdateTemplate:output_type -> notification.NotificationTemplate
-	30, // 58: notification.NotificationService.DeleteTemplate:output_type -> google.protobuf.Empty
-	18, // 59: notification.NotificationService.ListTemplates:output_type -> notification.ListTemplatesResponse
+	17, // 58: notification.NotificationService.DeleteTemplate:output_type -> notification.DeleteTemplateResponse
+	19, // 59: notification.NotificationService.ListTemplates:output_type -> notification.ListTemplatesResponse
 	5,  // 60: notification.NotificationService.SendTemplatedNotification:output_type -> notification.SendSMSResponse
-	20, // 61: notification.NotificationService.UpdateUserPreferences:output_type -> notification.UserNotificationPreferences
-	20, // 62: notification.NotificationService.GetUserPreferences:output_type -> notification.UserNotificationPreferences
+	21, // 61: notification.NotificationService.UpdateUserPreferences:output_type -> notification.UserNotificationPreferences
+	21, // 62: notification.NotificationService.GetUserPreferences:output_type -> notification.UserNotificationPreferences
 	52, // [52:63] is the sub-list for method output_type
 	41, // [41:52] is the sub-list for method input_type
 	41, // [41:41] is the sub-list for extension type_name
@@ -2249,16 +2303,16 @@ func file_notification_proto_init() {
 	file_notification_proto_msgTypes[6].OneofWrappers = []any{}
 	file_notification_proto_msgTypes[7].OneofWrappers = []any{}
 	file_notification_proto_msgTypes[11].OneofWrappers = []any{}
-	file_notification_proto_msgTypes[13].OneofWrappers = []any{}
-	file_notification_proto_msgTypes[15].OneofWrappers = []any{}
-	file_notification_proto_msgTypes[17].OneofWrappers = []any{}
+	file_notification_proto_msgTypes[14].OneofWrappers = []any{}
+	file_notification_proto_msgTypes[16].OneofWrappers = []any{}
+	file_notification_proto_msgTypes[18].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_notification_proto_rawDesc), len(file_notification_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   25,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

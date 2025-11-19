@@ -5,40 +5,39 @@ package notification;
 option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 
 // NotificationService provides APIs for sending notifications to users
 service NotificationService {
   // Send an SMS notification to a user
   rpc SendSMS(SendSMSRequest) returns (SendSMSResponse);
-  
+
   // Send a bulk SMS to multiple users
   rpc SendBulkSMS(SendBulkSMSRequest) returns (SendBulkSMSResponse);
-  
+
   // Get notification status by ID
   rpc GetNotificationStatus(GetNotificationStatusRequest) returns (NotificationStatus);
-  
+
   // List notifications for a user with pagination
   rpc ListUserNotifications(ListUserNotificationsRequest) returns (ListUserNotificationsResponse);
-  
+
   // Create notification templates for reuse
   rpc CreateTemplate(CreateTemplateRequest) returns (NotificationTemplate);
-  
+
   // Update an existing template
   rpc UpdateTemplate(UpdateTemplateRequest) returns (NotificationTemplate);
-  
+
   // Delete a template
-  rpc DeleteTemplate(DeleteTemplateRequest) returns (google.protobuf.Empty);
-  
+  rpc DeleteTemplate(DeleteTemplateRequest) returns (DeleteTemplateResponse);
+
   // List available templates
   rpc ListTemplates(ListTemplatesRequest) returns (ListTemplatesResponse);
-  
+
   // Send notification using a template
   rpc SendTemplatedNotification(SendTemplatedNotificationRequest) returns (SendSMSResponse);
-  
+
   // Subscribe/unsubscribe user from notification types
   rpc UpdateUserPreferences(UpdateUserPreferencesRequest) returns (UserNotificationPreferences);
-  
+
   // Get user notification preferences
   rpc GetUserPreferences(GetUserPreferencesRequest) returns (UserNotificationPreferences);
 }
@@ -211,6 +210,11 @@ message UpdateTemplateRequest {
 // DeleteTemplateRequest is used to delete a template
 message DeleteTemplateRequest {
   string template_id = 1;                      // Template ID to delete
+}
+
+message DeleteTemplateResponse {
+  bool success = 1;                            // Whether deletion was successful
+  string message = 2;                          // Status message
 }
 
 // ListTemplatesRequest is used to list available templates
