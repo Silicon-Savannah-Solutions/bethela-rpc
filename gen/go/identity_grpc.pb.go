@@ -33,6 +33,7 @@ const (
 	IdentityService_ListUsers_FullMethodName               = "/identity.IdentityService/ListUsers"
 	IdentityService_RequestVerificationCode_FullMethodName = "/identity.IdentityService/RequestVerificationCode"
 	IdentityService_VerifyAccount_FullMethodName           = "/identity.IdentityService/VerifyAccount"
+	IdentityService_GetUserCurrency_FullMethodName         = "/identity.IdentityService/GetUserCurrency"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -66,7 +67,8 @@ type IdentityServiceClient interface {
 	// Request a verification code
 	RequestVerificationCode(ctx context.Context, in *RequestVerificationCodeRequest, opts ...grpc.CallOption) (*RequestVerificationCodeResponse, error)
 	// Verify an account using a verification code
-	VerifyAccount(ctx context.Context, in *VerifyAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	VerifyAccount(ctx context.Context, in *VerifyAccountRequest, opts ...grpc.CallOption) (*VerifyAccountResponse, error)
+	GetUserCurrency(ctx context.Context, in *GetUserCurrencyRequest, opts ...grpc.CallOption) (*GetUserCurrencyResponse, error)
 }
 
 type identityServiceClient struct {
@@ -197,10 +199,20 @@ func (c *identityServiceClient) RequestVerificationCode(ctx context.Context, in 
 	return out, nil
 }
 
-func (c *identityServiceClient) VerifyAccount(ctx context.Context, in *VerifyAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *identityServiceClient) VerifyAccount(ctx context.Context, in *VerifyAccountRequest, opts ...grpc.CallOption) (*VerifyAccountResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(VerifyAccountResponse)
 	err := c.cc.Invoke(ctx, IdentityService_VerifyAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityServiceClient) GetUserCurrency(ctx context.Context, in *GetUserCurrencyRequest, opts ...grpc.CallOption) (*GetUserCurrencyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserCurrencyResponse)
+	err := c.cc.Invoke(ctx, IdentityService_GetUserCurrency_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -238,7 +250,8 @@ type IdentityServiceServer interface {
 	// Request a verification code
 	RequestVerificationCode(context.Context, *RequestVerificationCodeRequest) (*RequestVerificationCodeResponse, error)
 	// Verify an account using a verification code
-	VerifyAccount(context.Context, *VerifyAccountRequest) (*emptypb.Empty, error)
+	VerifyAccount(context.Context, *VerifyAccountRequest) (*VerifyAccountResponse, error)
+	GetUserCurrency(context.Context, *GetUserCurrencyRequest) (*GetUserCurrencyResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -285,8 +298,11 @@ func (UnimplementedIdentityServiceServer) ListUsers(context.Context, *ListUsersR
 func (UnimplementedIdentityServiceServer) RequestVerificationCode(context.Context, *RequestVerificationCodeRequest) (*RequestVerificationCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RequestVerificationCode not implemented")
 }
-func (UnimplementedIdentityServiceServer) VerifyAccount(context.Context, *VerifyAccountRequest) (*emptypb.Empty, error) {
+func (UnimplementedIdentityServiceServer) VerifyAccount(context.Context, *VerifyAccountRequest) (*VerifyAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyAccount not implemented")
+}
+func (UnimplementedIdentityServiceServer) GetUserCurrency(context.Context, *GetUserCurrencyRequest) (*GetUserCurrencyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCurrency not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -543,6 +559,24 @@ func _IdentityService_VerifyAccount_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_GetUserCurrency_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCurrencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).GetUserCurrency(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_GetUserCurrency_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).GetUserCurrency(ctx, req.(*GetUserCurrencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -601,6 +635,10 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyAccount",
 			Handler:    _IdentityService_VerifyAccount_Handler,
+		},
+		{
+			MethodName: "GetUserCurrency",
+			Handler:    _IdentityService_GetUserCurrency_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

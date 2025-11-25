@@ -47,7 +47,9 @@ service IdentityService {
   rpc RequestVerificationCode(RequestVerificationCodeRequest) returns (RequestVerificationCodeResponse);
 
   // Verify an account using a verification code
-  rpc VerifyAccount(VerifyAccountRequest) returns (google.protobuf.Empty);
+  rpc VerifyAccount(VerifyAccountRequest) returns (VerifyAccountResponse);
+
+  rpc GetUserCurrency(GetUserCurrencyRequest) returns (GetUserCurrencyResponse);
 }
 
 // User represents a user account
@@ -62,6 +64,11 @@ message User {
   google.protobuf.Timestamp created_at = 8;
   google.protobuf.Timestamp updated_at = 9;
   google.protobuf.Timestamp last_login = 10;
+}
+
+message VerifyAccountResponse {
+  string user_id = 1;
+  bool verified = 2;
 }
 
 // UserStatus represents the status of a user account
@@ -109,6 +116,17 @@ message CreateUserRequest {
 // GetUserRequest is used to retrieve a user by ID
 message GetUserRequest {
   string id = 1;
+  optional string phone_number = 2;
+}
+
+// GetUserCurrencyRequest is used to retrieve a user's currency information
+message GetUserCurrencyRequest {
+  string user_id = 1;
+  optional string phone_number = 2;
+}
+
+message GetUserCurrencyResponse {
+  string currency = 1;
 }
 
 // UpdateUserRequest is used to update a user's information
