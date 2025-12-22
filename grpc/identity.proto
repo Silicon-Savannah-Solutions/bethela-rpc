@@ -50,6 +50,9 @@ service IdentityService {
   rpc VerifyAccount(VerifyAccountRequest) returns (VerifyAccountResponse);
 
   rpc GetUserCurrency(GetUserCurrencyRequest) returns (GetUserCurrencyResponse);
+
+  // Admin resets a user's password directly (requires admin privileges)
+  rpc AdminResetPassword(AdminResetPasswordRequest) returns (google.protobuf.Empty);
 }
 
 // User represents a user account
@@ -209,6 +212,13 @@ message ChangePasswordRequest {
   string user_id = 1;
   string current_password = 2;
   string new_password = 3;
+}
+
+// AdminResetPasswordRequest is used by admins to reset a user's password
+message AdminResetPasswordRequest {
+  string user_id = 1;           // Required: ID of user whose password to reset
+  string new_password = 2;      // Required: New password (min 8 characters)
+  string admin_user_id = 3;     // Required: ID of admin performing reset (for audit)
 }
 
 // ListUsersRequest is used to list users with pagination
