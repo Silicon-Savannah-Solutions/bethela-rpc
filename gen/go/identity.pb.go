@@ -1287,8 +1287,12 @@ func (x *VerifyTokenResponse) GetExpiresIn() int64 {
 
 // RequestPasswordResetRequest is used to request a password reset
 type RequestPasswordResetRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Identifier:
+	//
+	//	*RequestPasswordResetRequest_Email
+	//	*RequestPasswordResetRequest_PhoneNumber
+	Identifier    isRequestPasswordResetRequest_Identifier `protobuf_oneof:"identifier"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1323,18 +1327,57 @@ func (*RequestPasswordResetRequest) Descriptor() ([]byte, []int) {
 	return file_identity_proto_rawDescGZIP(), []int{17}
 }
 
+func (x *RequestPasswordResetRequest) GetIdentifier() isRequestPasswordResetRequest_Identifier {
+	if x != nil {
+		return x.Identifier
+	}
+	return nil
+}
+
 func (x *RequestPasswordResetRequest) GetEmail() string {
 	if x != nil {
-		return x.Email
+		if x, ok := x.Identifier.(*RequestPasswordResetRequest_Email); ok {
+			return x.Email
+		}
 	}
 	return ""
 }
 
-// ResetPasswordRequest is used to reset a password using a token
+func (x *RequestPasswordResetRequest) GetPhoneNumber() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*RequestPasswordResetRequest_PhoneNumber); ok {
+			return x.PhoneNumber
+		}
+	}
+	return ""
+}
+
+type isRequestPasswordResetRequest_Identifier interface {
+	isRequestPasswordResetRequest_Identifier()
+}
+
+type RequestPasswordResetRequest_Email struct {
+	Email string `protobuf:"bytes,1,opt,name=email,proto3,oneof"` // Email address (existing email flow)
+}
+
+type RequestPasswordResetRequest_PhoneNumber struct {
+	PhoneNumber string `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3,oneof"` // Phone number for SMS OTP flow
+}
+
+func (*RequestPasswordResetRequest_Email) isRequestPasswordResetRequest_Identifier() {}
+
+func (*RequestPasswordResetRequest_PhoneNumber) isRequestPasswordResetRequest_Identifier() {}
+
+// ResetPasswordRequest is used to reset a password using a token or OTP code
 type ResetPasswordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ResetToken    string                 `protobuf:"bytes,1,opt,name=reset_token,json=resetToken,proto3" json:"reset_token,omitempty"`
-	NewPassword   string                 `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Identifier:
+	//
+	//	*ResetPasswordRequest_Token
+	//	*ResetPasswordRequest_PhoneNumber
+	Identifier    isResetPasswordRequest_Identifier `protobuf_oneof:"identifier"`
+	Code          string                            `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`                                  // 6-digit OTP code for SMS flow (required with phone_number)
+	NewPassword   string                            `protobuf:"bytes,4,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"` // New password (min 8 characters)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1369,9 +1412,34 @@ func (*ResetPasswordRequest) Descriptor() ([]byte, []int) {
 	return file_identity_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *ResetPasswordRequest) GetResetToken() string {
+func (x *ResetPasswordRequest) GetIdentifier() isResetPasswordRequest_Identifier {
 	if x != nil {
-		return x.ResetToken
+		return x.Identifier
+	}
+	return nil
+}
+
+func (x *ResetPasswordRequest) GetToken() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*ResetPasswordRequest_Token); ok {
+			return x.Token
+		}
+	}
+	return ""
+}
+
+func (x *ResetPasswordRequest) GetPhoneNumber() string {
+	if x != nil {
+		if x, ok := x.Identifier.(*ResetPasswordRequest_PhoneNumber); ok {
+			return x.PhoneNumber
+		}
+	}
+	return ""
+}
+
+func (x *ResetPasswordRequest) GetCode() string {
+	if x != nil {
+		return x.Code
 	}
 	return ""
 }
@@ -1382,6 +1450,22 @@ func (x *ResetPasswordRequest) GetNewPassword() string {
 	}
 	return ""
 }
+
+type isResetPasswordRequest_Identifier interface {
+	isResetPasswordRequest_Identifier()
+}
+
+type ResetPasswordRequest_Token struct {
+	Token string `protobuf:"bytes,1,opt,name=token,proto3,oneof"` // UUID token for email flow (existing)
+}
+
+type ResetPasswordRequest_PhoneNumber struct {
+	PhoneNumber string `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3,oneof"` // Phone number for SMS OTP flow
+}
+
+func (*ResetPasswordRequest_Token) isResetPasswordRequest_Identifier() {}
+
+func (*ResetPasswordRequest_PhoneNumber) isResetPasswordRequest_Identifier() {}
 
 // ChangePasswordRequest is used to change a password when logged in
 type ChangePasswordRequest struct {
@@ -1985,13 +2069,19 @@ const file_identity_proto_rawDesc = "" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12 \n" +
 	"\vpermissions\x18\x03 \x03(\tR\vpermissions\x12\x1d\n" +
 	"\n" +
-	"expires_in\x18\x04 \x01(\x03R\texpiresIn\"3\n" +
-	"\x1bRequestPasswordResetRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"Z\n" +
-	"\x14ResetPasswordRequest\x12\x1f\n" +
-	"\vreset_token\x18\x01 \x01(\tR\n" +
-	"resetToken\x12!\n" +
-	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"~\n" +
+	"expires_in\x18\x04 \x01(\x03R\texpiresIn\"h\n" +
+	"\x1bRequestPasswordResetRequest\x12\x16\n" +
+	"\x05email\x18\x01 \x01(\tH\x00R\x05email\x12#\n" +
+	"\fphone_number\x18\x02 \x01(\tH\x00R\vphoneNumberB\f\n" +
+	"\n" +
+	"identifier\"\x98\x01\n" +
+	"\x14ResetPasswordRequest\x12\x16\n" +
+	"\x05token\x18\x01 \x01(\tH\x00R\x05token\x12#\n" +
+	"\fphone_number\x18\x02 \x01(\tH\x00R\vphoneNumber\x12\x12\n" +
+	"\x04code\x18\x03 \x01(\tR\x04code\x12!\n" +
+	"\fnew_password\x18\x04 \x01(\tR\vnewPasswordB\f\n" +
+	"\n" +
+	"identifier\"~\n" +
 	"\x15ChangePasswordRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12)\n" +
 	"\x10current_password\x18\x02 \x01(\tR\x0fcurrentPassword\x12!\n" +
@@ -2172,6 +2262,14 @@ func file_identity_proto_init() {
 	file_identity_proto_msgTypes[11].OneofWrappers = []any{
 		(*LoginRequest_Email)(nil),
 		(*LoginRequest_Username)(nil),
+	}
+	file_identity_proto_msgTypes[17].OneofWrappers = []any{
+		(*RequestPasswordResetRequest_Email)(nil),
+		(*RequestPasswordResetRequest_PhoneNumber)(nil),
+	}
+	file_identity_proto_msgTypes[18].OneofWrappers = []any{
+		(*ResetPasswordRequest_Token)(nil),
+		(*ResetPasswordRequest_PhoneNumber)(nil),
 	}
 	file_identity_proto_msgTypes[21].OneofWrappers = []any{}
 	file_identity_proto_msgTypes[23].OneofWrappers = []any{

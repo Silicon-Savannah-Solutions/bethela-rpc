@@ -198,13 +198,20 @@ message VerifyTokenResponse {
 
 // RequestPasswordResetRequest is used to request a password reset
 message RequestPasswordResetRequest {
-  string email = 1;
+  oneof identifier {
+    string email = 1;        // Email address (existing email flow)
+    string phone_number = 2; // Phone number for SMS OTP flow
+  }
 }
 
-// ResetPasswordRequest is used to reset a password using a token
+// ResetPasswordRequest is used to reset a password using a token or OTP code
 message ResetPasswordRequest {
-  string reset_token = 1;
-  string new_password = 2;
+  oneof identifier {
+    string token = 1;        // UUID token for email flow (existing)
+    string phone_number = 2; // Phone number for SMS OTP flow
+  }
+  string code = 3;           // 6-digit OTP code for SMS flow (required with phone_number)
+  string new_password = 4;   // New password (min 8 characters)
 }
 
 // ChangePasswordRequest is used to change a password when logged in
