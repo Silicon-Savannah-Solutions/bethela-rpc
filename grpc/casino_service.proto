@@ -39,6 +39,9 @@ service CasinoService {
   // Admin methods for game management
   rpc UpdateGameStatus(UpdateGameStatusRequest) returns (UpdateGameStatusResponse);
 
+  // Seed games from all registered providers
+  rpc SeedGames(SeedGamesRequest) returns (SeedGamesResponse);
+
   // Internal methods used by the casino service
   rpc ProcessBet(ProcessBetRequest) returns (ProcessBetResponse);
   rpc ProcessWin(ProcessWinRequest) returns (ProcessWinResponse);
@@ -210,4 +213,26 @@ message UpdateGameStatusResponse {
   bool success = 1;            // Whether the update was successful
   string error_message = 2;    // Error message if unsuccessful
   casino.Game game = 3;        // Updated game data
+}
+
+// SeedGamesRequest is used to trigger game seeding from providers
+message SeedGamesRequest {
+  // Empty request - seeds all registered providers
+}
+
+// ProviderSeedStats contains statistics for a single provider's seeding operation
+message ProviderSeedStats {
+  int32 games_processed = 1;   // Total games from provider
+  bool success = 2;            // Whether seeding succeeded
+  string error = 3;            // Error message if failed
+}
+
+// SeedGamesResponse is returned after seeding games from providers
+message SeedGamesResponse {
+  int32 total_games = 1;       // Total games seeded across all providers
+  int32 providers_seeded = 2;  // Number of providers successfully seeded
+  map<string, ProviderSeedStats> provider_results = 3; // Results per provider
+  repeated string errors = 4;  // List of errors encountered
+  bool success = 5;            // Overall success status
+  string message = 6;          // Human-readable result message
 }
