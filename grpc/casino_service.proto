@@ -38,6 +38,7 @@ service CasinoService {
 
   // Admin methods for game management
   rpc UpdateGameStatus(UpdateGameStatusRequest) returns (UpdateGameStatusResponse);
+  rpc UpdateGameCategory(UpdateGameCategoryRequest) returns (UpdateGameCategoryResponse);
 
   // Seed games from all registered providers
   rpc SeedGames(SeedGamesRequest) returns (SeedGamesResponse);
@@ -235,4 +236,17 @@ message SeedGamesResponse {
   repeated string errors = 4;  // List of errors encountered
   bool success = 5;            // Overall success status
   string message = 6;          // Human-readable result message
+}
+
+// UpdateGameCategoryRequest is used to update a game's category
+message UpdateGameCategoryRequest {
+  string game_id = 1;          // Internal game ID
+  string category = 2;         // New category to assign to the game
+}
+
+// UpdateGameCategoryResponse is returned after updating game category
+message UpdateGameCategoryResponse {
+  bool success = 1;            // Whether the update was successful
+  string error_message = 2;    // Error message if unsuccessful
+  casino.Game game = 3;        // Updated game data
 }
