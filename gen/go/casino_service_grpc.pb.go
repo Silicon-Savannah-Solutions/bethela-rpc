@@ -28,6 +28,7 @@ const (
 	CasinoService_GetPlayerHistory_FullMethodName   = "/casino.CasinoService/GetPlayerHistory"
 	CasinoService_UpdateGameStatus_FullMethodName   = "/casino.CasinoService/UpdateGameStatus"
 	CasinoService_UpdateGameCategory_FullMethodName = "/casino.CasinoService/UpdateGameCategory"
+	CasinoService_UpdateGame_FullMethodName         = "/casino.CasinoService/UpdateGame"
 	CasinoService_SeedGames_FullMethodName          = "/casino.CasinoService/SeedGames"
 	CasinoService_ProcessBet_FullMethodName         = "/casino.CasinoService/ProcessBet"
 	CasinoService_ProcessWin_FullMethodName         = "/casino.CasinoService/ProcessWin"
@@ -57,6 +58,7 @@ type CasinoServiceClient interface {
 	// Admin methods for game management
 	UpdateGameStatus(ctx context.Context, in *UpdateGameStatusRequest, opts ...grpc.CallOption) (*UpdateGameStatusResponse, error)
 	UpdateGameCategory(ctx context.Context, in *UpdateGameCategoryRequest, opts ...grpc.CallOption) (*UpdateGameCategoryResponse, error)
+	UpdateGame(ctx context.Context, in *UpdateGameRequest, opts ...grpc.CallOption) (*UpdateGameResponse, error)
 	// Seed games from all registered providers
 	SeedGames(ctx context.Context, in *SeedGamesRequest, opts ...grpc.CallOption) (*SeedGamesResponse, error)
 	// Internal methods used by the casino service
@@ -163,6 +165,16 @@ func (c *casinoServiceClient) UpdateGameCategory(ctx context.Context, in *Update
 	return out, nil
 }
 
+func (c *casinoServiceClient) UpdateGame(ctx context.Context, in *UpdateGameRequest, opts ...grpc.CallOption) (*UpdateGameResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateGameResponse)
+	err := c.cc.Invoke(ctx, CasinoService_UpdateGame_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *casinoServiceClient) SeedGames(ctx context.Context, in *SeedGamesRequest, opts ...grpc.CallOption) (*SeedGamesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SeedGamesResponse)
@@ -226,6 +238,7 @@ type CasinoServiceServer interface {
 	// Admin methods for game management
 	UpdateGameStatus(context.Context, *UpdateGameStatusRequest) (*UpdateGameStatusResponse, error)
 	UpdateGameCategory(context.Context, *UpdateGameCategoryRequest) (*UpdateGameCategoryResponse, error)
+	UpdateGame(context.Context, *UpdateGameRequest) (*UpdateGameResponse, error)
 	// Seed games from all registered providers
 	SeedGames(context.Context, *SeedGamesRequest) (*SeedGamesResponse, error)
 	// Internal methods used by the casino service
@@ -268,6 +281,9 @@ func (UnimplementedCasinoServiceServer) UpdateGameStatus(context.Context, *Updat
 }
 func (UnimplementedCasinoServiceServer) UpdateGameCategory(context.Context, *UpdateGameCategoryRequest) (*UpdateGameCategoryResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateGameCategory not implemented")
+}
+func (UnimplementedCasinoServiceServer) UpdateGame(context.Context, *UpdateGameRequest) (*UpdateGameResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateGame not implemented")
 }
 func (UnimplementedCasinoServiceServer) SeedGames(context.Context, *SeedGamesRequest) (*SeedGamesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SeedGames not implemented")
@@ -464,6 +480,24 @@ func _CasinoService_UpdateGameCategory_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CasinoService_UpdateGame_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CasinoServiceServer).UpdateGame(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CasinoService_UpdateGame_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CasinoServiceServer).UpdateGame(ctx, req.(*UpdateGameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CasinoService_SeedGames_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SeedGamesRequest)
 	if err := dec(in); err != nil {
@@ -578,6 +612,10 @@ var CasinoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateGameCategory",
 			Handler:    _CasinoService_UpdateGameCategory_Handler,
+		},
+		{
+			MethodName: "UpdateGame",
+			Handler:    _CasinoService_UpdateGame_Handler,
 		},
 		{
 			MethodName: "SeedGames",

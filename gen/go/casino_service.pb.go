@@ -1750,6 +1750,168 @@ func (x *UpdateGameCategoryResponse) GetGame() *Game {
 	return nil
 }
 
+// UpdateGameRequest is used to update any game fields (all fields except game_id are optional)
+type UpdateGameRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`                         // Internal game ID (required)
+	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`                                     // Game name
+	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`                       // Game description
+	ThumbnailUrl  *string                `protobuf:"bytes,4,opt,name=thumbnail_url,json=thumbnailUrl,proto3,oneof" json:"thumbnail_url,omitempty"` // URL to game thumbnail/cover art
+	Category      *string                `protobuf:"bytes,5,opt,name=category,proto3,oneof" json:"category,omitempty"`                             // Game category
+	IsActive      *bool                  `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3,oneof" json:"is_active,omitempty"`            // Active status
+	IsVisible     *bool                  `protobuf:"varint,7,opt,name=is_visible,json=isVisible,proto3,oneof" json:"is_visible,omitempty"`         // Visibility status
+	IsOriginal    *bool                  `protobuf:"varint,8,opt,name=is_original,json=isOriginal,proto3,oneof" json:"is_original,omitempty"`      // Original game status
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateGameRequest) Reset() {
+	*x = UpdateGameRequest{}
+	mi := &file_casino_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateGameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateGameRequest) ProtoMessage() {}
+
+func (x *UpdateGameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_casino_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateGameRequest.ProtoReflect.Descriptor instead.
+func (*UpdateGameRequest) Descriptor() ([]byte, []int) {
+	return file_casino_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *UpdateGameRequest) GetGameId() string {
+	if x != nil {
+		return x.GameId
+	}
+	return ""
+}
+
+func (x *UpdateGameRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *UpdateGameRequest) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *UpdateGameRequest) GetThumbnailUrl() string {
+	if x != nil && x.ThumbnailUrl != nil {
+		return *x.ThumbnailUrl
+	}
+	return ""
+}
+
+func (x *UpdateGameRequest) GetCategory() string {
+	if x != nil && x.Category != nil {
+		return *x.Category
+	}
+	return ""
+}
+
+func (x *UpdateGameRequest) GetIsActive() bool {
+	if x != nil && x.IsActive != nil {
+		return *x.IsActive
+	}
+	return false
+}
+
+func (x *UpdateGameRequest) GetIsVisible() bool {
+	if x != nil && x.IsVisible != nil {
+		return *x.IsVisible
+	}
+	return false
+}
+
+func (x *UpdateGameRequest) GetIsOriginal() bool {
+	if x != nil && x.IsOriginal != nil {
+		return *x.IsOriginal
+	}
+	return false
+}
+
+// UpdateGameResponse is returned after updating a game
+type UpdateGameResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`                              // Whether the update was successful
+	ErrorMessage  string                 `protobuf:"bytes,2,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"` // Error message if unsuccessful
+	Game          *Game                  `protobuf:"bytes,3,opt,name=game,proto3" json:"game,omitempty"`                                     // Updated game data
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateGameResponse) Reset() {
+	*x = UpdateGameResponse{}
+	mi := &file_casino_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateGameResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateGameResponse) ProtoMessage() {}
+
+func (x *UpdateGameResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_casino_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateGameResponse.ProtoReflect.Descriptor instead.
+func (*UpdateGameResponse) Descriptor() ([]byte, []int) {
+	return file_casino_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *UpdateGameResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UpdateGameResponse) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *UpdateGameResponse) GetGame() *Game {
+	if x != nil {
+		return x.Game
+	}
+	return nil
+}
+
 var File_casino_service_proto protoreflect.FileDescriptor
 
 const file_casino_service_proto_rawDesc = "" +
@@ -1908,7 +2070,30 @@ const file_casino_service_proto_rawDesc = "" +
 	"\x1aUpdateGameCategoryResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12#\n" +
 	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\x12 \n" +
-	"\x04game\x18\x03 \x01(\v2\f.casino.GameR\x04game2\xd5\a\n" +
+	"\x04game\x18\x03 \x01(\v2\f.casino.GameR\x04game\"\x88\x03\n" +
+	"\x11UpdateGameRequest\x12\x17\n" +
+	"\agame_id\x18\x01 \x01(\tR\x06gameId\x12\x17\n" +
+	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12(\n" +
+	"\rthumbnail_url\x18\x04 \x01(\tH\x02R\fthumbnailUrl\x88\x01\x01\x12\x1f\n" +
+	"\bcategory\x18\x05 \x01(\tH\x03R\bcategory\x88\x01\x01\x12 \n" +
+	"\tis_active\x18\x06 \x01(\bH\x04R\bisActive\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"is_visible\x18\a \x01(\bH\x05R\tisVisible\x88\x01\x01\x12$\n" +
+	"\vis_original\x18\b \x01(\bH\x06R\n" +
+	"isOriginal\x88\x01\x01B\a\n" +
+	"\x05_nameB\x0e\n" +
+	"\f_descriptionB\x10\n" +
+	"\x0e_thumbnail_urlB\v\n" +
+	"\t_categoryB\f\n" +
+	"\n" +
+	"_is_activeB\r\n" +
+	"\v_is_visibleB\x0e\n" +
+	"\f_is_original\"u\n" +
+	"\x12UpdateGameResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12#\n" +
+	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\x12 \n" +
+	"\x04game\x18\x03 \x01(\v2\f.casino.GameR\x04game2\x9a\b\n" +
 	"\rCasinoService\x12@\n" +
 	"\tListGames\x12\x18.casino.ListGamesRequest\x1a\x19.casino.ListGamesResponse\x12H\n" +
 	"\x11ListOriginalGames\x12\x18.casino.ListGamesRequest\x1a\x19.casino.ListGamesResponse\x12/\n" +
@@ -1919,7 +2104,9 @@ const file_casino_service_proto_rawDesc = "" +
 	"LaunchGame\x12\x19.casino.LaunchGameRequest\x1a\x1a.casino.LaunchGameResponse\x12U\n" +
 	"\x10GetPlayerHistory\x12\x1f.casino.GetPlayerHistoryRequest\x1a .casino.GetPlayerHistoryResponse\x12U\n" +
 	"\x10UpdateGameStatus\x12\x1f.casino.UpdateGameStatusRequest\x1a .casino.UpdateGameStatusResponse\x12[\n" +
-	"\x12UpdateGameCategory\x12!.casino.UpdateGameCategoryRequest\x1a\".casino.UpdateGameCategoryResponse\x12@\n" +
+	"\x12UpdateGameCategory\x12!.casino.UpdateGameCategoryRequest\x1a\".casino.UpdateGameCategoryResponse\x12C\n" +
+	"\n" +
+	"UpdateGame\x12\x19.casino.UpdateGameRequest\x1a\x1a.casino.UpdateGameResponse\x12@\n" +
 	"\tSeedGames\x12\x18.casino.SeedGamesRequest\x1a\x19.casino.SeedGamesResponse\x12C\n" +
 	"\n" +
 	"ProcessBet\x12\x19.casino.ProcessBetRequest\x1a\x1a.casino.ProcessBetResponse\x12C\n" +
@@ -1939,7 +2126,7 @@ func file_casino_service_proto_rawDescGZIP() []byte {
 	return file_casino_service_proto_rawDescData
 }
 
-var file_casino_service_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
+var file_casino_service_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_casino_service_proto_goTypes = []any{
 	(*ListGamesRequest)(nil),           // 0: casino.ListGamesRequest
 	(*ListGamesResponse)(nil),          // 1: casino.ListGamesResponse
@@ -1968,70 +2155,75 @@ var file_casino_service_proto_goTypes = []any{
 	(*SeedGamesResponse)(nil),          // 24: casino.SeedGamesResponse
 	(*UpdateGameCategoryRequest)(nil),  // 25: casino.UpdateGameCategoryRequest
 	(*UpdateGameCategoryResponse)(nil), // 26: casino.UpdateGameCategoryResponse
-	nil,                                // 27: casino.SeedGamesResponse.ProviderResultsEntry
-	(*Game)(nil),                       // 28: casino.Game
-	(*timestamppb.Timestamp)(nil),      // 29: google.protobuf.Timestamp
-	(*Money)(nil),                      // 30: wallet.Money
-	(*BetRequest)(nil),                 // 31: casino.BetRequest
-	(*WinRequest)(nil),                 // 32: casino.WinRequest
-	(*RollbackRequest)(nil),            // 33: casino.RollbackRequest
-	(*LaunchGameRequest)(nil),          // 34: casino.LaunchGameRequest
-	(*LaunchGameResponse)(nil),         // 35: casino.LaunchGameResponse
+	(*UpdateGameRequest)(nil),          // 27: casino.UpdateGameRequest
+	(*UpdateGameResponse)(nil),         // 28: casino.UpdateGameResponse
+	nil,                                // 29: casino.SeedGamesResponse.ProviderResultsEntry
+	(*Game)(nil),                       // 30: casino.Game
+	(*timestamppb.Timestamp)(nil),      // 31: google.protobuf.Timestamp
+	(*Money)(nil),                      // 32: wallet.Money
+	(*BetRequest)(nil),                 // 33: casino.BetRequest
+	(*WinRequest)(nil),                 // 34: casino.WinRequest
+	(*RollbackRequest)(nil),            // 35: casino.RollbackRequest
+	(*LaunchGameRequest)(nil),          // 36: casino.LaunchGameRequest
+	(*LaunchGameResponse)(nil),         // 37: casino.LaunchGameResponse
 }
 var file_casino_service_proto_depIdxs = []int32{
-	28, // 0: casino.ListGamesResponse.games:type_name -> casino.Game
+	30, // 0: casino.ListGamesResponse.games:type_name -> casino.Game
 	4,  // 1: casino.GetCategoriesResponse.categories:type_name -> casino.Category
 	7,  // 2: casino.GetProvidersResponse.providers:type_name -> casino.Provider
-	29, // 3: casino.ServiceLaunchResponse.expires_at:type_name -> google.protobuf.Timestamp
-	29, // 4: casino.GetPlayerHistoryRequest.start_date:type_name -> google.protobuf.Timestamp
-	29, // 5: casino.GetPlayerHistoryRequest.end_date:type_name -> google.protobuf.Timestamp
-	29, // 6: casino.GameSession.start_time:type_name -> google.protobuf.Timestamp
-	29, // 7: casino.GameSession.end_time:type_name -> google.protobuf.Timestamp
-	30, // 8: casino.GameSession.bet_amount:type_name -> wallet.Money
-	30, // 9: casino.GameSession.win_amount:type_name -> wallet.Money
-	30, // 10: casino.GameSession.net_position:type_name -> wallet.Money
+	31, // 3: casino.ServiceLaunchResponse.expires_at:type_name -> google.protobuf.Timestamp
+	31, // 4: casino.GetPlayerHistoryRequest.start_date:type_name -> google.protobuf.Timestamp
+	31, // 5: casino.GetPlayerHistoryRequest.end_date:type_name -> google.protobuf.Timestamp
+	31, // 6: casino.GameSession.start_time:type_name -> google.protobuf.Timestamp
+	31, // 7: casino.GameSession.end_time:type_name -> google.protobuf.Timestamp
+	32, // 8: casino.GameSession.bet_amount:type_name -> wallet.Money
+	32, // 9: casino.GameSession.win_amount:type_name -> wallet.Money
+	32, // 10: casino.GameSession.net_position:type_name -> wallet.Money
 	12, // 11: casino.GetPlayerHistoryResponse.sessions:type_name -> casino.GameSession
-	31, // 12: casino.ProcessBetRequest.bet_request:type_name -> casino.BetRequest
-	30, // 13: casino.ProcessBetResponse.balance:type_name -> wallet.Money
-	32, // 14: casino.ProcessWinRequest.win_request:type_name -> casino.WinRequest
-	30, // 15: casino.ProcessWinResponse.balance:type_name -> wallet.Money
-	33, // 16: casino.ProcessRollbackRequest.rollback_request:type_name -> casino.RollbackRequest
-	30, // 17: casino.ProcessRollbackResponse.balance:type_name -> wallet.Money
-	28, // 18: casino.UpdateGameStatusResponse.game:type_name -> casino.Game
-	27, // 19: casino.SeedGamesResponse.provider_results:type_name -> casino.SeedGamesResponse.ProviderResultsEntry
-	28, // 20: casino.UpdateGameCategoryResponse.game:type_name -> casino.Game
-	23, // 21: casino.SeedGamesResponse.ProviderResultsEntry.value:type_name -> casino.ProviderSeedStats
-	0,  // 22: casino.CasinoService.ListGames:input_type -> casino.ListGamesRequest
-	0,  // 23: casino.CasinoService.ListOriginalGames:input_type -> casino.ListGamesRequest
-	2,  // 24: casino.CasinoService.GetGame:input_type -> casino.GetGameRequest
-	3,  // 25: casino.CasinoService.GetCategories:input_type -> casino.GetCategoriesRequest
-	6,  // 26: casino.CasinoService.GetProviders:input_type -> casino.GetProvidersRequest
-	34, // 27: casino.CasinoService.LaunchGame:input_type -> casino.LaunchGameRequest
-	11, // 28: casino.CasinoService.GetPlayerHistory:input_type -> casino.GetPlayerHistoryRequest
-	20, // 29: casino.CasinoService.UpdateGameStatus:input_type -> casino.UpdateGameStatusRequest
-	25, // 30: casino.CasinoService.UpdateGameCategory:input_type -> casino.UpdateGameCategoryRequest
-	22, // 31: casino.CasinoService.SeedGames:input_type -> casino.SeedGamesRequest
-	14, // 32: casino.CasinoService.ProcessBet:input_type -> casino.ProcessBetRequest
-	16, // 33: casino.CasinoService.ProcessWin:input_type -> casino.ProcessWinRequest
-	18, // 34: casino.CasinoService.ProcessRollback:input_type -> casino.ProcessRollbackRequest
-	1,  // 35: casino.CasinoService.ListGames:output_type -> casino.ListGamesResponse
-	1,  // 36: casino.CasinoService.ListOriginalGames:output_type -> casino.ListGamesResponse
-	28, // 37: casino.CasinoService.GetGame:output_type -> casino.Game
-	5,  // 38: casino.CasinoService.GetCategories:output_type -> casino.GetCategoriesResponse
-	8,  // 39: casino.CasinoService.GetProviders:output_type -> casino.GetProvidersResponse
-	35, // 40: casino.CasinoService.LaunchGame:output_type -> casino.LaunchGameResponse
-	13, // 41: casino.CasinoService.GetPlayerHistory:output_type -> casino.GetPlayerHistoryResponse
-	21, // 42: casino.CasinoService.UpdateGameStatus:output_type -> casino.UpdateGameStatusResponse
-	26, // 43: casino.CasinoService.UpdateGameCategory:output_type -> casino.UpdateGameCategoryResponse
-	24, // 44: casino.CasinoService.SeedGames:output_type -> casino.SeedGamesResponse
-	15, // 45: casino.CasinoService.ProcessBet:output_type -> casino.ProcessBetResponse
-	17, // 46: casino.CasinoService.ProcessWin:output_type -> casino.ProcessWinResponse
-	19, // 47: casino.CasinoService.ProcessRollback:output_type -> casino.ProcessRollbackResponse
-	35, // [35:48] is the sub-list for method output_type
-	22, // [22:35] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	33, // 12: casino.ProcessBetRequest.bet_request:type_name -> casino.BetRequest
+	32, // 13: casino.ProcessBetResponse.balance:type_name -> wallet.Money
+	34, // 14: casino.ProcessWinRequest.win_request:type_name -> casino.WinRequest
+	32, // 15: casino.ProcessWinResponse.balance:type_name -> wallet.Money
+	35, // 16: casino.ProcessRollbackRequest.rollback_request:type_name -> casino.RollbackRequest
+	32, // 17: casino.ProcessRollbackResponse.balance:type_name -> wallet.Money
+	30, // 18: casino.UpdateGameStatusResponse.game:type_name -> casino.Game
+	29, // 19: casino.SeedGamesResponse.provider_results:type_name -> casino.SeedGamesResponse.ProviderResultsEntry
+	30, // 20: casino.UpdateGameCategoryResponse.game:type_name -> casino.Game
+	30, // 21: casino.UpdateGameResponse.game:type_name -> casino.Game
+	23, // 22: casino.SeedGamesResponse.ProviderResultsEntry.value:type_name -> casino.ProviderSeedStats
+	0,  // 23: casino.CasinoService.ListGames:input_type -> casino.ListGamesRequest
+	0,  // 24: casino.CasinoService.ListOriginalGames:input_type -> casino.ListGamesRequest
+	2,  // 25: casino.CasinoService.GetGame:input_type -> casino.GetGameRequest
+	3,  // 26: casino.CasinoService.GetCategories:input_type -> casino.GetCategoriesRequest
+	6,  // 27: casino.CasinoService.GetProviders:input_type -> casino.GetProvidersRequest
+	36, // 28: casino.CasinoService.LaunchGame:input_type -> casino.LaunchGameRequest
+	11, // 29: casino.CasinoService.GetPlayerHistory:input_type -> casino.GetPlayerHistoryRequest
+	20, // 30: casino.CasinoService.UpdateGameStatus:input_type -> casino.UpdateGameStatusRequest
+	25, // 31: casino.CasinoService.UpdateGameCategory:input_type -> casino.UpdateGameCategoryRequest
+	27, // 32: casino.CasinoService.UpdateGame:input_type -> casino.UpdateGameRequest
+	22, // 33: casino.CasinoService.SeedGames:input_type -> casino.SeedGamesRequest
+	14, // 34: casino.CasinoService.ProcessBet:input_type -> casino.ProcessBetRequest
+	16, // 35: casino.CasinoService.ProcessWin:input_type -> casino.ProcessWinRequest
+	18, // 36: casino.CasinoService.ProcessRollback:input_type -> casino.ProcessRollbackRequest
+	1,  // 37: casino.CasinoService.ListGames:output_type -> casino.ListGamesResponse
+	1,  // 38: casino.CasinoService.ListOriginalGames:output_type -> casino.ListGamesResponse
+	30, // 39: casino.CasinoService.GetGame:output_type -> casino.Game
+	5,  // 40: casino.CasinoService.GetCategories:output_type -> casino.GetCategoriesResponse
+	8,  // 41: casino.CasinoService.GetProviders:output_type -> casino.GetProvidersResponse
+	37, // 42: casino.CasinoService.LaunchGame:output_type -> casino.LaunchGameResponse
+	13, // 43: casino.CasinoService.GetPlayerHistory:output_type -> casino.GetPlayerHistoryResponse
+	21, // 44: casino.CasinoService.UpdateGameStatus:output_type -> casino.UpdateGameStatusResponse
+	26, // 45: casino.CasinoService.UpdateGameCategory:output_type -> casino.UpdateGameCategoryResponse
+	28, // 46: casino.CasinoService.UpdateGame:output_type -> casino.UpdateGameResponse
+	24, // 47: casino.CasinoService.SeedGames:output_type -> casino.SeedGamesResponse
+	15, // 48: casino.CasinoService.ProcessBet:output_type -> casino.ProcessBetResponse
+	17, // 49: casino.CasinoService.ProcessWin:output_type -> casino.ProcessWinResponse
+	19, // 50: casino.CasinoService.ProcessRollback:output_type -> casino.ProcessRollbackResponse
+	37, // [37:51] is the sub-list for method output_type
+	23, // [23:37] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_casino_service_proto_init() }
@@ -2042,13 +2234,14 @@ func file_casino_service_proto_init() {
 	file_wallet_proto_init()
 	file_casino_provider_proto_init()
 	file_casino_service_proto_msgTypes[20].OneofWrappers = []any{}
+	file_casino_service_proto_msgTypes[27].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_casino_service_proto_rawDesc), len(file_casino_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   28,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
