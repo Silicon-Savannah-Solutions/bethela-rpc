@@ -1595,8 +1595,9 @@ type ListUsersRequest struct {
 	PageSize  int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Optional filters
-	Status        *UserStatus `protobuf:"varint,3,opt,name=status,proto3,enum=identity.UserStatus,oneof" json:"status,omitempty"`
-	RoleName      *string     `protobuf:"bytes,4,opt,name=role_name,json=roleName,proto3,oneof" json:"role_name,omitempty"`
+	Status        *UserStatus            `protobuf:"varint,3,opt,name=status,proto3,enum=identity.UserStatus,oneof" json:"status,omitempty"`
+	RoleName      *string                `protobuf:"bytes,4,opt,name=role_name,json=roleName,proto3,oneof" json:"role_name,omitempty"`
+	CreatedAfter  *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_after,json=createdAfter,proto3,oneof" json:"created_after,omitempty"` // Filter users created after this time
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1657,6 +1658,13 @@ func (x *ListUsersRequest) GetRoleName() string {
 		return *x.RoleName
 	}
 	return ""
+}
+
+func (x *ListUsersRequest) GetCreatedAfter() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAfter
+	}
+	return nil
 }
 
 // ListUsersResponse contains a list of users and pagination info
@@ -2089,16 +2097,18 @@ const file_identity_proto_rawDesc = "" +
 	"\x19AdminResetPasswordRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12!\n" +
 	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\x12\"\n" +
-	"\radmin_user_id\x18\x03 \x01(\tR\vadminUserId\"\xbc\x01\n" +
+	"\radmin_user_id\x18\x03 \x01(\tR\vadminUserId\"\x94\x02\n" +
 	"\x10ListUsersRequest\x12\x1b\n" +
 	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x02 \x01(\tR\tpageToken\x121\n" +
 	"\x06status\x18\x03 \x01(\x0e2\x14.identity.UserStatusH\x00R\x06status\x88\x01\x01\x12 \n" +
-	"\trole_name\x18\x04 \x01(\tH\x01R\broleName\x88\x01\x01B\t\n" +
+	"\trole_name\x18\x04 \x01(\tH\x01R\broleName\x88\x01\x01\x12D\n" +
+	"\rcreated_after\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\fcreatedAfter\x88\x01\x01B\t\n" +
 	"\a_statusB\f\n" +
 	"\n" +
-	"_role_name\"\x82\x01\n" +
+	"_role_nameB\x10\n" +
+	"\x0e_created_after\"\x82\x01\n" +
 	"\x11ListUsersResponse\x12$\n" +
 	"\x05users\x18\x01 \x03(\v2\x0e.identity.UserR\x05users\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
@@ -2212,43 +2222,44 @@ var file_identity_proto_depIdxs = []int32{
 	5,  // 10: identity.UpdateUserRequest.metadata:type_name -> identity.UserMetadata
 	14, // 11: identity.LoginRequest.device_info:type_name -> identity.DeviceInfo
 	0,  // 12: identity.ListUsersRequest.status:type_name -> identity.UserStatus
-	2,  // 13: identity.ListUsersResponse.users:type_name -> identity.User
-	1,  // 14: identity.RequestVerificationCodeRequest.type:type_name -> identity.VerificationType
-	7,  // 15: identity.IdentityService.CreateUser:input_type -> identity.CreateUserRequest
-	8,  // 16: identity.IdentityService.GetUser:input_type -> identity.GetUserRequest
-	11, // 17: identity.IdentityService.UpdateUser:input_type -> identity.UpdateUserRequest
-	12, // 18: identity.IdentityService.DeleteUser:input_type -> identity.DeleteUserRequest
-	13, // 19: identity.IdentityService.Login:input_type -> identity.LoginRequest
-	16, // 20: identity.IdentityService.Logout:input_type -> identity.LogoutRequest
-	17, // 21: identity.IdentityService.VerifyToken:input_type -> identity.VerifyTokenRequest
-	19, // 22: identity.IdentityService.RequestPasswordReset:input_type -> identity.RequestPasswordResetRequest
-	20, // 23: identity.IdentityService.ResetPassword:input_type -> identity.ResetPasswordRequest
-	21, // 24: identity.IdentityService.ChangePassword:input_type -> identity.ChangePasswordRequest
-	23, // 25: identity.IdentityService.ListUsers:input_type -> identity.ListUsersRequest
-	25, // 26: identity.IdentityService.RequestVerificationCode:input_type -> identity.RequestVerificationCodeRequest
-	27, // 27: identity.IdentityService.VerifyAccount:input_type -> identity.VerifyAccountRequest
-	9,  // 28: identity.IdentityService.GetUserCurrency:input_type -> identity.GetUserCurrencyRequest
-	22, // 29: identity.IdentityService.AdminResetPassword:input_type -> identity.AdminResetPasswordRequest
-	2,  // 30: identity.IdentityService.CreateUser:output_type -> identity.User
-	2,  // 31: identity.IdentityService.GetUser:output_type -> identity.User
-	2,  // 32: identity.IdentityService.UpdateUser:output_type -> identity.User
-	30, // 33: identity.IdentityService.DeleteUser:output_type -> google.protobuf.Empty
-	15, // 34: identity.IdentityService.Login:output_type -> identity.LoginResponse
-	30, // 35: identity.IdentityService.Logout:output_type -> google.protobuf.Empty
-	18, // 36: identity.IdentityService.VerifyToken:output_type -> identity.VerifyTokenResponse
-	30, // 37: identity.IdentityService.RequestPasswordReset:output_type -> google.protobuf.Empty
-	30, // 38: identity.IdentityService.ResetPassword:output_type -> google.protobuf.Empty
-	30, // 39: identity.IdentityService.ChangePassword:output_type -> google.protobuf.Empty
-	24, // 40: identity.IdentityService.ListUsers:output_type -> identity.ListUsersResponse
-	26, // 41: identity.IdentityService.RequestVerificationCode:output_type -> identity.RequestVerificationCodeResponse
-	3,  // 42: identity.IdentityService.VerifyAccount:output_type -> identity.VerifyAccountResponse
-	10, // 43: identity.IdentityService.GetUserCurrency:output_type -> identity.GetUserCurrencyResponse
-	30, // 44: identity.IdentityService.AdminResetPassword:output_type -> google.protobuf.Empty
-	30, // [30:45] is the sub-list for method output_type
-	15, // [15:30] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	29, // 13: identity.ListUsersRequest.created_after:type_name -> google.protobuf.Timestamp
+	2,  // 14: identity.ListUsersResponse.users:type_name -> identity.User
+	1,  // 15: identity.RequestVerificationCodeRequest.type:type_name -> identity.VerificationType
+	7,  // 16: identity.IdentityService.CreateUser:input_type -> identity.CreateUserRequest
+	8,  // 17: identity.IdentityService.GetUser:input_type -> identity.GetUserRequest
+	11, // 18: identity.IdentityService.UpdateUser:input_type -> identity.UpdateUserRequest
+	12, // 19: identity.IdentityService.DeleteUser:input_type -> identity.DeleteUserRequest
+	13, // 20: identity.IdentityService.Login:input_type -> identity.LoginRequest
+	16, // 21: identity.IdentityService.Logout:input_type -> identity.LogoutRequest
+	17, // 22: identity.IdentityService.VerifyToken:input_type -> identity.VerifyTokenRequest
+	19, // 23: identity.IdentityService.RequestPasswordReset:input_type -> identity.RequestPasswordResetRequest
+	20, // 24: identity.IdentityService.ResetPassword:input_type -> identity.ResetPasswordRequest
+	21, // 25: identity.IdentityService.ChangePassword:input_type -> identity.ChangePasswordRequest
+	23, // 26: identity.IdentityService.ListUsers:input_type -> identity.ListUsersRequest
+	25, // 27: identity.IdentityService.RequestVerificationCode:input_type -> identity.RequestVerificationCodeRequest
+	27, // 28: identity.IdentityService.VerifyAccount:input_type -> identity.VerifyAccountRequest
+	9,  // 29: identity.IdentityService.GetUserCurrency:input_type -> identity.GetUserCurrencyRequest
+	22, // 30: identity.IdentityService.AdminResetPassword:input_type -> identity.AdminResetPasswordRequest
+	2,  // 31: identity.IdentityService.CreateUser:output_type -> identity.User
+	2,  // 32: identity.IdentityService.GetUser:output_type -> identity.User
+	2,  // 33: identity.IdentityService.UpdateUser:output_type -> identity.User
+	30, // 34: identity.IdentityService.DeleteUser:output_type -> google.protobuf.Empty
+	15, // 35: identity.IdentityService.Login:output_type -> identity.LoginResponse
+	30, // 36: identity.IdentityService.Logout:output_type -> google.protobuf.Empty
+	18, // 37: identity.IdentityService.VerifyToken:output_type -> identity.VerifyTokenResponse
+	30, // 38: identity.IdentityService.RequestPasswordReset:output_type -> google.protobuf.Empty
+	30, // 39: identity.IdentityService.ResetPassword:output_type -> google.protobuf.Empty
+	30, // 40: identity.IdentityService.ChangePassword:output_type -> google.protobuf.Empty
+	24, // 41: identity.IdentityService.ListUsers:output_type -> identity.ListUsersResponse
+	26, // 42: identity.IdentityService.RequestVerificationCode:output_type -> identity.RequestVerificationCodeResponse
+	3,  // 43: identity.IdentityService.VerifyAccount:output_type -> identity.VerifyAccountResponse
+	10, // 44: identity.IdentityService.GetUserCurrency:output_type -> identity.GetUserCurrencyResponse
+	30, // 45: identity.IdentityService.AdminResetPassword:output_type -> google.protobuf.Empty
+	31, // [31:46] is the sub-list for method output_type
+	16, // [16:31] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_identity_proto_init() }

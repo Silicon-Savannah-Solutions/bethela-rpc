@@ -235,6 +235,7 @@ message ListUsersRequest {
   // Optional filters
   optional UserStatus status = 3;
   optional string role_name = 4;
+  optional google.protobuf.Timestamp created_after = 5; // Filter users created after this time
 }
 
 // ListUsersResponse contains a list of users and pagination info
