@@ -19,20 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CasinoService_ListGames_FullMethodName          = "/casino.CasinoService/ListGames"
-	CasinoService_ListOriginalGames_FullMethodName  = "/casino.CasinoService/ListOriginalGames"
-	CasinoService_GetGame_FullMethodName            = "/casino.CasinoService/GetGame"
-	CasinoService_GetCategories_FullMethodName      = "/casino.CasinoService/GetCategories"
-	CasinoService_GetProviders_FullMethodName       = "/casino.CasinoService/GetProviders"
-	CasinoService_LaunchGame_FullMethodName         = "/casino.CasinoService/LaunchGame"
-	CasinoService_GetPlayerHistory_FullMethodName   = "/casino.CasinoService/GetPlayerHistory"
-	CasinoService_UpdateGameStatus_FullMethodName   = "/casino.CasinoService/UpdateGameStatus"
-	CasinoService_UpdateGameCategory_FullMethodName = "/casino.CasinoService/UpdateGameCategory"
-	CasinoService_UpdateGame_FullMethodName         = "/casino.CasinoService/UpdateGame"
-	CasinoService_SeedGames_FullMethodName          = "/casino.CasinoService/SeedGames"
-	CasinoService_ProcessBet_FullMethodName         = "/casino.CasinoService/ProcessBet"
-	CasinoService_ProcessWin_FullMethodName         = "/casino.CasinoService/ProcessWin"
-	CasinoService_ProcessRollback_FullMethodName    = "/casino.CasinoService/ProcessRollback"
+	CasinoService_ListGames_FullMethodName             = "/casino.CasinoService/ListGames"
+	CasinoService_ListOriginalGames_FullMethodName     = "/casino.CasinoService/ListOriginalGames"
+	CasinoService_GetGame_FullMethodName               = "/casino.CasinoService/GetGame"
+	CasinoService_GetCategories_FullMethodName         = "/casino.CasinoService/GetCategories"
+	CasinoService_GetProviders_FullMethodName          = "/casino.CasinoService/GetProviders"
+	CasinoService_LaunchGame_FullMethodName            = "/casino.CasinoService/LaunchGame"
+	CasinoService_GetPlayerHistory_FullMethodName      = "/casino.CasinoService/GetPlayerHistory"
+	CasinoService_UpdateGameStatus_FullMethodName      = "/casino.CasinoService/UpdateGameStatus"
+	CasinoService_UpdateGameCategory_FullMethodName    = "/casino.CasinoService/UpdateGameCategory"
+	CasinoService_UpdateGame_FullMethodName            = "/casino.CasinoService/UpdateGame"
+	CasinoService_SeedGames_FullMethodName             = "/casino.CasinoService/SeedGames"
+	CasinoService_GetFinancialAnalytics_FullMethodName = "/casino.CasinoService/GetFinancialAnalytics"
+	CasinoService_ProcessBet_FullMethodName            = "/casino.CasinoService/ProcessBet"
+	CasinoService_ProcessWin_FullMethodName            = "/casino.CasinoService/ProcessWin"
+	CasinoService_ProcessRollback_FullMethodName       = "/casino.CasinoService/ProcessRollback"
 )
 
 // CasinoServiceClient is the client API for CasinoService service.
@@ -61,6 +62,8 @@ type CasinoServiceClient interface {
 	UpdateGame(ctx context.Context, in *UpdateGameRequest, opts ...grpc.CallOption) (*UpdateGameResponse, error)
 	// Seed games from all registered providers
 	SeedGames(ctx context.Context, in *SeedGamesRequest, opts ...grpc.CallOption) (*SeedGamesResponse, error)
+	// Analytics methods for admin dashboard
+	GetFinancialAnalytics(ctx context.Context, in *FinancialAnalyticsRequest, opts ...grpc.CallOption) (*FinancialAnalyticsResponse, error)
 	// Internal methods used by the casino service
 	ProcessBet(ctx context.Context, in *ProcessBetRequest, opts ...grpc.CallOption) (*ProcessBetResponse, error)
 	ProcessWin(ctx context.Context, in *ProcessWinRequest, opts ...grpc.CallOption) (*ProcessWinResponse, error)
@@ -185,6 +188,16 @@ func (c *casinoServiceClient) SeedGames(ctx context.Context, in *SeedGamesReques
 	return out, nil
 }
 
+func (c *casinoServiceClient) GetFinancialAnalytics(ctx context.Context, in *FinancialAnalyticsRequest, opts ...grpc.CallOption) (*FinancialAnalyticsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FinancialAnalyticsResponse)
+	err := c.cc.Invoke(ctx, CasinoService_GetFinancialAnalytics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *casinoServiceClient) ProcessBet(ctx context.Context, in *ProcessBetRequest, opts ...grpc.CallOption) (*ProcessBetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProcessBetResponse)
@@ -241,6 +254,8 @@ type CasinoServiceServer interface {
 	UpdateGame(context.Context, *UpdateGameRequest) (*UpdateGameResponse, error)
 	// Seed games from all registered providers
 	SeedGames(context.Context, *SeedGamesRequest) (*SeedGamesResponse, error)
+	// Analytics methods for admin dashboard
+	GetFinancialAnalytics(context.Context, *FinancialAnalyticsRequest) (*FinancialAnalyticsResponse, error)
 	// Internal methods used by the casino service
 	ProcessBet(context.Context, *ProcessBetRequest) (*ProcessBetResponse, error)
 	ProcessWin(context.Context, *ProcessWinRequest) (*ProcessWinResponse, error)
@@ -287,6 +302,9 @@ func (UnimplementedCasinoServiceServer) UpdateGame(context.Context, *UpdateGameR
 }
 func (UnimplementedCasinoServiceServer) SeedGames(context.Context, *SeedGamesRequest) (*SeedGamesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SeedGames not implemented")
+}
+func (UnimplementedCasinoServiceServer) GetFinancialAnalytics(context.Context, *FinancialAnalyticsRequest) (*FinancialAnalyticsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFinancialAnalytics not implemented")
 }
 func (UnimplementedCasinoServiceServer) ProcessBet(context.Context, *ProcessBetRequest) (*ProcessBetResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ProcessBet not implemented")
@@ -516,6 +534,24 @@ func _CasinoService_SeedGames_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CasinoService_GetFinancialAnalytics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinancialAnalyticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CasinoServiceServer).GetFinancialAnalytics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CasinoService_GetFinancialAnalytics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CasinoServiceServer).GetFinancialAnalytics(ctx, req.(*FinancialAnalyticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CasinoService_ProcessBet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProcessBetRequest)
 	if err := dec(in); err != nil {
@@ -620,6 +656,10 @@ var CasinoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SeedGames",
 			Handler:    _CasinoService_SeedGames_Handler,
+		},
+		{
+			MethodName: "GetFinancialAnalytics",
+			Handler:    _CasinoService_GetFinancialAnalytics_Handler,
 		},
 		{
 			MethodName: "ProcessBet",

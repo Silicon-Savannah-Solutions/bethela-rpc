@@ -44,6 +44,9 @@ service CasinoService {
   // Seed games from all registered providers
   rpc SeedGames(SeedGamesRequest) returns (SeedGamesResponse);
 
+  // Analytics methods for admin dashboard
+  rpc GetFinancialAnalytics(FinancialAnalyticsRequest) returns (FinancialAnalyticsResponse);
+
   // Internal methods used by the casino service
   rpc ProcessBet(ProcessBetRequest) returns (ProcessBetResponse);
   rpc ProcessWin(ProcessWinRequest) returns (ProcessWinResponse);
@@ -269,4 +272,22 @@ message UpdateGameResponse {
   bool success = 1;            // Whether the update was successful
   string error_message = 2;    // Error message if unsuccessful
   casino.Game game = 3;        // Updated game data
+}
+
+// FinancialAnalyticsRequest is used to get financial analytics for a date range
+message FinancialAnalyticsRequest {
+  google.protobuf.Timestamp start_time = 1; // Start of date range
+  google.protobuf.Timestamp end_time = 2;   // End of date range
+}
+
+// FinancialAnalyticsResponse contains aggregated financial analytics data
+message FinancialAnalyticsResponse {
+  int64 total_bets = 1;          // Sum of all bets in period (cents)
+  int64 total_wins = 2;          // Sum of all wins in period (cents)
+  int64 ggr = 3;                 // Gross Gaming Revenue (total_bets - total_wins)
+  double house_edge_percent = 4; // House edge percentage ((ggr / total_bets) * 100)
+  int64 avg_bet_size = 5;        // Average bet size (cents)
+  int64 bet_count = 6;           // Number of bets placed
+  int64 win_count = 7;           // Number of wins
+  int64 active_players = 8;      // Unique players in period
 }
