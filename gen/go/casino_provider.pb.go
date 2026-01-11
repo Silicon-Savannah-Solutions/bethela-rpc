@@ -39,6 +39,7 @@ type Game struct {
 	UpdatedAt           *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`                                                                                   // Last update time
 	IsVisible           bool                   `protobuf:"varint,13,opt,name=is_visible,json=isVisible,proto3" json:"is_visible,omitempty"`                                                                                  // Whether the game is visible to players
 	IsOriginal          bool                   `protobuf:"varint,14,opt,name=is_original,json=isOriginal,proto3" json:"is_original,omitempty"`                                                                               // Whether the game appears in originals section
+	Provider            string                 `protobuf:"bytes,15,opt,name=provider,proto3" json:"provider,omitempty"`                                                                                                      // Provider name (eurocasino, kaya, etc.)
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -169,6 +170,13 @@ func (x *Game) GetIsOriginal() bool {
 		return x.IsOriginal
 	}
 	return false
+}
+
+func (x *Game) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
 }
 
 // GetGamesRequest is used to retrieve games from a provider
@@ -1025,7 +1033,7 @@ var File_casino_provider_proto protoreflect.FileDescriptor
 
 const file_casino_provider_proto_rawDesc = "" +
 	"\n" +
-	"\x15casino_provider.proto\x12\x06casino\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\x88\x06\n" +
+	"\x15casino_provider.proto\x12\x06casino\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\fwallet.proto\"\xa4\x06\n" +
 	"\x04Game\x12\x17\n" +
 	"\agame_id\x18\x01 \x01(\tR\x06gameId\x12\x1b\n" +
 	"\tgame_uuid\x18\x02 \x01(\tR\bgameUuid\x12\x12\n" +
@@ -1045,7 +1053,8 @@ const file_casino_provider_proto_rawDesc = "" +
 	"\n" +
 	"is_visible\x18\r \x01(\bR\tisVisible\x12\x1f\n" +
 	"\vis_original\x18\x0e \x01(\bR\n" +
-	"isOriginal\x1a?\n" +
+	"isOriginal\x12\x1a\n" +
+	"\bprovider\x18\x0f \x01(\tR\bprovider\x1a?\n" +
 	"\x11MinimumStakeEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a?\n" +
