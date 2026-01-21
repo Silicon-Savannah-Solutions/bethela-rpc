@@ -337,6 +337,8 @@ type LaunchGameRequest struct {
 	DemoMode      bool                   `protobuf:"varint,7,opt,name=demo_mode,json=demoMode,proto3" json:"demo_mode,omitempty"`            // Whether to launch in demo mode
 	ReturnUrl     string                 `protobuf:"bytes,8,opt,name=return_url,json=returnUrl,proto3" json:"return_url,omitempty"`          // URL to return to after game ends
 	Language      string                 `protobuf:"bytes,9,opt,name=language,proto3" json:"language,omitempty"`                             // Player's preferred language
+	PlayerIp      string                 `protobuf:"bytes,10,opt,name=player_ip,json=playerIp,proto3" json:"player_ip,omitempty"`            // Player's IP address for session tracking
+	UserAgent     string                 `protobuf:"bytes,11,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`         // Player's User-Agent for session tracking
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -430,6 +432,20 @@ func (x *LaunchGameRequest) GetReturnUrl() string {
 func (x *LaunchGameRequest) GetLanguage() string {
 	if x != nil {
 		return x.Language
+	}
+	return ""
+}
+
+func (x *LaunchGameRequest) GetPlayerIp() string {
+	if x != nil {
+		return x.PlayerIp
+	}
+	return ""
+}
+
+func (x *LaunchGameRequest) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
 	}
 	return ""
 }
@@ -1075,7 +1091,7 @@ const file_casino_provider_proto_rawDesc = "" +
 	"\x05games\x18\x01 \x03(\v2\f.casino.GameR\x05games\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
 	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x19\n" +
-	"\bper_page\x18\x04 \x01(\x05R\aperPage\"\xac\x02\n" +
+	"\bper_page\x18\x04 \x01(\x05R\aperPage\"\xe8\x02\n" +
 	"\x11LaunchGameRequest\x12\x17\n" +
 	"\agame_id\x18\x01 \x01(\tR\x06gameId\x12\x1b\n" +
 	"\tplayer_id\x18\x02 \x01(\tR\bplayerId\x12\x1f\n" +
@@ -1087,7 +1103,11 @@ const file_casino_provider_proto_rawDesc = "" +
 	"\tdemo_mode\x18\a \x01(\bR\bdemoMode\x12\x1d\n" +
 	"\n" +
 	"return_url\x18\b \x01(\tR\treturnUrl\x12\x1a\n" +
-	"\blanguage\x18\t \x01(\tR\blanguage\"\x89\x01\n" +
+	"\blanguage\x18\t \x01(\tR\blanguage\x12\x1b\n" +
+	"\tplayer_ip\x18\n" +
+	" \x01(\tR\bplayerIp\x12\x1d\n" +
+	"\n" +
+	"user_agent\x18\v \x01(\tR\tuserAgent\"\x89\x01\n" +
 	"\x12LaunchGameResponse\x12\x19\n" +
 	"\bgame_url\x18\x01 \x01(\tR\agameUrl\x12\x1d\n" +
 	"\n" +

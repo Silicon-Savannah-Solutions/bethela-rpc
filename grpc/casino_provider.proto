@@ -73,6 +73,8 @@ message LaunchGameRequest {
   bool demo_mode = 7;          // Whether to launch in demo mode
   string return_url = 8;       // URL to return to after game ends
   string language = 9;         // Player's preferred language
+  string player_ip = 10;       // Player's IP address for session tracking
+  string user_agent = 11;      // Player's User-Agent for session tracking
 }
 
 // LaunchGameResponse contains the game launch URL
