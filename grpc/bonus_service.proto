@@ -1,0 +1,429 @@
+syntax = "proto3";
+
+package bonus;
+
+option go_package = "github.com/Silicon-Savannah-Solutions/bethela-rpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "wallet.proto";
+
+// BonusService provides APIs for managing promotions, bonuses, and rewards
+service BonusService {
+  // Admin operations - Promotion management
+  rpc CreatePromotion(CreatePromotionRequest) returns (Promotion);
+  rpc UpdatePromotion(UpdatePromotionRequest) returns (Promotion);
+  rpc GetPromotion(GetPromotionRequest) returns (Promotion);
+  rpc ListPromotions(ListPromotionsRequest) returns (ListPromotionsResponse);
+  rpc DeletePromotion(DeletePromotionRequest) returns (google.protobuf.Empty);
+  rpc ActivatePromotion(ActivatePromotionRequest) returns (Promotion);
+  rpc PausePromotion(PausePromotionRequest) returns (Promotion);
+
+  // Rule management
+  rpc AddPromotionRule(AddPromotionRuleRequest) returns (PromotionRule);
+  rpc UpdatePromotionRule(UpdatePromotionRuleRequest) returns (PromotionRule);
+  rpc DeletePromotionRule(DeletePromotionRuleRequest) returns (google.protobuf.Empty);
+
+  // Reward configuration
+  rpc AddPromotionReward(AddPromotionRewardRequest) returns (PromotionReward);
+  rpc UpdatePromotionReward(UpdatePromotionRewardRequest) returns (PromotionReward);
+  rpc DeletePromotionReward(DeletePromotionRewardRequest) returns (google.protobuf.Empty);
+
+  // Action processing (called by other services when events occur)
+  rpc ProcessAction(ProcessActionRequest) returns (ProcessActionResponse);
+
+  // User rewards management
+  rpc GetUserRewards(GetUserRewardsRequest) returns (GetUserRewardsResponse);
+  rpc GetUserFreeSpins(GetUserFreeSpinsRequest) returns (GetUserFreeSpinsResponse);
+  rpc UseFreeSpin(UseFreeSpinRequest) returns (UseFreeSpinResponse);
+  rpc UpdateWagering(UpdateWageringRequest) returns (UpdateWageringResponse);
+  rpc ClaimPromotion(ClaimPromotionRequest) returns (ClaimPromotionResponse);
+
+  // Admin manual operations
+  rpc GrantReward(GrantRewardRequest) returns (UserReward);
+  rpc CancelUserReward(CancelUserRewardRequest) returns (google.protobuf.Empty);
+
+  // Statistics
+  rpc GetPromotionStats(GetPromotionStatsRequest) returns (PromotionStats);
+}
+
+// Enums
+
+enum PromotionType {
+  PROMOTION_TYPE_UNSPECIFIED = 0;
+  PROMOTION_TYPE_RULE_BASED = 1;   // Always-active automatic triggers
+  PROMOTION_TYPE_CAMPAIGN = 2;     // Time-limited promotions
+}
+
+enum PromotionStatus {
+  PROMOTION_STATUS_UNSPECIFIED = 0;
+  PROMOTION_STATUS_DRAFT = 1;
+  PROMOTION_STATUS_ACTIVE = 2;
+  PROMOTION_STATUS_PAUSED = 3;
+  PROMOTION_STATUS_ENDED = 4;
+}
+
+enum RuleType {
+  RULE_TYPE_UNSPECIFIED = 0;
+  RULE_TYPE_DEPOSIT = 1;           // Triggered on deposit
+  RULE_TYPE_REGISTRATION = 2;      // Triggered on user registration
+  RULE_TYPE_WAGER = 3;             // Triggered on cumulative wagering
+  RULE_TYPE_DAILY_LOGIN = 4;       // Triggered on daily login
+  RULE_TYPE_REFERRAL = 5;          // Triggered when referral completes action
+  RULE_TYPE_GAME_PLAYED = 6;       // Triggered when specific game is played
+  RULE_TYPE_CONSECUTIVE_DAYS = 7;  // Triggered on consecutive active days
+  RULE_TYPE_BET_PLACED = 8;        // Triggered on bet placement
+  RULE_TYPE_WIN = 9;               // Triggered on win
+  RULE_TYPE_PROFILE_COMPLETION = 10; // Triggered on profile completion
+  RULE_TYPE_VERIFICATION = 11;     // Triggered on account verification
+}
+
+enum RewardType {
+  REWARD_TYPE_UNSPECIFIED = 0;
+  REWARD_TYPE_BONUS_BALANCE = 1;   // Credits to wallet bonus balance
+  REWARD_TYPE_FREE_SPINS = 2;      // Free spins for slot games
+  REWARD_TYPE_FREE_BET = 3;        // Fixed amount free bet
+}
+
+enum RewardValueType {
+  REWARD_VALUE_TYPE_UNSPECIFIED = 0;
+  REWARD_VALUE_TYPE_FIXED = 1;      // Fixed amount (e.g., 500 cents)
+  REWARD_VALUE_TYPE_PERCENTAGE = 2; // Percentage of trigger amount
+}
+
+enum UserRewardStatus {
+  USER_REWARD_STATUS_UNSPECIFIED = 0;
+  USER_REWARD_STATUS_PENDING = 1;   // Awaiting activation/claim
+  USER_REWARD_STATUS_ACTIVE = 2;    // Currently active
+  USER_REWARD_STATUS_USED = 3;      // Fully used/completed
+  USER_REWARD_STATUS_EXPIRED = 4;   // Expired before completion
+  USER_REWARD_STATUS_CANCELLED = 5; // Manually cancelled
+}
+
+enum FreeSpinStatus {
+  FREE_SPIN_STATUS_UNSPECIFIED = 0;
+  FREE_SPIN_STATUS_ACTIVE = 1;
+  FREE_SPIN_STATUS_COMPLETED = 2;
+  FREE_SPIN_STATUS_EXPIRED = 3;
+}
+
+// Core messages
+
+message Promotion {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  PromotionType promotion_type = 4;
+  PromotionStatus status = 5;
+  google.protobuf.Timestamp start_date = 6;
+  google.protobuf.Timestamp end_date = 7;
+  int32 max_redemptions = 8;         // Total redemptions allowed (0 = unlimited)
+  int32 max_per_user = 9;            // How many times per user
+  int32 current_redemptions = 10;    // Current redemption count
+  int32 priority = 11;               // Higher = checked first
+  string country_code = 12;          // Optional country restriction
+  repeated PromotionRule rules = 13;
+  repeated PromotionReward rewards = 14;
+  google.protobuf.Timestamp created_at = 15;
+  google.protobuf.Timestamp updated_at = 16;
+  string currency = 17;              // Currency for the promotion (e.g., "KES")
+  bool requires_claim = 18;          // If true, user must explicitly claim
+}
+
+message PromotionRule {
+  string id = 1;
+  string promotion_id = 2;
+  RuleType rule_type = 3;
+  string condition_json = 4;         // JSON conditions (flexible structure)
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message PromotionReward {
+  string id = 1;
+  string promotion_id = 2;
+  RewardType reward_type = 3;
+  RewardValueType reward_value_type = 4;
+  int64 reward_value = 5;            // Amount in cents or percentage
+  int64 max_reward = 6;              // Cap for percentage rewards (in cents)
+  int32 wagering_requirement = 7;    // Multiplier before withdrawal (e.g., 10 = 10x)
+  int32 valid_days = 8;              // Days until reward expires
+  string game_restrictions_json = 9; // JSON: restrict to specific games
+  int32 free_spin_count = 10;        // Number of free spins (for REWARD_TYPE_FREE_SPINS)
+  int64 spin_value = 11;             // Value per spin in cents (for free spins)
+  google.protobuf.Timestamp created_at = 12;
+}
+
+message UserReward {
+  string id = 1;
+  string user_id = 2;
+  string promotion_id = 3;
+  string promotion_name = 4;
+  string reward_id = 5;
+  UserRewardStatus status = 6;
+  RewardType reward_type = 7;
+  int64 original_amount = 8;         // Original reward amount in cents
+  int64 remaining_amount = 9;        // Remaining amount
+  int64 wagering_required = 10;      // Total wagering required in cents
+  int64 wagering_completed = 11;     // Wagering completed so far
+  string trigger_data_json = 12;     // JSON: data that triggered the reward
+  google.protobuf.Timestamp expires_at = 13;
+  google.protobuf.Timestamp activated_at = 14;
+  google.protobuf.Timestamp completed_at = 15;
+  google.protobuf.Timestamp created_at = 16;
+  google.protobuf.Timestamp updated_at = 17;
+  string currency = 18;
+}
+
+message FreeSpin {
+  string id = 1;
+  string user_reward_id = 2;
+  string user_id = 3;
+  string game_id = 4;
+  string game_name = 5;
+  int32 spins_total = 6;
+  int32 spins_used = 7;
+  int64 spin_value = 8;              // Value per spin in cents
+  int64 winnings_total = 9;          // Total winnings from spins
+  FreeSpinStatus status = 10;
+  google.protobuf.Timestamp expires_at = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}
+
+message UserActionEvent {
+  string id = 1;
+  string user_id = 2;
+  string action_type = 3;            // deposit, registration, wager, etc.
+  string action_data_json = 4;       // JSON: action-specific data
+  bool processed = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+// Request/Response messages
+
+// Promotion CRUD
+message CreatePromotionRequest {
+  string name = 1;
+  string description = 2;
+  PromotionType promotion_type = 3;
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  int32 max_redemptions = 6;
+  int32 max_per_user = 7;
+  int32 priority = 8;
+  string country_code = 9;
+  string currency = 10;
+  bool requires_claim = 11;
+}
+
+message UpdatePromotionRequest {
+  string id = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional google.protobuf.Timestamp start_date = 4;
+  optional google.protobuf.Timestamp end_date = 5;
+  optional int32 max_redemptions = 6;
+  optional int32 max_per_user = 7;
+  optional int32 priority = 8;
+  optional string country_code = 9;
+  optional string currency = 10;
+  optional bool requires_claim = 11;
+}
+
+message GetPromotionRequest {
+  string id = 1;
+}
+
+message ListPromotionsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  optional PromotionStatus status = 3;
+  optional PromotionType promotion_type = 4;
+  bool include_expired = 5;
+}
+
+message ListPromotionsResponse {
+  repeated Promotion promotions = 1;
+  string next_page_token = 2;
+  int32 total_count = 3;
+}
+
+message DeletePromotionRequest {
+  string id = 1;
+}
+
+message ActivatePromotionRequest {
+  string id = 1;
+}
+
+message PausePromotionRequest {
+  string id = 1;
+}
+
+// Rule management
+message AddPromotionRuleRequest {
+  string promotion_id = 1;
+  RuleType rule_type = 2;
+  string condition_json = 3;
+}
+
+message UpdatePromotionRuleRequest {
+  string id = 1;
+  optional RuleType rule_type = 2;
+  optional string condition_json = 3;
+}
+
+message DeletePromotionRuleRequest {
+  string id = 1;
+}
+
+// Reward configuration
+message AddPromotionRewardRequest {
+  string promotion_id = 1;
+  RewardType reward_type = 2;
+  RewardValueType reward_value_type = 3;
+  int64 reward_value = 4;
+  int64 max_reward = 5;
+  int32 wagering_requirement = 6;
+  int32 valid_days = 7;
+  string game_restrictions_json = 8;
+  int32 free_spin_count = 9;
+  int64 spin_value = 10;
+}
+
+message UpdatePromotionRewardRequest {
+  string id = 1;
+  optional RewardType reward_type = 2;
+  optional RewardValueType reward_value_type = 3;
+  optional int64 reward_value = 4;
+  optional int64 max_reward = 5;
+  optional int32 wagering_requirement = 6;
+  optional int32 valid_days = 7;
+  optional string game_restrictions_json = 8;
+  optional int32 free_spin_count = 9;
+  optional int64 spin_value = 10;
+}
+
+message DeletePromotionRewardRequest {
+  string id = 1;
+}
+
+// Action processing
+message ProcessActionRequest {
+  string user_id = 1;
+  string action_type = 2;            // deposit, registration, wager, daily_login, etc.
+  string action_data_json = 3;       // JSON with action-specific data
+  string country_code = 4;           // User's country for filtering
+}
+
+message ProcessActionResponse {
+  bool success = 1;
+  repeated UserReward rewards_granted = 2;
+  string message = 3;
+}
+
+// User rewards
+message GetUserRewardsRequest {
+  string user_id = 1;
+  optional UserRewardStatus status = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message GetUserRewardsResponse {
+  repeated UserReward rewards = 1;
+  string next_page_token = 2;
+  int32 total_count = 3;
+  int64 total_bonus_balance = 4;     // Sum of all active bonus balances
+  int64 total_wagering_remaining = 5; // Sum of remaining wagering across all
+}
+
+message GetUserFreeSpinsRequest {
+  string user_id = 1;
+  optional string game_id = 2;       // Filter by specific game
+  bool active_only = 3;
+}
+
+message GetUserFreeSpinsResponse {
+  repeated FreeSpin free_spins = 1;
+  int32 total_available = 2;
+}
+
+message UseFreeSpinRequest {
+  string user_id = 1;
+  string free_spin_id = 2;
+  string game_id = 3;
+  string round_id = 4;
+}
+
+message UseFreeSpinResponse {
+  bool success = 1;
+  int64 spin_value = 2;              // Value of the spin used
+  int32 spins_remaining = 3;
+  string error_message = 4;
+}
+
+message UpdateWageringRequest {
+  string user_id = 1;
+  int64 wager_amount = 2;            // Amount wagered in cents
+  string game_id = 3;
+  string round_id = 4;
+}
+
+message UpdateWageringResponse {
+  bool success = 1;
+  int64 total_wagering_completed = 2;
+  int64 total_wagering_remaining = 3;
+  repeated UserReward completed_rewards = 4; // Rewards that completed wagering
+  string message = 5;
+}
+
+message ClaimPromotionRequest {
+  string user_id = 1;
+  string promotion_id = 2;
+  string action_data_json = 3;       // Optional data for claim (e.g., deposit amount)
+}
+
+message ClaimPromotionResponse {
+  bool success = 1;
+  UserReward reward = 2;
+  string error_message = 3;
+}
+
+// Admin manual operations
+message GrantRewardRequest {
+  string user_id = 1;
+  RewardType reward_type = 2;
+  int64 amount = 3;                  // Amount in cents
+  int32 wagering_requirement = 4;
+  int32 valid_days = 5;
+  string reason = 6;
+  string game_id = 7;                // For free spins
+  int32 free_spin_count = 8;         // For free spins
+  int64 spin_value = 9;              // For free spins
+  string currency = 10;
+}
+
+message CancelUserRewardRequest {
+  string id = 1;
+  string reason = 2;
+}
+
+// Statistics
+message GetPromotionStatsRequest {
+  string promotion_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message PromotionStats {
+  string promotion_id = 1;
+  string promotion_name = 2;
+  int32 total_redemptions = 3;
+  int32 unique_users = 4;
+  int64 total_rewards_granted = 5;   // In cents
+  int64 total_wagering_generated = 6; // In cents
+  int64 total_conversions = 7;       // Rewards that completed wagering
+  double conversion_rate = 8;        // Percentage
+  int64 cost_to_company = 9;         // Net cost in cents
+}
