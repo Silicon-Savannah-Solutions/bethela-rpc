@@ -453,9 +453,10 @@ func (x *LaunchGameRequest) GetUserAgent() string {
 // LaunchGameResponse contains the game launch URL
 type LaunchGameResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	GameUrl       string                 `protobuf:"bytes,1,opt,name=game_url,json=gameUrl,proto3" json:"game_url,omitempty"`       // URL to launch the game
-	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"` // Provider's session ID
-	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"` // Session expiration time
+	GameUrl       *string                `protobuf:"bytes,1,opt,name=game_url,json=gameUrl,proto3,oneof" json:"game_url,omitempty"`             // URL to launch the game
+	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`             // Provider's session ID
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`             // Session expiration time
+	HtmlSnippet   *string                `protobuf:"bytes,4,opt,name=html_snippet,json=htmlSnippet,proto3,oneof" json:"html_snippet,omitempty"` // HTML snippet to embed the game
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -491,8 +492,8 @@ func (*LaunchGameResponse) Descriptor() ([]byte, []int) {
 }
 
 func (x *LaunchGameResponse) GetGameUrl() string {
-	if x != nil {
-		return x.GameUrl
+	if x != nil && x.GameUrl != nil {
+		return *x.GameUrl
 	}
 	return ""
 }
@@ -509,6 +510,13 @@ func (x *LaunchGameResponse) GetExpiresAt() *timestamppb.Timestamp {
 		return x.ExpiresAt
 	}
 	return nil
+}
+
+func (x *LaunchGameResponse) GetHtmlSnippet() string {
+	if x != nil && x.HtmlSnippet != nil {
+		return *x.HtmlSnippet
+	}
+	return ""
 }
 
 // BetRequest is used to process a bet
@@ -1107,13 +1115,16 @@ const file_casino_provider_proto_rawDesc = "" +
 	"\tplayer_ip\x18\n" +
 	" \x01(\tR\bplayerIp\x12\x1d\n" +
 	"\n" +
-	"user_agent\x18\v \x01(\tR\tuserAgent\"\x89\x01\n" +
-	"\x12LaunchGameResponse\x12\x19\n" +
-	"\bgame_url\x18\x01 \x01(\tR\agameUrl\x12\x1d\n" +
+	"user_agent\x18\v \x01(\tR\tuserAgent\"\xd4\x01\n" +
+	"\x12LaunchGameResponse\x12\x1e\n" +
+	"\bgame_url\x18\x01 \x01(\tH\x00R\agameUrl\x88\x01\x01\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x02 \x01(\tR\tsessionId\x129\n" +
 	"\n" +
-	"expires_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"\xff\x02\n" +
+	"expires_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x12&\n" +
+	"\fhtml_snippet\x18\x04 \x01(\tH\x01R\vhtmlSnippet\x88\x01\x01B\v\n" +
+	"\t_game_urlB\x0f\n" +
+	"\r_html_snippet\"\xff\x02\n" +
 	"\n" +
 	"BetRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12\x17\n" +
@@ -1257,6 +1268,7 @@ func file_casino_provider_proto_init() {
 		return
 	}
 	file_wallet_proto_init()
+	file_casino_provider_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

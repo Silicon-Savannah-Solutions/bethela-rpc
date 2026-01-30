@@ -79,9 +79,10 @@ message LaunchGameRequest {
 
 // LaunchGameResponse contains the game launch URL
 message LaunchGameResponse {
-  string game_url = 1;         // URL to launch the game
+  optional string game_url = 1;         // URL to launch the game
   string session_id = 2;       // Provider's session ID
   google.protobuf.Timestamp expires_at = 3; // Session expiration time
+  optional string html_snippet = 4;     // HTML snippet to embed the game
 }
 
 // BetRequest is used to process a bet
