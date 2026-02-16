@@ -150,6 +150,7 @@ message RewardRequest {
     string transaction_id = 2;
     Money amount = 3;
     WalletType reward_type = 4;
+    optional string source = 5; // e.g. "casino", "bonus" — defaults to "casino" if unset
 }
 
 message DepositResponse {

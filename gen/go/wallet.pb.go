@@ -989,6 +989,7 @@ type RewardRequest struct {
 	TransactionId string                 `protobuf:"bytes,2,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
 	RewardType    WalletType             `protobuf:"varint,4,opt,name=reward_type,json=rewardType,proto3,enum=wallet.WalletType" json:"reward_type,omitempty"`
+	Source        *string                `protobuf:"bytes,5,opt,name=source,proto3,oneof" json:"source,omitempty"` // e.g. "casino", "bonus" — defaults to "casino" if unset
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1049,6 +1050,13 @@ func (x *RewardRequest) GetRewardType() WalletType {
 		return x.RewardType
 	}
 	return WalletType_BONUS_WALLET
+}
+
+func (x *RewardRequest) GetSource() string {
+	if x != nil && x.Source != nil {
+		return *x.Source
+	}
+	return ""
 }
 
 type DepositResponse struct {
@@ -2070,13 +2078,15 @@ const file_wallet_proto_rawDesc = "" +
 	"\x0eDepositRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12%\n" +
 	"\x06amount\x18\x02 \x01(\v2\r.wallet.MoneyR\x06amount\x121\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x19.wallet.TransactionStatusR\x06status\"\xab\x01\n" +
+	"\x06status\x18\x03 \x01(\x0e2\x19.wallet.TransactionStatusR\x06status\"\xd3\x01\n" +
 	"\rRewardRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12%\n" +
 	"\x0etransaction_id\x18\x02 \x01(\tR\rtransactionId\x12%\n" +
 	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x123\n" +
 	"\vreward_type\x18\x04 \x01(\x0e2\x12.wallet.WalletTypeR\n" +
-	"rewardType\"+\n" +
+	"rewardType\x12\x1b\n" +
+	"\x06source\x18\x05 \x01(\tH\x00R\x06source\x88\x01\x01B\t\n" +
+	"\a_source\"+\n" +
 	"\x0fDepositResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x92\x01\n" +
 	"\x0fWithdrawRequest\x12%\n" +
@@ -2330,6 +2340,7 @@ func file_wallet_proto_init() {
 	if File_wallet_proto != nil {
 		return
 	}
+	file_wallet_proto_msgTypes[13].OneofWrappers = []any{}
 	file_wallet_proto_msgTypes[25].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
