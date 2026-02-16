@@ -236,6 +236,8 @@ message ListUsersRequest {
   optional UserStatus status = 3;
   optional string role_name = 4;
   optional google.protobuf.Timestamp created_after = 5; // Filter users created after this time
+  optional string search = 6;        // Search by name, phone, or email
+  optional string exclude_role = 7;  // Exclude users whose only role matches this
 }
 
 // ListUsersResponse contains a list of users and pagination info

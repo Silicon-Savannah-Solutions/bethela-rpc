@@ -1598,6 +1598,8 @@ type ListUsersRequest struct {
 	Status        *UserStatus            `protobuf:"varint,3,opt,name=status,proto3,enum=identity.UserStatus,oneof" json:"status,omitempty"`
 	RoleName      *string                `protobuf:"bytes,4,opt,name=role_name,json=roleName,proto3,oneof" json:"role_name,omitempty"`
 	CreatedAfter  *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_after,json=createdAfter,proto3,oneof" json:"created_after,omitempty"` // Filter users created after this time
+	Search        *string                `protobuf:"bytes,6,opt,name=search,proto3,oneof" json:"search,omitempty"`                                 // Search by name, phone, or email
+	ExcludeRole   *string                `protobuf:"bytes,7,opt,name=exclude_role,json=excludeRole,proto3,oneof" json:"exclude_role,omitempty"`    // Exclude users whose only role matches this
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1665,6 +1667,20 @@ func (x *ListUsersRequest) GetCreatedAfter() *timestamppb.Timestamp {
 		return x.CreatedAfter
 	}
 	return nil
+}
+
+func (x *ListUsersRequest) GetSearch() string {
+	if x != nil && x.Search != nil {
+		return *x.Search
+	}
+	return ""
+}
+
+func (x *ListUsersRequest) GetExcludeRole() string {
+	if x != nil && x.ExcludeRole != nil {
+		return *x.ExcludeRole
+	}
+	return ""
 }
 
 // ListUsersResponse contains a list of users and pagination info
@@ -2097,18 +2113,22 @@ const file_identity_proto_rawDesc = "" +
 	"\x19AdminResetPasswordRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12!\n" +
 	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\x12\"\n" +
-	"\radmin_user_id\x18\x03 \x01(\tR\vadminUserId\"\x94\x02\n" +
+	"\radmin_user_id\x18\x03 \x01(\tR\vadminUserId\"\xf5\x02\n" +
 	"\x10ListUsersRequest\x12\x1b\n" +
 	"\tpage_size\x18\x01 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x02 \x01(\tR\tpageToken\x121\n" +
 	"\x06status\x18\x03 \x01(\x0e2\x14.identity.UserStatusH\x00R\x06status\x88\x01\x01\x12 \n" +
 	"\trole_name\x18\x04 \x01(\tH\x01R\broleName\x88\x01\x01\x12D\n" +
-	"\rcreated_after\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\fcreatedAfter\x88\x01\x01B\t\n" +
+	"\rcreated_after\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\fcreatedAfter\x88\x01\x01\x12\x1b\n" +
+	"\x06search\x18\x06 \x01(\tH\x03R\x06search\x88\x01\x01\x12&\n" +
+	"\fexclude_role\x18\a \x01(\tH\x04R\vexcludeRole\x88\x01\x01B\t\n" +
 	"\a_statusB\f\n" +
 	"\n" +
 	"_role_nameB\x10\n" +
-	"\x0e_created_after\"\x82\x01\n" +
+	"\x0e_created_afterB\t\n" +
+	"\a_searchB\x0f\n" +
+	"\r_exclude_role\"\x82\x01\n" +
 	"\x11ListUsersResponse\x12$\n" +
 	"\x05users\x18\x01 \x03(\v2\x0e.identity.UserR\x05users\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
