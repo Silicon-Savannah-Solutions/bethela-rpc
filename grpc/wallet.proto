@@ -30,6 +30,9 @@ service WalletService {
 
     rpc CheckProviderTransactionStatus(TransactionRequest) returns (TransactionResponse);
 
+    rpc ReconcileTransaction(ReconcileTransactionRequest) returns (ReconcileTransactionResponse);
+    rpc ReconcilePendingDeposits(ReconcilePendingDepositsRequest) returns (ReconcilePendingDepositsResponse);
+
     // wallet info
     rpc GetWalletByUserID(GetWalletByUserIDRequest) returns (Wallet);
     rpc CreateWallet(CreateWalletRequest) returns (Wallet);
@@ -269,4 +272,35 @@ message ReverseTransactionResponse {
     string reversal_transaction_id = 3;
     string original_transaction_id = 4;
     Money amount = 5;
+}
+
+message ReconcileTransactionRequest {
+    string transaction_id = 1;
+    string reconciled_by = 2;
+}
+
+message ReconcileTransactionResponse {
+    bool success = 1;
+    string message = 2;
+    string transaction_id = 3;
+    TransactionStatus previous_status = 4;
+    TransactionStatus new_status = 5;
+    Money amount = 6;
+}
+
+message ReconcilePendingDepositsRequest {
+    int64 date_from = 1;
+    int64 date_to = 2;
+    string reconciled_by = 3;
+}
+
+message ReconcilePendingDepositsResponse {
+    bool success = 1;
+    string message = 2;
+    int32 total_checked = 3;
+    int32 reconciled_success = 4;
+    int32 reconciled_failed = 5;
+    int32 still_pending = 6;
+    int32 errors = 7;
+    repeated ReconcileTransactionResponse results = 8;
 }

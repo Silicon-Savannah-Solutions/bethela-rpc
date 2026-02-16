@@ -31,6 +31,8 @@ const (
 	WalletService_ManualReconciliation_FullMethodName           = "/wallet.WalletService/ManualReconciliation"
 	WalletService_ReverseTransaction_FullMethodName             = "/wallet.WalletService/ReverseTransaction"
 	WalletService_CheckProviderTransactionStatus_FullMethodName = "/wallet.WalletService/CheckProviderTransactionStatus"
+	WalletService_ReconcileTransaction_FullMethodName           = "/wallet.WalletService/ReconcileTransaction"
+	WalletService_ReconcilePendingDeposits_FullMethodName       = "/wallet.WalletService/ReconcilePendingDeposits"
 	WalletService_GetWalletByUserID_FullMethodName              = "/wallet.WalletService/GetWalletByUserID"
 	WalletService_CreateWallet_FullMethodName                   = "/wallet.WalletService/CreateWallet"
 	WalletService_GetWalletByID_FullMethodName                  = "/wallet.WalletService/GetWalletByID"
@@ -54,6 +56,8 @@ type WalletServiceClient interface {
 	ManualReconciliation(ctx context.Context, in *ManualReconciliationRequest, opts ...grpc.CallOption) (*ManualReconciliationResponse, error)
 	ReverseTransaction(ctx context.Context, in *ReverseTransactionRequest, opts ...grpc.CallOption) (*ReverseTransactionResponse, error)
 	CheckProviderTransactionStatus(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	ReconcileTransaction(ctx context.Context, in *ReconcileTransactionRequest, opts ...grpc.CallOption) (*ReconcileTransactionResponse, error)
+	ReconcilePendingDeposits(ctx context.Context, in *ReconcilePendingDepositsRequest, opts ...grpc.CallOption) (*ReconcilePendingDepositsResponse, error)
 	// wallet info
 	GetWalletByUserID(ctx context.Context, in *GetWalletByUserIDRequest, opts ...grpc.CallOption) (*Wallet, error)
 	CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*Wallet, error)
@@ -191,6 +195,26 @@ func (c *walletServiceClient) CheckProviderTransactionStatus(ctx context.Context
 	return out, nil
 }
 
+func (c *walletServiceClient) ReconcileTransaction(ctx context.Context, in *ReconcileTransactionRequest, opts ...grpc.CallOption) (*ReconcileTransactionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReconcileTransactionResponse)
+	err := c.cc.Invoke(ctx, WalletService_ReconcileTransaction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *walletServiceClient) ReconcilePendingDeposits(ctx context.Context, in *ReconcilePendingDepositsRequest, opts ...grpc.CallOption) (*ReconcilePendingDepositsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReconcilePendingDepositsResponse)
+	err := c.cc.Invoke(ctx, WalletService_ReconcilePendingDeposits_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *walletServiceClient) GetWalletByUserID(ctx context.Context, in *GetWalletByUserIDRequest, opts ...grpc.CallOption) (*Wallet, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Wallet)
@@ -257,6 +281,8 @@ type WalletServiceServer interface {
 	ManualReconciliation(context.Context, *ManualReconciliationRequest) (*ManualReconciliationResponse, error)
 	ReverseTransaction(context.Context, *ReverseTransactionRequest) (*ReverseTransactionResponse, error)
 	CheckProviderTransactionStatus(context.Context, *TransactionRequest) (*TransactionResponse, error)
+	ReconcileTransaction(context.Context, *ReconcileTransactionRequest) (*ReconcileTransactionResponse, error)
+	ReconcilePendingDeposits(context.Context, *ReconcilePendingDepositsRequest) (*ReconcilePendingDepositsResponse, error)
 	// wallet info
 	GetWalletByUserID(context.Context, *GetWalletByUserIDRequest) (*Wallet, error)
 	CreateWallet(context.Context, *CreateWalletRequest) (*Wallet, error)
@@ -309,6 +335,12 @@ func (UnimplementedWalletServiceServer) ReverseTransaction(context.Context, *Rev
 }
 func (UnimplementedWalletServiceServer) CheckProviderTransactionStatus(context.Context, *TransactionRequest) (*TransactionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CheckProviderTransactionStatus not implemented")
+}
+func (UnimplementedWalletServiceServer) ReconcileTransaction(context.Context, *ReconcileTransactionRequest) (*ReconcileTransactionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReconcileTransaction not implemented")
+}
+func (UnimplementedWalletServiceServer) ReconcilePendingDeposits(context.Context, *ReconcilePendingDepositsRequest) (*ReconcilePendingDepositsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReconcilePendingDeposits not implemented")
 }
 func (UnimplementedWalletServiceServer) GetWalletByUserID(context.Context, *GetWalletByUserIDRequest) (*Wallet, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetWalletByUserID not implemented")
@@ -562,6 +594,42 @@ func _WalletService_CheckProviderTransactionStatus_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletService_ReconcileTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReconcileTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).ReconcileTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_ReconcileTransaction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).ReconcileTransaction(ctx, req.(*ReconcileTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WalletService_ReconcilePendingDeposits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReconcilePendingDepositsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).ReconcilePendingDeposits(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_ReconcilePendingDeposits_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).ReconcilePendingDeposits(ctx, req.(*ReconcilePendingDepositsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _WalletService_GetWalletByUserID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetWalletByUserIDRequest)
 	if err := dec(in); err != nil {
@@ -706,6 +774,14 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckProviderTransactionStatus",
 			Handler:    _WalletService_CheckProviderTransactionStatus_Handler,
+		},
+		{
+			MethodName: "ReconcileTransaction",
+			Handler:    _WalletService_ReconcileTransaction_Handler,
+		},
+		{
+			MethodName: "ReconcilePendingDeposits",
+			Handler:    _WalletService_ReconcilePendingDeposits_Handler,
 		},
 		{
 			MethodName: "GetWalletByUserID",
