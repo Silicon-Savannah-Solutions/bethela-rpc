@@ -29,6 +29,7 @@ const (
 	WalletService_Revertlien_FullMethodName                     = "/wallet.WalletService/Revertlien"
 	WalletService_CommitLien_FullMethodName                     = "/wallet.WalletService/CommitLien"
 	WalletService_ManualReconciliation_FullMethodName           = "/wallet.WalletService/ManualReconciliation"
+	WalletService_ReverseTransaction_FullMethodName             = "/wallet.WalletService/ReverseTransaction"
 	WalletService_CheckProviderTransactionStatus_FullMethodName = "/wallet.WalletService/CheckProviderTransactionStatus"
 	WalletService_GetWalletByUserID_FullMethodName              = "/wallet.WalletService/GetWalletByUserID"
 	WalletService_CreateWallet_FullMethodName                   = "/wallet.WalletService/CreateWallet"
@@ -51,6 +52,7 @@ type WalletServiceClient interface {
 	Revertlien(ctx context.Context, in *RevertLienRequest, opts ...grpc.CallOption) (*RevertLienResponse, error)
 	CommitLien(ctx context.Context, in *CommitLienRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
 	ManualReconciliation(ctx context.Context, in *ManualReconciliationRequest, opts ...grpc.CallOption) (*ManualReconciliationResponse, error)
+	ReverseTransaction(ctx context.Context, in *ReverseTransactionRequest, opts ...grpc.CallOption) (*ReverseTransactionResponse, error)
 	CheckProviderTransactionStatus(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
 	// wallet info
 	GetWalletByUserID(ctx context.Context, in *GetWalletByUserIDRequest, opts ...grpc.CallOption) (*Wallet, error)
@@ -169,6 +171,16 @@ func (c *walletServiceClient) ManualReconciliation(ctx context.Context, in *Manu
 	return out, nil
 }
 
+func (c *walletServiceClient) ReverseTransaction(ctx context.Context, in *ReverseTransactionRequest, opts ...grpc.CallOption) (*ReverseTransactionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReverseTransactionResponse)
+	err := c.cc.Invoke(ctx, WalletService_ReverseTransaction_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *walletServiceClient) CheckProviderTransactionStatus(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TransactionResponse)
@@ -243,6 +255,7 @@ type WalletServiceServer interface {
 	Revertlien(context.Context, *RevertLienRequest) (*RevertLienResponse, error)
 	CommitLien(context.Context, *CommitLienRequest) (*TransactionResponse, error)
 	ManualReconciliation(context.Context, *ManualReconciliationRequest) (*ManualReconciliationResponse, error)
+	ReverseTransaction(context.Context, *ReverseTransactionRequest) (*ReverseTransactionResponse, error)
 	CheckProviderTransactionStatus(context.Context, *TransactionRequest) (*TransactionResponse, error)
 	// wallet info
 	GetWalletByUserID(context.Context, *GetWalletByUserIDRequest) (*Wallet, error)
@@ -290,6 +303,9 @@ func (UnimplementedWalletServiceServer) CommitLien(context.Context, *CommitLienR
 }
 func (UnimplementedWalletServiceServer) ManualReconciliation(context.Context, *ManualReconciliationRequest) (*ManualReconciliationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ManualReconciliation not implemented")
+}
+func (UnimplementedWalletServiceServer) ReverseTransaction(context.Context, *ReverseTransactionRequest) (*ReverseTransactionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReverseTransaction not implemented")
 }
 func (UnimplementedWalletServiceServer) CheckProviderTransactionStatus(context.Context, *TransactionRequest) (*TransactionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CheckProviderTransactionStatus not implemented")
@@ -510,6 +526,24 @@ func _WalletService_ManualReconciliation_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WalletService_ReverseTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReverseTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletServiceServer).ReverseTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WalletService_ReverseTransaction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletServiceServer).ReverseTransaction(ctx, req.(*ReverseTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _WalletService_CheckProviderTransactionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TransactionRequest)
 	if err := dec(in); err != nil {
@@ -664,6 +698,10 @@ var WalletService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ManualReconciliation",
 			Handler:    _WalletService_ManualReconciliation_Handler,
+		},
+		{
+			MethodName: "ReverseTransaction",
+			Handler:    _WalletService_ReverseTransaction_Handler,
 		},
 		{
 			MethodName: "CheckProviderTransactionStatus",

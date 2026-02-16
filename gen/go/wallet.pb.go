@@ -28,6 +28,7 @@ const (
 	TransactionStatus_PENDING   TransactionStatus = 1
 	TransactionStatus_SUCCESS   TransactionStatus = 2
 	TransactionStatus_FAILED    TransactionStatus = 3
+	TransactionStatus_REVERSED  TransactionStatus = 4
 )
 
 // Enum value maps for TransactionStatus.
@@ -37,12 +38,14 @@ var (
 		1: "PENDING",
 		2: "SUCCESS",
 		3: "FAILED",
+		4: "REVERSED",
 	}
 	TransactionStatus_value = map[string]int32{
 		"UMBIGUOUS": 0,
 		"PENDING":   1,
 		"SUCCESS":   2,
 		"FAILED":    3,
+		"REVERSED":  4,
 	}
 )
 
@@ -2020,6 +2023,142 @@ func (x *ListTransactionsResponse) GetTotalCount() int32 {
 	return 0
 }
 
+type ReverseTransactionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TransactionId string                 `protobuf:"bytes,1,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	ReversedBy    string                 `protobuf:"bytes,3,opt,name=reversed_by,json=reversedBy,proto3" json:"reversed_by,omitempty"` // user ID of agent performing reversal
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReverseTransactionRequest) Reset() {
+	*x = ReverseTransactionRequest{}
+	mi := &file_wallet_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReverseTransactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReverseTransactionRequest) ProtoMessage() {}
+
+func (x *ReverseTransactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wallet_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReverseTransactionRequest.ProtoReflect.Descriptor instead.
+func (*ReverseTransactionRequest) Descriptor() ([]byte, []int) {
+	return file_wallet_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *ReverseTransactionRequest) GetTransactionId() string {
+	if x != nil {
+		return x.TransactionId
+	}
+	return ""
+}
+
+func (x *ReverseTransactionRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *ReverseTransactionRequest) GetReversedBy() string {
+	if x != nil {
+		return x.ReversedBy
+	}
+	return ""
+}
+
+type ReverseTransactionResponse struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Success               bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message               string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	ReversalTransactionId string                 `protobuf:"bytes,3,opt,name=reversal_transaction_id,json=reversalTransactionId,proto3" json:"reversal_transaction_id,omitempty"`
+	OriginalTransactionId string                 `protobuf:"bytes,4,opt,name=original_transaction_id,json=originalTransactionId,proto3" json:"original_transaction_id,omitempty"`
+	Amount                *Money                 `protobuf:"bytes,5,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *ReverseTransactionResponse) Reset() {
+	*x = ReverseTransactionResponse{}
+	mi := &file_wallet_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReverseTransactionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReverseTransactionResponse) ProtoMessage() {}
+
+func (x *ReverseTransactionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wallet_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReverseTransactionResponse.ProtoReflect.Descriptor instead.
+func (*ReverseTransactionResponse) Descriptor() ([]byte, []int) {
+	return file_wallet_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *ReverseTransactionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ReverseTransactionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ReverseTransactionResponse) GetReversalTransactionId() string {
+	if x != nil {
+		return x.ReversalTransactionId
+	}
+	return ""
+}
+
+func (x *ReverseTransactionResponse) GetOriginalTransactionId() string {
+	if x != nil {
+		return x.OriginalTransactionId
+	}
+	return ""
+}
+
+func (x *ReverseTransactionResponse) GetAmount() *Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
 var File_wallet_proto protoreflect.FileDescriptor
 
 const file_wallet_proto_rawDesc = "" +
@@ -2174,13 +2313,25 @@ const file_wallet_proto_rawDesc = "" +
 	"\ftransactions\x18\x01 \x03(\v2\x13.wallet.TransactionR\ftransactions\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\x12\x1f\n" +
 	"\vtotal_count\x18\x03 \x01(\x05R\n" +
-	"totalCount*H\n" +
+	"totalCount\"{\n" +
+	"\x19ReverseTransactionRequest\x12%\n" +
+	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\x12\x16\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1f\n" +
+	"\vreversed_by\x18\x03 \x01(\tR\n" +
+	"reversedBy\"\xe7\x01\n" +
+	"\x1aReverseTransactionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x126\n" +
+	"\x17reversal_transaction_id\x18\x03 \x01(\tR\x15reversalTransactionId\x126\n" +
+	"\x17original_transaction_id\x18\x04 \x01(\tR\x15originalTransactionId\x12%\n" +
+	"\x06amount\x18\x05 \x01(\v2\r.wallet.MoneyR\x06amount*V\n" +
 	"\x11TransactionStatus\x12\r\n" +
 	"\tUMBIGUOUS\x10\x00\x12\v\n" +
 	"\aPENDING\x10\x01\x12\v\n" +
 	"\aSUCCESS\x10\x02\x12\n" +
 	"\n" +
-	"\x06FAILED\x10\x03*>\n" +
+	"\x06FAILED\x10\x03\x12\f\n" +
+	"\bREVERSED\x10\x04*>\n" +
 	"\bLienType\x12\a\n" +
 	"\x03ALL\x10\x00\x12\f\n" +
 	"\bWiTHDRAW\x10\x01\x12\x10\n" +
@@ -2198,7 +2349,7 @@ const file_wallet_proto_rawDesc = "" +
 	"\x11ADMIN_DESTINATION\x10\x03\x12\x16\n" +
 	"\x12SYSTEM_DESTINATION\x10\x04\x12\x18\n" +
 	"\x14PROVIDER_DESTINATION\x10\x05\x12\x15\n" +
-	"\x11BONUS_DESTINATION\x10\x062\xd4\b\n" +
+	"\x11BONUS_DESTINATION\x10\x062\xb1\t\n" +
 	"\rWalletService\x126\n" +
 	"\x03C2B\x12\x12.wallet.C2BRequest\x1a\x1b.wallet.TransactionResponse\x126\n" +
 	"\x03B2C\x12\x12.wallet.B2CRequest\x1a\x1b.wallet.TransactionResponse\x12J\n" +
@@ -2211,7 +2362,8 @@ const file_wallet_proto_rawDesc = "" +
 	"Revertlien\x12\x19.wallet.RevertLienRequest\x1a\x1a.wallet.RevertLienResponse\x12D\n" +
 	"\n" +
 	"CommitLien\x12\x19.wallet.CommitLienRequest\x1a\x1b.wallet.TransactionResponse\x12a\n" +
-	"\x14ManualReconciliation\x12#.wallet.ManualReconciliationRequest\x1a$.wallet.ManualReconciliationResponse\x12Y\n" +
+	"\x14ManualReconciliation\x12#.wallet.ManualReconciliationRequest\x1a$.wallet.ManualReconciliationResponse\x12[\n" +
+	"\x12ReverseTransaction\x12!.wallet.ReverseTransactionRequest\x1a\".wallet.ReverseTransactionResponse\x12Y\n" +
 	"\x1eCheckProviderTransactionStatus\x12\x1a.wallet.TransactionRequest\x1a\x1b.wallet.TransactionResponse\x12E\n" +
 	"\x11GetWalletByUserID\x12 .wallet.GetWalletByUserIDRequest\x1a\x0e.wallet.Wallet\x12;\n" +
 	"\fCreateWallet\x12\x1b.wallet.CreateWalletRequest\x1a\x0e.wallet.Wallet\x12=\n" +
@@ -2233,7 +2385,7 @@ func file_wallet_proto_rawDescGZIP() []byte {
 }
 
 var file_wallet_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
+var file_wallet_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_wallet_proto_goTypes = []any{
 	(TransactionStatus)(0),               // 0: wallet.TransactionStatus
 	(LienType)(0),                        // 1: wallet.LienType
@@ -2267,6 +2419,8 @@ var file_wallet_proto_goTypes = []any{
 	(*ListTransactionsRequest)(nil),      // 29: wallet.ListTransactionsRequest
 	(*Transaction)(nil),                  // 30: wallet.Transaction
 	(*ListTransactionsResponse)(nil),     // 31: wallet.ListTransactionsResponse
+	(*ReverseTransactionRequest)(nil),    // 32: wallet.ReverseTransactionRequest
+	(*ReverseTransactionResponse)(nil),   // 33: wallet.ReverseTransactionResponse
 }
 var file_wallet_proto_depIdxs = []int32{
 	4,  // 0: wallet.Balance.amount:type_name -> wallet.Money
@@ -2296,43 +2450,46 @@ var file_wallet_proto_depIdxs = []int32{
 	0,  // 24: wallet.Transaction.status:type_name -> wallet.TransactionStatus
 	3,  // 25: wallet.Transaction.destination:type_name -> wallet.TransactionDestination
 	30, // 26: wallet.ListTransactionsResponse.transactions:type_name -> wallet.Transaction
-	7,  // 27: wallet.WalletService.C2B:input_type -> wallet.C2BRequest
-	8,  // 28: wallet.WalletService.B2C:input_type -> wallet.B2CRequest
-	9,  // 29: wallet.WalletService.TransactionInfo:input_type -> wallet.TransactionRequest
-	16, // 30: wallet.WalletService.Deposit:input_type -> wallet.DepositRequest
-	17, // 31: wallet.WalletService.Reward:input_type -> wallet.RewardRequest
-	19, // 32: wallet.WalletService.Withdraw:input_type -> wallet.WithdrawRequest
-	21, // 33: wallet.WalletService.TakeLien:input_type -> wallet.LienRequest
-	23, // 34: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
-	25, // 35: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
-	27, // 36: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
-	9,  // 37: wallet.WalletService.CheckProviderTransactionStatus:input_type -> wallet.TransactionRequest
-	12, // 38: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
-	13, // 39: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
-	14, // 40: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
-	15, // 41: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
-	29, // 42: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
-	10, // 43: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
-	10, // 44: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
-	10, // 45: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
-	18, // 46: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
-	18, // 47: wallet.WalletService.Reward:output_type -> wallet.DepositResponse
-	20, // 48: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
-	22, // 49: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
-	24, // 50: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
-	10, // 51: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
-	28, // 52: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
-	10, // 53: wallet.WalletService.CheckProviderTransactionStatus:output_type -> wallet.TransactionResponse
-	6,  // 54: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
-	6,  // 55: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
-	6,  // 56: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
-	5,  // 57: wallet.WalletService.GetBalance:output_type -> wallet.Balance
-	31, // 58: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
-	43, // [43:59] is the sub-list for method output_type
-	27, // [27:43] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	4,  // 27: wallet.ReverseTransactionResponse.amount:type_name -> wallet.Money
+	7,  // 28: wallet.WalletService.C2B:input_type -> wallet.C2BRequest
+	8,  // 29: wallet.WalletService.B2C:input_type -> wallet.B2CRequest
+	9,  // 30: wallet.WalletService.TransactionInfo:input_type -> wallet.TransactionRequest
+	16, // 31: wallet.WalletService.Deposit:input_type -> wallet.DepositRequest
+	17, // 32: wallet.WalletService.Reward:input_type -> wallet.RewardRequest
+	19, // 33: wallet.WalletService.Withdraw:input_type -> wallet.WithdrawRequest
+	21, // 34: wallet.WalletService.TakeLien:input_type -> wallet.LienRequest
+	23, // 35: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
+	25, // 36: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
+	27, // 37: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
+	32, // 38: wallet.WalletService.ReverseTransaction:input_type -> wallet.ReverseTransactionRequest
+	9,  // 39: wallet.WalletService.CheckProviderTransactionStatus:input_type -> wallet.TransactionRequest
+	12, // 40: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
+	13, // 41: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
+	14, // 42: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
+	15, // 43: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
+	29, // 44: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
+	10, // 45: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
+	10, // 46: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
+	10, // 47: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
+	18, // 48: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
+	18, // 49: wallet.WalletService.Reward:output_type -> wallet.DepositResponse
+	20, // 50: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
+	22, // 51: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
+	24, // 52: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
+	10, // 53: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
+	28, // 54: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
+	33, // 55: wallet.WalletService.ReverseTransaction:output_type -> wallet.ReverseTransactionResponse
+	10, // 56: wallet.WalletService.CheckProviderTransactionStatus:output_type -> wallet.TransactionResponse
+	6,  // 57: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
+	6,  // 58: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
+	6,  // 59: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
+	5,  // 60: wallet.WalletService.GetBalance:output_type -> wallet.Balance
+	31, // 61: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
+	45, // [45:62] is the sub-list for method output_type
+	28, // [28:45] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_wallet_proto_init() }
@@ -2348,7 +2505,7 @@ func file_wallet_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wallet_proto_rawDesc), len(file_wallet_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   28,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

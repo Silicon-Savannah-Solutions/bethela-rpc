@@ -26,6 +26,8 @@ service WalletService {
 
     rpc ManualReconciliation(ManualReconciliationRequest) returns (ManualReconciliationResponse);
 
+    rpc ReverseTransaction(ReverseTransactionRequest) returns (ReverseTransactionResponse);
+
     rpc CheckProviderTransactionStatus(TransactionRequest) returns (TransactionResponse);
 
     // wallet info
@@ -43,6 +45,7 @@ enum TransactionStatus {
     PENDING = 1;
     SUCCESS = 2;
     FAILED = 3;
+    REVERSED = 4;
 }
 
 enum LienType {
@@ -252,4 +255,18 @@ message ListTransactionsResponse {
     repeated Transaction transactions = 1;
     string next_page_token = 2;
     int32 total_count = 3;
+}
+
+message ReverseTransactionRequest {
+    string transaction_id = 1;
+    string reason = 2;
+    string reversed_by = 3;  // user ID of agent performing reversal
+}
+
+message ReverseTransactionResponse {
+    bool success = 1;
+    string message = 2;
+    string reversal_transaction_id = 3;
+    string original_transaction_id = 4;
+    Money amount = 5;
 }
