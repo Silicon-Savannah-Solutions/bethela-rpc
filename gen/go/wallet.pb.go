@@ -392,11 +392,14 @@ func (x *Wallet) GetBalances() []*Money {
 }
 
 type C2BRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	UserId          string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Amount          *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	MaxDailyDeposit int64                  `protobuf:"varint,4,opt,name=max_daily_deposit,json=maxDailyDeposit,proto3" json:"max_daily_deposit,omitempty"`
+	MinAmount       int64                  `protobuf:"varint,5,opt,name=min_amount,json=minAmount,proto3" json:"min_amount,omitempty"`
+	MaxAmount       int64                  `protobuf:"varint,6,opt,name=max_amount,json=maxAmount,proto3" json:"max_amount,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *C2BRequest) Reset() {
@@ -443,12 +446,36 @@ func (x *C2BRequest) GetAmount() *Money {
 	return nil
 }
 
+func (x *C2BRequest) GetMaxDailyDeposit() int64 {
+	if x != nil {
+		return x.MaxDailyDeposit
+	}
+	return 0
+}
+
+func (x *C2BRequest) GetMinAmount() int64 {
+	if x != nil {
+		return x.MinAmount
+	}
+	return 0
+}
+
+func (x *C2BRequest) GetMaxAmount() int64 {
+	if x != nil {
+		return x.MaxAmount
+	}
+	return 0
+}
+
 type B2CRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Amount        *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	UserId           string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Amount           *Money                 `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	MaxDailyWithdraw int64                  `protobuf:"varint,4,opt,name=max_daily_withdraw,json=maxDailyWithdraw,proto3" json:"max_daily_withdraw,omitempty"`
+	MinAmount        int64                  `protobuf:"varint,5,opt,name=min_amount,json=minAmount,proto3" json:"min_amount,omitempty"`
+	MaxAmount        int64                  `protobuf:"varint,6,opt,name=max_amount,json=maxAmount,proto3" json:"max_amount,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *B2CRequest) Reset() {
@@ -493,6 +520,27 @@ func (x *B2CRequest) GetAmount() *Money {
 		return x.Amount
 	}
 	return nil
+}
+
+func (x *B2CRequest) GetMaxDailyWithdraw() int64 {
+	if x != nil {
+		return x.MaxDailyWithdraw
+	}
+	return 0
+}
+
+func (x *B2CRequest) GetMinAmount() int64 {
+	if x != nil {
+		return x.MinAmount
+	}
+	return 0
+}
+
+func (x *B2CRequest) GetMaxAmount() int64 {
+	if x != nil {
+		return x.MaxAmount
+	}
+	return 0
 }
 
 type TransactionRequest struct {
@@ -1977,15 +2025,25 @@ const file_wallet_proto_rawDesc = "" +
 	"\x06amount\x18\x02 \x01(\v2\r.wallet.MoneyR\x06amount\"P\n" +
 	"\x06Wallet\x12\x1b\n" +
 	"\twallet_id\x18\x01 \x01(\tR\bwalletId\x12)\n" +
-	"\bbalances\x18\x02 \x03(\v2\r.wallet.MoneyR\bbalances\"L\n" +
+	"\bbalances\x18\x02 \x03(\v2\r.wallet.MoneyR\bbalances\"\xb6\x01\n" +
 	"\n" +
 	"C2BRequest\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12%\n" +
-	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\"L\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12*\n" +
+	"\x11max_daily_deposit\x18\x04 \x01(\x03R\x0fmaxDailyDeposit\x12\x1d\n" +
+	"\n" +
+	"min_amount\x18\x05 \x01(\x03R\tminAmount\x12\x1d\n" +
+	"\n" +
+	"max_amount\x18\x06 \x01(\x03R\tmaxAmount\"\xb8\x01\n" +
 	"\n" +
 	"B2CRequest\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12%\n" +
-	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\";\n" +
+	"\x06amount\x18\x03 \x01(\v2\r.wallet.MoneyR\x06amount\x12,\n" +
+	"\x12max_daily_withdraw\x18\x04 \x01(\x03R\x10maxDailyWithdraw\x12\x1d\n" +
+	"\n" +
+	"min_amount\x18\x05 \x01(\x03R\tminAmount\x12\x1d\n" +
+	"\n" +
+	"max_amount\x18\x06 \x01(\x03R\tmaxAmount\";\n" +
 	"\x12TransactionRequest\x12%\n" +
 	"\x0etransaction_id\x18\x01 \x01(\tR\rtransactionId\"\xb0\x01\n" +
 	"\x13TransactionResponse\x12%\n" +
@@ -2130,7 +2188,7 @@ const file_wallet_proto_rawDesc = "" +
 	"\x11ADMIN_DESTINATION\x10\x03\x12\x16\n" +
 	"\x12SYSTEM_DESTINATION\x10\x04\x12\x18\n" +
 	"\x14PROVIDER_DESTINATION\x10\x05\x12\x15\n" +
-	"\x11BONUS_DESTINATION\x10\x062\xf9\a\n" +
+	"\x11BONUS_DESTINATION\x10\x062\xd4\b\n" +
 	"\rWalletService\x126\n" +
 	"\x03C2B\x12\x12.wallet.C2BRequest\x1a\x1b.wallet.TransactionResponse\x126\n" +
 	"\x03B2C\x12\x12.wallet.B2CRequest\x1a\x1b.wallet.TransactionResponse\x12J\n" +
@@ -2143,7 +2201,8 @@ const file_wallet_proto_rawDesc = "" +
 	"Revertlien\x12\x19.wallet.RevertLienRequest\x1a\x1a.wallet.RevertLienResponse\x12D\n" +
 	"\n" +
 	"CommitLien\x12\x19.wallet.CommitLienRequest\x1a\x1b.wallet.TransactionResponse\x12a\n" +
-	"\x14ManualReconciliation\x12#.wallet.ManualReconciliationRequest\x1a$.wallet.ManualReconciliationResponse\x12E\n" +
+	"\x14ManualReconciliation\x12#.wallet.ManualReconciliationRequest\x1a$.wallet.ManualReconciliationResponse\x12Y\n" +
+	"\x1eCheckProviderTransactionStatus\x12\x1a.wallet.TransactionRequest\x1a\x1b.wallet.TransactionResponse\x12E\n" +
 	"\x11GetWalletByUserID\x12 .wallet.GetWalletByUserIDRequest\x1a\x0e.wallet.Wallet\x12;\n" +
 	"\fCreateWallet\x12\x1b.wallet.CreateWalletRequest\x1a\x0e.wallet.Wallet\x12=\n" +
 	"\rGetWalletByID\x12\x1c.wallet.GetWalletByIDRequest\x1a\x0e.wallet.Wallet\x128\n" +
@@ -2237,28 +2296,30 @@ var file_wallet_proto_depIdxs = []int32{
 	23, // 34: wallet.WalletService.Revertlien:input_type -> wallet.RevertLienRequest
 	25, // 35: wallet.WalletService.CommitLien:input_type -> wallet.CommitLienRequest
 	27, // 36: wallet.WalletService.ManualReconciliation:input_type -> wallet.ManualReconciliationRequest
-	12, // 37: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
-	13, // 38: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
-	14, // 39: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
-	15, // 40: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
-	29, // 41: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
-	10, // 42: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
-	10, // 43: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
-	10, // 44: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
-	18, // 45: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
-	18, // 46: wallet.WalletService.Reward:output_type -> wallet.DepositResponse
-	20, // 47: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
-	22, // 48: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
-	24, // 49: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
-	10, // 50: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
-	28, // 51: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
-	6,  // 52: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
-	6,  // 53: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
-	6,  // 54: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
-	5,  // 55: wallet.WalletService.GetBalance:output_type -> wallet.Balance
-	31, // 56: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
-	42, // [42:57] is the sub-list for method output_type
-	27, // [27:42] is the sub-list for method input_type
+	9,  // 37: wallet.WalletService.CheckProviderTransactionStatus:input_type -> wallet.TransactionRequest
+	12, // 38: wallet.WalletService.GetWalletByUserID:input_type -> wallet.GetWalletByUserIDRequest
+	13, // 39: wallet.WalletService.CreateWallet:input_type -> wallet.CreateWalletRequest
+	14, // 40: wallet.WalletService.GetWalletByID:input_type -> wallet.GetWalletByIDRequest
+	15, // 41: wallet.WalletService.GetBalance:input_type -> wallet.GetBalanceRequest
+	29, // 42: wallet.WalletService.ListTransactions:input_type -> wallet.ListTransactionsRequest
+	10, // 43: wallet.WalletService.C2B:output_type -> wallet.TransactionResponse
+	10, // 44: wallet.WalletService.B2C:output_type -> wallet.TransactionResponse
+	10, // 45: wallet.WalletService.TransactionInfo:output_type -> wallet.TransactionResponse
+	18, // 46: wallet.WalletService.Deposit:output_type -> wallet.DepositResponse
+	18, // 47: wallet.WalletService.Reward:output_type -> wallet.DepositResponse
+	20, // 48: wallet.WalletService.Withdraw:output_type -> wallet.WithdrawResponse
+	22, // 49: wallet.WalletService.TakeLien:output_type -> wallet.LienResponse
+	24, // 50: wallet.WalletService.Revertlien:output_type -> wallet.RevertLienResponse
+	10, // 51: wallet.WalletService.CommitLien:output_type -> wallet.TransactionResponse
+	28, // 52: wallet.WalletService.ManualReconciliation:output_type -> wallet.ManualReconciliationResponse
+	10, // 53: wallet.WalletService.CheckProviderTransactionStatus:output_type -> wallet.TransactionResponse
+	6,  // 54: wallet.WalletService.GetWalletByUserID:output_type -> wallet.Wallet
+	6,  // 55: wallet.WalletService.CreateWallet:output_type -> wallet.Wallet
+	6,  // 56: wallet.WalletService.GetWalletByID:output_type -> wallet.Wallet
+	5,  // 57: wallet.WalletService.GetBalance:output_type -> wallet.Balance
+	31, // 58: wallet.WalletService.ListTransactions:output_type -> wallet.ListTransactionsResponse
+	43, // [43:59] is the sub-list for method output_type
+	27, // [27:43] is the sub-list for method input_type
 	27, // [27:27] is the sub-list for extension type_name
 	27, // [27:27] is the sub-list for extension extendee
 	0,  // [0:27] is the sub-list for field type_name

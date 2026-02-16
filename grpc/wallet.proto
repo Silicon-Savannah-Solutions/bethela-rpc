@@ -26,6 +26,8 @@ service WalletService {
 
     rpc ManualReconciliation(ManualReconciliationRequest) returns (ManualReconciliationResponse);
 
+    rpc CheckProviderTransactionStatus(TransactionRequest) returns (TransactionResponse);
+
     // wallet info
     rpc GetWalletByUserID(GetWalletByUserIDRequest) returns (Wallet);
     rpc CreateWallet(CreateWalletRequest) returns (Wallet);
@@ -85,11 +87,17 @@ message Wallet {
 message C2BRequest {
     string user_id = 2;
     Money amount = 3;
+    int64 max_daily_deposit = 4;
+    int64 min_amount = 5;
+    int64 max_amount = 6;
 }
 
 message B2CRequest {
     string user_id = 2;
     Money amount = 3;
+    int64 max_daily_withdraw = 4;
+    int64 min_amount = 5;
+    int64 max_amount = 6;
 }
 
 message TransactionRequest {
